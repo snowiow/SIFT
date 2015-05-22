@@ -1,82 +1,80 @@
 #include "sift.hpp"
 
-using namespace vigra;
+#include <iostream>
+#include <vector>
+#include <string>
+
+#include <vigra/convolution.hxx>
+#include <vigra/resizeimage.hxx>
+#include <vigra/impex.hxx>
+#include <vigra/multi_array.hxx>
+#include <vigra/multi_math.hxx>
+
 using namespace vigra::multi_math;
 
-void Sift::calculate(vigra::MultiArray<2, float> img, float sigma, float k) {
-    auto first = convolveWithGauss(img, sigma);
-    std::vector<MultiArray<2, float>> laplacians;
-    std::vector<MultiArray<2, float>> gaussians;
-    gaussians.push_back(first);
+void Sift::calculate(vigra::MultiArray<2, f32_t>& img, f32_t sigma, f32_t k) {
+    std::vector<vigra::MultiArray<2, f32_t>> laplacians;
+    std::vector<vigra::MultiArray<2, f32_t>> gaussians;
+    gaussians.emplace_back(convolveWithGauss(img, sigma));
 
     //first epoch
-    unsigned int laplacionsPerEpoch = 4;
+    const u32_t laplacionsPerEpoch = 4;
 
-    for (unsigned int i = 1; i < laplacionsPerEpoch + 1; i++) {
-        MultiArray<2, float> gaussian = convolveWithGauss(img, std::pow(k, i) *
-            sigma);
-
-        gaussians.push_back(gaussian);
-        MultiArray<2, float> laplacian = laplacianOfGaussian(gaussians[i - 1],
-             gaussians[i]);
-
-        laplacians.push_back(laplacian);
+    for (u32_t i = 1; i < laplacionsPerEpoch + 1; i++) {
+        gaussians.emplace_back(convolveWithGauss(img, std::pow(k, i) * sigma));
+        laplacians.emplace_back(laplacianOfGaussian(gaussians[i - 1], gaussians[i]));
     }
 
     //Save laplacianOfGaussian for viewing
-    for (unsigned int i = 0; i < laplacians.size(); i++) {
+    for (u32_t i = 0; i < laplacians.size(); i++) {
         std::string fnStr = "laplacian" + std::to_string(i) + ".png";
-        char fn[fnStr.size()];
-        strcpy(fn, fnStr.c_str());
-        exportImage(laplacians[i], ImageExportInfo(fnStr.c_str()));
+        exportImage(laplacians[i], vigra::ImageExportInfo(fnStr.c_str()));
     }
 }
 
-MultiArray<2, float> Sift::reduceToNextLevel(const MultiArray<2, float> & in)
-{
+vigra::MultiArray<2, f32_t> Sift::reduceToNextLevel(const vigra::MultiArray<2, f32_t> & in) {
     // image size at current level
-    int height = in.height();
-    int width = in.width();
+    const i32_t height = in.height();
+    const i32_t width = in.width();
 
     // image size at next smaller level
-    int newheight = (height + 1) / 2;
-    int newwidth = (width + 1) / 2;
+    const i32_t newheight = (height + 1) / 2;
+    const i32_t newwidth = (width + 1) / 2;
 
     // resize result image to appropriate size
-    MultiArray<2, float> out(Shape2(newwidth, newheight));
+    vigra::MultiArray<2, f32_t> out(vigra::Shape2(newwidth, newheight));
 
     // define a Gaussian kernel (size 5x1)
-    Kernel1D<double> filter;
+    vigra::Kernel1D<f64_t> filter;
     //Inits the filter with the 5 values from -2 the value to +2 the value
     filter.initExplicitly(-2, 2) = 0.05, 0.25, 0.4, 0.25, 0.05;
 
-    MultiArray<2, float> tmpimage1(Shape2(width, height));
-    MultiArray<2, float> tmpimage2(Shape2(width, height));
+    vigra::MultiArray<2, f32_t> tmpimage1(vigra::Shape2(width, height));
+    vigra::MultiArray<2, f32_t> tmpimage2(vigra::Shape2(width, height));
 
     //convolves every row from in to out with the filter
     separableConvolveX(in, tmpimage1, filter);
     //same for y
     separableConvolveY(tmpimage1, tmpimage2, filter);
-
     // downsample smoothed image
     resizeImageNoInterpolation(tmpimage2, out);
+
     return out;
 }
 
-MultiArray<2, float> Sift::convolveWithGauss(const MultiArray<2, float>& input, float sigma) {
-    Kernel1D<double> filter;
+vigra::MultiArray<2, f32_t> Sift::convolveWithGauss(const vigra::MultiArray<2, f32_t>& input, f32_t sigma) {
+    vigra::Kernel1D<f64_t> filter;
     filter.initGaussian(sigma);
 
-    MultiArray<2, float> tmp(input.shape());
-    MultiArray<2, float> result(input.shape());
+    vigra::MultiArray<2, f32_t> tmp(input.shape());
+    vigra::MultiArray<2, f32_t> result(input.shape());
+
     separableConvolveX(input, tmp, filter);
     separableConvolveY(tmp, result, filter);
+
     return result;
 }
 
-MultiArray<2, float> Sift::laplacianOfGaussian(
-    const MultiArray<2, float>& lower, const MultiArray<2, float> higher) {
-
-   MultiArray<2, float>result = higher - lower;
-   return result;
+vigra::MultiArray<2, f32_t> Sift::laplacianOfGaussian(const vigra::MultiArray<2, f32_t>& lower, const vigra::MultiArray<2, f32_t>& higher) {
+    return higher - lower;
 }
