@@ -32,7 +32,7 @@ void Sift::calculate(vigra::MultiArray<2, f32_t>& img, f32_t sigma, f32_t k) {
     }
 }
 
-vigra::MultiArray<2, f32_t> Sift::reduceToNextLevel(const vigra::MultiArray<2, f32_t> & in) {
+vigra::MultiArray<2, f32_t> Sift::reduceToNextLevel(const vigra::MultiArray<2, f32_t>& in) {
     // image size at current level
     const i32_t height = in.height();
     const i32_t width = in.width();
