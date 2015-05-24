@@ -12,7 +12,7 @@ int main(int argc, char** argv) {
     vigra::importImage(info, img);
 
     Sift sift;
-    sift.calculate(img);
-    
+    sift.calculate(img, 3);
+
     return 0;
 }
