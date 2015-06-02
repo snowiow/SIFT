@@ -13,27 +13,74 @@
 using namespace vigra::multi_math;
 
 void Sift::calculate(vigra::MultiArray<2, f32_t>& img, u16_t epochs, f32_t sigma, f32_t k,
-    u16_t dogPerEpoch) const {
+    u16_t dogPerEpoch) {
 
     auto dogs = _createDOGs(img, epochs, sigma, k, dogPerEpoch);
     auto interestPoints = _findScaleSpaceExtrema(dogs);
 
-    // Save img with found interest points for demonstration purposes
-    for (auto point : interestPoints[0]) {
-        img(std::get<0>(point), std::get<1>(point)) = 255;
-    }
+    //Save img with found interest points for demonstration purposes
+    auto img_output1 = img;
+    for (auto epoch : interestPoints[0])
+        for (auto point : epoch)
+            img_output1(std::get<0>(point), std::get<1>(point)) = 255;
 
-    exportImage(img, vigra::ImageExportInfo("images/interest_points.png"));
+    exportImage(img_output1, vigra::ImageExportInfo("images/interest_points.png"));
+
+    _eliminateEdgeResponses(interestPoints, dogs);
+
+    //Save img again without edge responses
+    auto img_output2 = img;
+    for (auto epoch : interestPoints[0]) 
+        for (auto point : epoch) 
+            img_output2(std::get<0>(point), std::get<1>(point)) = 255;
+        
+    exportImage(img_output2, vigra::ImageExportInfo("images/interest_points2.png"));
 }
 
-const std::vector<std::vector<std::tuple<u32_t, u32_t>>>
-    Sift::_findScaleSpaceExtrema(std::vector<std::vector<vigra::MultiArray<2, f32_t>>> dogs) const {
+void Sift::_eliminateEdgeResponses(interest_point_epochs& interestPoints, const img_epochs& dogs, u32_t r) {
 
+    for (u32_t i = 0; i < interestPoints.size(); i++) {
+        for (u32_t j = 0; j < interestPoints[i].size(); j++) {
+            auto iter = interestPoints[i][j].begin();
+             while (iter != interestPoints[i][j].end()) {
+                // calculate Tr(D(x,x) + D(y, y))
+                auto coords = *iter; 
+                i32_t dxx = dogs[i][j](std::get<0>(coords), std::get<0>(coords));
+                i32_t dyy = dogs[i][j](std::get<1>(coords), std::get<1>(coords));
+                i32_t tr= dxx + dyy;
+
+                //calculate Det = D(x, x) * D(y, y) - D(x, y) ^ 2
+                i32_t det = dxx * dyy - std::pow(dogs[i][j](std::get<0>(coords), std::get<1>(coords)), 2);
+
+                //delete if determinant is negative
+                if (det < 0) {
+                   iter = interestPoints[i][j].erase(iter);
+                   continue;
+                }
+                //paper calculates with img values between 0 and 1. Ours are between 0 255.
+                r *=255;
+                //Is principal curvature above the given threshold
+                if (std::pow(tr, 2) / det > std::pow(r + 1, 2) / r) {
+                    iter = interestPoints[i][j].erase(iter);
+                    continue;
+                }
+                ++iter;
+            }
+        }
+    }
+}
+
+void Sift::_keypointLocation(interest_point_epochs& interestPoints) {
+        //?
+}
+
+const interest_point_epochs Sift::_findScaleSpaceExtrema(img_epochs dogs) const {
     //a Vector with epochs containing tuples of interest points found per epoch
-    std::vector<std::vector<std::tuple<u32_t, u32_t>>> interestPoints;
+    interest_point_epochs interestPoints;
     for (u32_t e = 0; e < dogs.size(); e++) {
-        interestPoints.emplace_back(std::vector<std::tuple<u32_t, u32_t>>());
+        interestPoints.emplace_back(std::vector<std::vector<std::tuple<u32_t, u32_t>>>());
         for (u32_t i = 1; i < dogs[e].size() - 1; i++) {
+            interestPoints[e].emplace_back(std::vector<std::tuple<u32_t, u32_t>>());
             for (u32_t x = 0; x < dogs[e][i].shape(0); x++) {
                 for (u32_t y = 0; y < dogs[e][i].shape(1); y++) {
                     auto leftUpCorner = vigra::Shape2(x - 1, y - 1);
@@ -55,7 +102,7 @@ const std::vector<std::vector<std::tuple<u32_t, u32_t>>>
                         !any(under < dogs[e][i](x, y)) &&
                         !any(above < dogs[e][i](x, y)))) {
 
-                       interestPoints[e].emplace_back(std::make_tuple(x, y));
+                       interestPoints[e].back().emplace_back(std::make_tuple(x, y));
                     }
                 }
             }
@@ -64,20 +111,20 @@ const std::vector<std::vector<std::tuple<u32_t, u32_t>>>
     return interestPoints;
 }
 
-const std::vector<std::vector<vigra::MultiArray<2, f32_t>>> Sift::_createDOGs(
-    vigra::MultiArray<2, f32_t>& img, u16_t epochs, f32_t sigma, f32_t k, u16_t dogPerEpoch) const {
+const img_epochs Sift::_createDOGs(vigra::MultiArray<2, f32_t>& img, u16_t epochs, f32_t sigma,
+    f32_t k, u16_t dogPerEpoch) const {
 
-    /*
+        /*
     * A vector which contains a vector for each epoch. Those are filled with the
     * Images which were created from the laplacianOfGaussians.
     */
-    std::vector<std::vector<vigra::MultiArray<2, f32_t>>> laplacians;
+    img_epochs laplacians;
 
     /*
     * a vector which contains a vector for each epoch. Those are filled with the
     * images which were created from gaussians
     */
-    std::vector<std::vector<vigra::MultiArray<2, f32_t>>> gaussians;
+    img_epochs gaussians;
 
     //add inital image
     gaussians.emplace_back(std::vector<vigra::MultiArray<2, f32_t>>());
@@ -108,13 +155,13 @@ const std::vector<std::vector<vigra::MultiArray<2, f32_t>>> Sift::_createDOGs(
     }
 
     //Save laplacianOfGaussian for Demonstration purposes
-    // for (u32_t i = 0; i < laplacians.size(); i++) {
-    //     for (u32_t j = 0; j < laplacians[i].size(); j++) {
-    //     std::string fnStr = "images/laplacian" + std::to_string(i) + std::to_string(j)
-    //         + ".png";
-    //     exportImage(laplacians[i][j], vigra::ImageExportInfo(fnStr.c_str()));
-    //     }
-    // }
+     for (u32_t i = 0; i < laplacians.size(); i++) {
+         for (u32_t j = 0; j < laplacians[i].size(); j++) {
+         std::string fnStr = "images/laplacian" + std::to_string(i) + std::to_string(j)
+             + ".png";
+         exportImage(laplacians[i][j], vigra::ImageExportInfo(fnStr.c_str()));
+         }
+     }
     return laplacians;
 }
 
@@ -122,12 +169,12 @@ const vigra::MultiArray<2, f32_t> Sift::_reduceToNextLevel(const vigra::MultiArr
     f32_t sigma) const {
 
     // image size at current level
-    const i32_t height = in.height();
-    const i32_t width = in.width();
+    const u32_t height = in.height();
+    const u32_t width = in.width();
 
     // image size at next smaller level
-    const i32_t newheight = (height + 1) / 2;
-    const i32_t newwidth = (width + 1) / 2;
+    const u32_t newheight = (height + 1) / 2;
+    const u32_t newwidth = (width + 1) / 2;
 
     // resize result image to appropriate size
     vigra::MultiArray<2, f32_t> out(vigra::Shape2(newwidth, newheight));
@@ -140,9 +187,8 @@ const vigra::MultiArray<2, f32_t> Sift::_reduceToNextLevel(const vigra::MultiArr
 const vigra::MultiArray<2, f32_t> Sift::_convolveWithGauss(const vigra::MultiArray<2, f32_t>& input,
     f32_t sigma) const {
 
-    vigra::Kernel1D<f64_t> filter;
+    vigra::Kernel1D<f32_t> filter;
     filter.initGaussian(sigma);
-
     vigra::MultiArray<2, f32_t> tmp(input.shape());
     vigra::MultiArray<2, f32_t> result(input.shape());
 
