@@ -13,7 +13,7 @@
 
 using namespace vigra::multi_math;
 
-void Sift::calculate(vigra::MultiArray<2, f32_t>& img, u16_t epochs, f32_t sigma, f32_t k, u16_t dogPerEpoch) {
+void Sift::calculate(vigra::MultiArray<2, f32_t>& img, u16_t epochs, f32_t sigma, f32_t k, u16_t dogPerEpoch) const {
     auto dogs = _createDOGs(img, epochs, sigma, k, dogPerEpoch);
     auto interestPoints = _findScaleSpaceExtrema(dogs);
 

@@ -17,7 +17,7 @@ public:
     * @param with standard value square root of 2
     * @param How many DOGs should be created per epoch
     */
-    void calculate(vigra::MultiArray<2, f32_t>&, u16_t epochs = 4, f32_t sigma = 1.6, f32_t k = std::sqrt(2), u16_t dogPerEpoch = 3);
+    void calculate(vigra::MultiArray<2, f32_t>&, u16_t epochs = 4, f32_t sigma = 1.6, f32_t k = std::sqrt(2), u16_t dogPerEpoch = 3) const ;
 
 private:
 
