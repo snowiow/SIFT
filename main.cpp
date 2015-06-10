@@ -17,7 +17,7 @@ int main(int argc, char** argv) {
     
     try {
         vigra::ImageImportInfo info(img_file.c_str());
-        vigra::MultiArray<2, float> img(vigra::Shape2(info.shape()));
+        vigra::MultiArray<2, f32_t> img(vigra::Shape2(info.shape()));
         vigra::importImage(info, img);
 
         Sift sift;
