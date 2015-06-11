@@ -20,22 +20,19 @@ void Sift::calculate(vigra::MultiArray<2, f32_t>& img, u16_t epochs, f32_t sigma
 
 
     auto dogs = _createDOGs(img, epochs, sigma, k, dogPerEpoch);
-    auto interestPoints = _findScaleSpaceExtrema(dogs);
+    auto& interestPoints = _findScaleSpaceExtrema(dogs);
 
     //Save img with found interest points for demonstration purposes
     auto img_output1 = img;
-    for (auto img : interestPoints[0]) {
+    for (auto& img : interestPoints[0]) {
         //std::cout << img.width() << std::endl;
         //std::cout << img.height() << std::endl;
         for(u16_t x = 0; x < img.width(); x++) {
             for(u16_t y = 0; y < img.height(); y++) {
-                if (x <= img_output1.shape(0) && y <= img_output1.shape(1)) {
-                    if (img[Point(x, y)] > -1) {
-                        std::cout << "test";
-                        img_output1(x, y) = 255;
-                    }
-
+                if (img[Point(x, y)] > -1) {
+                    img_output1(x, y) = 255;
                 }
+
             }
         }
     }
@@ -113,7 +110,7 @@ const interest_point_epochs Sift::_findScaleSpaceExtrema(const img_epochs& dogs)
         for (u16_t i = 1; i < dogs[e].size() - 1; i++) {
             std::cout << dogs[e][i].shape(0) << std::endl;
             std::cout << dogs[e][i].shape(1) << std::endl;
-            interestPoints[e].push_back(FlatMatrix<f32_t>(dogs[e][i].shape(0), dogs[e][i].shape(1), -1));
+            interestPoints[e].emplace_back(FlatMatrix<f32_t>(dogs[e][i].shape(0), dogs[e][i].shape(1), -1));
             for (i32_t x = 0; x < dogs[e][i].shape(0); x++) {
                 for (i32_t y = 0; y < dogs[e][i].shape(1); y++) {
                     auto leftUpCorner = vigra::Shape2(x - 1, y - 1);

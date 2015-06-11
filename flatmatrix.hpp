@@ -16,20 +16,17 @@ private:
 public:
     FlatMatrix() = default;
     
-    explicit FlatMatrix(u16_t width, u16_t height, const T& init = T()) {
+    explicit FlatMatrix(u16_t width, u16_t height, const T& def = T()) : _height(height), _width(width) {
         assert(width > 1 && height > 1);
         
-        _width = _height = std::max(width, height);
         const u32_t size = _width * _height;
 
         _data = std::shared_ptr<T>(new T[size], std::default_delete<T[]>());
         for (u32_t i = 0; i < size; i++) {
-            _data.get()[i] = init;
+            _data.get()[i] = def; 
         }
     }
     
-    //FlatMatrix(const FlatMatrix&) = delete;
-
     u16_t width() const {
         return _width;
     }
@@ -41,7 +38,7 @@ public:
     T& operator [](const Point& vec) {
         assert(vec.x < _width && vec.y < _height);
         
-        const u32_t index = vec.x * _width + vec.y;
+        const u32_t index = vec.x * _height + vec.y;
         assert(index < (_width * _height));
         
         return _data.get()[index];
@@ -50,10 +47,18 @@ public:
     const T& operator [](const Point& vec) const {
         assert(vec.x < _width && vec.y < _height);
         
-        const u32_t index = vec.x * _width + vec.y;
+        const u32_t index = vec.x * _height + vec.y;
         assert(index < (_width * _height));
         
         return _data.get()[index];
+    }
+    
+    T& operator()(u16_t x, u16_t y) {
+        return (*this)[Point(x, y)];
+    }
+    
+    const T& operator()(u16_t x, u16_t y) const {
+        return (*this)[Point(x, y)];
     }
 
     T* begin() {
