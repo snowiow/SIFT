@@ -1,6 +1,10 @@
 #ifndef MATRIX_HPP
 #define MATRIX_HPP
 
+#ifdef _MSC_VER
+#pragma warning(disable: 4018)
+#endif
+
 #include <iostream>
 #include <cassert>
 #include <memory>

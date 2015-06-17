@@ -16,42 +16,40 @@
 
 using namespace vigra::multi_math;
 
-void Sift::calculate(vigra::MultiArray<2, f32_t>& img, u16_t epochs, f32_t sigma, f32_t k, 
-        u16_t dogPerEpoch) const {
-
-
+void Sift::calculate(
+    vigra::MultiArray<2, f32_t>& img, u16_t epochs, f32_t sigma, f32_t k, u16_t dogPerEpoch) const
+{
     auto dogs = _createDOGs(img, epochs, sigma, k, dogPerEpoch);
     auto interestPoints = _findScaleSpaceExtrema(dogs);
     //Save img with found interest points for demonstration purposes
     auto img_output1 = img;
-    for (auto img : interestPoints[0]) {
+    for (auto& img : interestPoints[0]) {
         for(u16_t x = 0; x < img.width(); x++) {
             for(u16_t y = 0; y < img.height(); y++) {
                 if (img[Point(x, y)] > -1) {
                     img_output1(x, y) = 255;
                 }
-
             }
         }
     }
 
     exportImage(img_output1, vigra::ImageExportInfo("images/interest_points.png"));
-    
+    /*
     _keypointLocation(interestPoints, dogs);
+    
     auto img_output2 = img;
-    for (auto img : interestPoints[0]) {
+    for (auto& img : interestPoints[0]) {
         for(u16_t x = 0; x < img.width(); x++) {
             for(u16_t y = 0; y < img.height(); y++) {
                 if (img[Point(x, y)] > -1) {
                     img_output2(x, y) = 255;
                 }
-
             }
         }
     }
-
+    
     exportImage(img_output2, vigra::ImageExportInfo("images/after_keypointLocation.png"));
-
+    */
     //_eliminateEdgeResponses(interestPoints, dogs);
 
     //Save img again without edge responses
@@ -68,7 +66,6 @@ void Sift::calculate(vigra::MultiArray<2, f32_t>& img, u16_t epochs, f32_t sigma
 
 const vigra::MultiArray<2, f32_t> Sift::_differenceOfNeighbouringSampleX(
         const Matrix<f32_t>& interestPoints, const vigra::MultiArray<2, f32_t>& d) const {
-
     vigra::MultiArray<2, f32_t> derivative = d;
     for (u16_t x = 1; x < d.width() - 1; x++) {
         for(u16_t y = 0; y < d.height(); y++) {
@@ -82,7 +79,6 @@ const vigra::MultiArray<2, f32_t> Sift::_differenceOfNeighbouringSampleX(
 
 const vigra::MultiArray<2, f32_t> Sift::_differenceOfNeighbouringSampleY(
         const Matrix<f32_t>& interestPoints, const vigra::MultiArray<2, f32_t>& d) const {
-
     vigra::MultiArray<2, f32_t> derivative = d;
     for (u16_t x = 0; x < d.width(); x++) {
         for(u16_t y = 1; y < d.height() - 1; y++) {
@@ -97,7 +93,6 @@ const vigra::MultiArray<2, f32_t> Sift::_differenceOfNeighbouringSampleY(
 const vigra::MultiArray<2, f32_t> Sift::_differenceOfNeighbouringSampleSigma(
             const std::vector<Matrix<f32_t>>& interestPoints, 
             const std::vector<vigra::MultiArray<2, f32_t>>& d) const {
-    
     assert(interestPoints.size() == 3);
     assert(d.size() == 3);
     vigra::MultiArray<2, f32_t> derivative = d[1];
@@ -176,7 +171,7 @@ void Sift::_keypointLocation(interest_point_epochs& interestPoints, const img_ep
             v1[0] = vigra::linalg::transpose(v1[0]);
             v1[1] = vigra::linalg::transpose(v1[1]);
             v1[2] = vigra::linalg::transpose(v1[2]);
-            vigra::MultiArray<2, f32_t> ext_sub = dogs[e][i] + 0.5 * v1 * extremum;
+            //vigra::MultiArray<2, f32_t> ext_sub = dogs[e][i] + 0.5 * v1 * extremum;
 
             //for (u16_t x = 1; x < ext_sub.shape(0) - 1; x++) {
                 //for (u16_t y = 1; y < ext_sub.shape(1) - 1; y++) {
