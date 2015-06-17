@@ -1,3 +1,6 @@
+#ifndef MATRIX_HPP
+#define MATRIX_HPP
+
 #include <iostream>
 #include <cassert>
 #include <memory>
@@ -6,7 +9,7 @@
 #include "point.hpp"
 
 template <typename T>
-class FlatMatrix {
+class Matrix {
 private:
     u16_t _width;
     u16_t _height;
@@ -14,9 +17,9 @@ private:
     std::shared_ptr<T> _data;
 
 public:
-    FlatMatrix() = default;
+    Matrix() = default;
     
-    explicit FlatMatrix(u16_t width, u16_t height, const T& def = T()) : _height(height), _width(width) {
+    explicit Matrix(u16_t width, u16_t height, const T& def = T()) : _height(height), _width(width) {
         assert(width > 1 && height > 1);
         
         const u32_t size = _width * _height;
@@ -69,7 +72,7 @@ public:
         return &_data.get()[_width * _height];
     }
 
-    friend std::ostream& operator <<(std::ostream& out, FlatMatrix& m) {
+    friend std::ostream& operator <<(std::ostream& out, Matrix& m) {
         const u32_t size = m._width * m._height;
         
         for (u32_t i = 0, x = 1; i < size; i++, x++) {
@@ -85,3 +88,5 @@ public:
         return out;
     }
 };
+
+#endif
