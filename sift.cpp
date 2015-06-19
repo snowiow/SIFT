@@ -53,19 +53,12 @@ void Sift::calculate(
     }
 
 void Sift::_keypointLocation(interest_point_epochs& interestPoints, const img_epochs& dogs) const {
-    assert(dogs.size() == interestPoints.size());
     for(u16_t e = 0; e < dogs.size(); e++) {
-        assert(dogs[e].size() >= 3);
-        assert(interestPoints[e].size() == dogs[e].size() / 3);
         for (u16_t i = 1; i < dogs[e].size() - 1; i++) {
-            assert(dogs[e][i].shape(0) == interestPoints[e][i - 1].width());
-            assert(dogs[e][i].shape(1) == interestPoints[e][i - 1].height());
             for (u16_t x = 1; x < dogs[e][i].shape(0) - 1; x++) {
                 for (u16_t y = 1; y < dogs[e][i].shape(1) - 1; y++) {
                     if (interestPoints[e][i - 1](x, y) > -1) {
                         auto d = dogs[e][i];
-                        assert(d.shape(0) > 2);
-                        assert(d.shape(1) > 2);
 
                         f32_t dx = (d(x - 1, y) - d(x + 1, y)) / 2;
                         f32_t dy = (d(x, y - 1) - d(x, y + 1)) / 2;
@@ -82,15 +75,15 @@ void Sift::_keypointLocation(interest_point_epochs& interestPoints, const img_ep
                         f32_t dys = dogs[e][i + 1](x, y + 1) - dogs[e][i + 1](x, y + 1)
                             - dogs[e][i - 1](x, y + 1) + dogs[e][i - 1](x, y - 1);
                         vigra::MultiArray<2, f32_t> sec_deriv(vigra::Shape2(3, 3));
-                        sec_deriv(0, 0) = dxx;
-                        sec_deriv(0, 1) = dxy;
-                        sec_deriv(0, 2) = dxs;
-                        sec_deriv(1, 0) = dxy;
-                        sec_deriv(1, 1) = dyy;
-                        sec_deriv(1, 2) = dys;
-                        sec_deriv(2, 0) = dxs;
-                        sec_deriv(2, 1) = dys;
-                        sec_deriv(2, 2) = dss;
+                        sec_deriv(0, 0) = -dxx;
+                        sec_deriv(0, 1) = -dxy;
+                        sec_deriv(0, 2) = -dxs;
+                        sec_deriv(1, 0) = -dxy;
+                        sec_deriv(1, 1) = -dyy;
+                        sec_deriv(1, 2) = -dys;
+                        sec_deriv(2, 0) = -dxs;
+                        sec_deriv(2, 1) = -dys;
+                        sec_deriv(2, 2) = -dss;
 
                         vigra::TinyVector<f32_t, 3> deriv(dx, dy, ds);
                         auto extremum =  vigra::linalg::operator*(vigra::linalg::inverse(sec_deriv), deriv); 
