@@ -18,15 +18,14 @@
 
 using namespace vigra::multi_math;
 
-void Sift::calculate(vigra::MultiArray<2, f32_t>& img, u16_t epochs, f32_t sigma, f32_t k, 
-        u16_t dogPerEpoch) const {
-
-
+void Sift::calculate(
+    vigra::MultiArray<2, f32_t>& img, u16_t epochs, f32_t sigma, f32_t k, u16_t dogPerEpoch) const
+{
     auto dogs = _createDOGs(img, epochs, sigma, k, dogPerEpoch);
     auto interestPoints = _findScaleSpaceExtrema(dogs);
     //Save img with found interest points for demonstration purposes
     auto img_output1 = img;
-    for (auto img : interestPoints[0]) {
+    for (auto& img : interestPoints[0]) {
         for(u16_t x = 0; x < img.width(); x++) {
             for(u16_t y = 0; y < img.height(); y++) {
                 if (img[Point(x, y)] > -1) {
@@ -37,10 +36,10 @@ void Sift::calculate(vigra::MultiArray<2, f32_t>& img, u16_t epochs, f32_t sigma
     }
 
     exportImage(img_output1, vigra::ImageExportInfo("images/interest_points.png"));
-
     _keypointLocation(interestPoints, dogs);
+    
     auto img_output2 = img;
-    for (auto img : interestPoints[0]) {
+    for (auto& img : interestPoints[0]) {
         for(u16_t x = 0; x < img.width(); x++) {
             for(u16_t y = 0; y < img.height(); y++) {
                 if (img[Point(x, y)] > -1) {
@@ -49,22 +48,9 @@ void Sift::calculate(vigra::MultiArray<2, f32_t>& img, u16_t epochs, f32_t sigma
             }
         }
     }
-
+    
     exportImage(img_output2, vigra::ImageExportInfo("images/after_keypointLocation.png"));
-
-    //_eliminateEdgeResponses(interestPoints, dogs);
-
-    //Save img again without edge responses
-    //auto img_output2 = img;
-    //for (auto epoch : interestPoints[0]) {
-    //for (auto point : epoch) {
-    //if (point != -1)
-    //img_output2(point) = 255;
-    //}
-    //}
-
-    //exportImage(img_output2, vigra::ImageExportInfo("images/interest_points2.png"));
-}
+    }
 
 void Sift::_keypointLocation(interest_point_epochs& interestPoints, const img_epochs& dogs) const {
     assert(dogs.size() == interestPoints.size());
@@ -110,7 +96,6 @@ void Sift::_keypointLocation(interest_point_epochs& interestPoints, const img_ep
                         deriv[0] = dx;
                         deriv[1] = dy;
                         deriv[2] = ds;
-                        assert(sec_deriv.shape(1) == deriv.size());
                         auto extremum =  vigra::linalg::operator*(vigra::linalg::inverse(sec_deriv), deriv); 
 
                         //Calculated up 0.5 from paper to image values [0,255]
