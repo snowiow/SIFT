@@ -23,45 +23,6 @@ public:
             f32_t k = std::sqrt(2),  u16_t dogPerEpoch = 3) const;
 
 private:
-
-    /*
-    * Tests the found interest points by building up a hessian matrix, make Tr and determinant and
-    * test these against some threshold.
-    * @param The vector with the epochs, which contaisn a vector of the interest points as tuples
-    * @param The found DoGs
-    * @param the threshold against which the calculated values are tested against
-    */
-    void _eliminateEdgeResponses(interest_point_epochs&, 
-            const img_epochs&, u16_t r = 10) const;
-
-
-    /*
-     * Calculates the difference of neighbouring sample points in the X-dimension
-     * @param The Matrix with interest points of the current DoG
-     * @param The current DoG
-     * @return The resulting Image
-     */
-    const vigra::MultiArray<2, f32_t> _differenceOfNeighbouringSampleX(
-            const Matrix<f32_t>&, const vigra::MultiArray<2, f32_t>&) const;
-
-    /*
-     * Calculates the difference of neighbouring sample points in the X-dimension
-     * @param The Matrix with interest points of the current DoG
-     * @param The current DoG
-     * @return The resulting Image
-     */
-    const vigra::MultiArray<2, f32_t> _differenceOfNeighbouringSampleY(
-        const Matrix<f32_t>&, const vigra::MultiArray<2, f32_t>&) const;
-
-    /*
-     * Calculates the difference of neighbouring sample points in the scale- dimension
-     * @param A vector with 3 FlatMatrices which contain the interestPoints
-     * @param A vector of 3 Multiarrays which contain the Dogs. The second is the one of which
-     * the derivative is taken from
-     */
-    const vigra::MultiArray<2, f32_t> _differenceOfNeighbouringSampleSigma(
-            const std::vector<Matrix<f32_t>>&, const std::vector<vigra::MultiArray<2, f32_t>>&) const;
-
     /*
     * Keypoint Location uses Taylor expansion to filter the weak interest points.
     * @param the vector with epochs and the keypoints as tuples inside the epochs, which will be
