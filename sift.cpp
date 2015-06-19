@@ -1,6 +1,5 @@
 #include "sift.hpp"
 
-
 #include <iostream>
 #include <vector>
 #include <string>
@@ -49,7 +48,7 @@ void Sift::calculate(
         }
     }
 
-    exportImage(img_output2, vigra::ImageExportInfo("images/after_keypointLocation.png"));
+    exportImage(img_output2, vigra::ImageExportInfo("images/after_filter.png"));
 }
 
 void Sift::_eliminateEdgeResponses(interest_point_epochs& interestPoints, const img_epochs& dogs) const {
@@ -60,32 +59,16 @@ void Sift::_eliminateEdgeResponses(interest_point_epochs& interestPoints, const 
                     if (interestPoints[e][i - 1](x, y) > -1) {
                         auto d = dogs[e][i];
 
-                        f32_t dx = (d(x - 1, y) - d(x + 1, y)) / 2;
-                        f32_t dy = (d(x, y - 1) - d(x, y + 1)) / 2;
-                        f32_t ds = (dogs[e][i - 1](x, y) - dogs[e][i + 1](x, y)) / 2;
+                        const vigra::MultiArray<2, f32_t> param[3] = {dogs[e][i - 1], dogs[e][i], dogs[e][i + 1]};
+                        const Point p(x, y);
+                        auto deriv = _foDerivative(param, p);
+                        auto sec_deriv = _soDerivative(param, p);
 
-                        f32_t dxx = d(x + 1, y) + d(x - 1, y) - 2 * d(x, y);
-                        f32_t dyy = d(x, y + 1) + d(x, y - 1) - 2 * d(x, y);
-                        f32_t dss = dogs[e][i + 1](x, y) + dogs[e][i - 1](x, y) - 2 * d(x, y);
-                        f32_t dxy = d(x + 1, y + 1) - d(x - 1, y + 1) - d(x + 1, y - 1) 
-                            + d(x - 1, y - 1);
-                        f32_t dxs = dogs[e][i + 1](x + 1, y) - dogs[e][i + 1](x - 1, y) 
-                            - dogs[e][i - 1](x + 1, y) + dogs[e][i - 1](x - 1, y);
+                        auto neg_sec_deriv = sec_deriv;
+                        for (auto elem : neg_sec_deriv) {
+                            elem *= -1;
+                        }
 
-                        f32_t dys = dogs[e][i + 1](x, y + 1) - dogs[e][i + 1](x, y + 1)
-                            - dogs[e][i - 1](x, y + 1) + dogs[e][i - 1](x, y - 1);
-                        vigra::MultiArray<2, f32_t> sec_deriv(vigra::Shape2(3, 3));
-                        sec_deriv(0, 0) = -dxx;
-                        sec_deriv(0, 1) = -dxy;
-                        sec_deriv(0, 2) = -dxs;
-                        sec_deriv(1, 0) = -dxy;
-                        sec_deriv(1, 1) = -dyy;
-                        sec_deriv(1, 2) = -dys;
-                        sec_deriv(2, 0) = -dxs;
-                        sec_deriv(2, 1) = -dys;
-                        sec_deriv(2, 2) = -dss;
-
-                        vigra::TinyVector<f32_t, 3> deriv(dx, dy, ds);
                         auto extremum =  vigra::linalg::operator*(vigra::linalg::inverse(sec_deriv), deriv); 
 
                         //Calculated up 0.5 from paper to image values [0,255]
@@ -105,8 +88,10 @@ void Sift::_eliminateEdgeResponses(interest_point_epochs& interestPoints, const 
                             continue;
                         }
 
-                        f32_t hessian_tr = dxx + dyy;
-                        f32_t hessian_det = dxx * dyy - std::pow(dxy, 2);
+                        //dxx + dyy
+                        f32_t hessian_tr = sec_deriv(0, 0) + sec_deriv(1, 1);
+                        //dxx * dyy - dxy^2
+                        f32_t hessian_det = sec_deriv(0, 0) * sec_deriv(1, 1) - std::pow(sec_deriv(1, 0), 2);
 
                         if (hessian_det < 0) {
                             interestPoints[e][i - 1](x, y) = -1;
@@ -121,6 +106,45 @@ void Sift::_eliminateEdgeResponses(interest_point_epochs& interestPoints, const 
             }
         }
     }
+}
+
+const vigra::TinyVector<f32_t, 3> Sift::_foDerivative(const vigra::MultiArray<2, f32_t> img[3], 
+        const Point& p) const {
+
+    f32_t dx = (img[1](p.x - 1, p.y) - img[1](p.x + 1, p.y)) / 2;
+    f32_t dy = (img[1](p.x, p.y - 1) - img[1](p.x, p.y + 1)) / 2;
+    f32_t ds = (img[0](p.x, p.y) - img[2](p.x, p.y)) / 2;
+
+    return vigra::TinyVector<f32_t, 3>(dx, dy, ds);
+}
+
+const vigra::MultiArray<2, f32_t> Sift::_soDerivative(const vigra::MultiArray<2, f32_t> img[3], 
+        const Point& p) const {
+
+    f32_t dxx = img[1](p.x + 1, p.y) + img[1](p.x - 1, p.y) - 2 * img[1](p.x, p.y);
+    f32_t dyy = img[1](p.x, p.y + 1) + img[1](p.x, p.y - 1) - 2 * img[1](p.x, p.y);
+    f32_t dss = img[2](p.x, p.y) + img[0](p.x, p.y) - 2 * img[1](p.x, p.y);
+    f32_t dxy = img[1](p.x + 1, p.y + 1) - img[1](p.x - 1, p.y + 1) - img[1](p.x + 1, p.y - 1) 
+        + img[1](p.x - 1, p.y - 1);
+
+    f32_t dxs = img[2](p.x + 1, p.y) - img[2](p.x - 1, p.y) 
+        - img[0](p.x + 1, p.y) + img[0](p.x - 1, p.y);
+
+    f32_t dys = img[2](p.x, p.y + 1) - img[2](p.x, p.y + 1)
+        - img[0](p.x, p.y + 1) + img[0](p.x, p.y - 1);
+    vigra::MultiArray<2, f32_t> sec_deriv(vigra::Shape2(3, 3));
+
+    sec_deriv(0, 0) = dxx;
+    sec_deriv(0, 1) = dxy;
+    sec_deriv(0, 2) = dxs;
+    sec_deriv(1, 0) = dxy;
+    sec_deriv(1, 1) = dyy;
+    sec_deriv(1, 2) = dys;
+    sec_deriv(2, 0) = dxs;
+    sec_deriv(2, 1) = dys;
+    sec_deriv(2, 2) = dss;
+
+    return sec_deriv;
 }
 
 const interest_point_epochs Sift::_findScaleSpaceExtrema(const img_epochs& dogs) const {

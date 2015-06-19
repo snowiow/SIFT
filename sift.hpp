@@ -37,6 +37,26 @@ private:
     const interest_point_epochs _findScaleSpaceExtrema(const img_epochs& dogs) const;
 
     /*
+     * Calculates the first order derivative of the image, at the coordinates
+     * @param img the image of which the first derivative is taken.
+     * @param p the point at which the derivative is taken
+     * @return the derivative as a vector (dx, dy, ds) 
+     */
+    const vigra::TinyVector<f32_t, 3> _foDerivative(const vigra::MultiArray<2, f32_t>[3], const Point&) const;
+
+    /*
+     * Calculates the second order derivative of the image, at the coordinates
+     * @param img the image of which the second derivative is taken.
+     * @param p the point at which the derivative is taken
+     * @return the derivative as a matrix 
+     * (dxx, dxy, dxs)
+     * (dyx, dyy, dys)
+     * (dsx, dsy, dss) 
+     */
+
+    const vigra::MultiArray<2, f32_t> _soDerivative(const vigra::MultiArray<2, f32_t>[3], const Point&) const;
+
+    /*
     * Creates the Laplacians of Gaussians for the count of epochs.
     * @param the given img
     * @param sigma for gaussian
