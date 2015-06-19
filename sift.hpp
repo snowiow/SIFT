@@ -28,7 +28,7 @@ private:
     * @param the vector with epochs and the keypoints as tuples inside the epochs, which will be
     * filtered
     */
-    void _keypointLocation(interest_point_epochs&, const img_epochs&) const;
+    void _eliminateEdgeResponses(interest_point_epochs&, const img_epochs&) const;
 
     /*
     * Finds the Scale space extrema.

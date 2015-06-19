@@ -19,7 +19,7 @@
 using namespace vigra::multi_math;
 
 void Sift::calculate(
-    vigra::MultiArray<2, f32_t>& img, u16_t epochs, f32_t sigma, f32_t k, u16_t dogPerEpoch) const
+        vigra::MultiArray<2, f32_t>& img, u16_t epochs, f32_t sigma, f32_t k, u16_t dogPerEpoch) const
 {
     auto dogs = _createDOGs(img, epochs, sigma, k, dogPerEpoch);
     auto interestPoints = _findScaleSpaceExtrema(dogs);
@@ -36,8 +36,8 @@ void Sift::calculate(
     }
 
     exportImage(img_output1, vigra::ImageExportInfo("images/interest_points.png"));
-    _keypointLocation(interestPoints, dogs);
-    
+    _eliminateEdgeResponses(interestPoints, dogs);
+
     auto img_output2 = img;
     for (auto& img : interestPoints[0]) {
         for(u16_t x = 0; x < img.width(); x++) {
@@ -48,11 +48,11 @@ void Sift::calculate(
             }
         }
     }
-    
-    exportImage(img_output2, vigra::ImageExportInfo("images/after_keypointLocation.png"));
-    }
 
-void Sift::_keypointLocation(interest_point_epochs& interestPoints, const img_epochs& dogs) const {
+    exportImage(img_output2, vigra::ImageExportInfo("images/after_keypointLocation.png"));
+}
+
+void Sift::_eliminateEdgeResponses(interest_point_epochs& interestPoints, const img_epochs& dogs) const {
     for(u16_t e = 0; e < dogs.size(); e++) {
         for (u16_t i = 1; i < dogs[e].size() - 1; i++) {
             for (u16_t x = 1; x < dogs[e][i].shape(0) - 1; x++) {
@@ -103,6 +103,18 @@ void Sift::_keypointLocation(interest_point_epochs& interestPoints, const img_ep
                         if (func_val_extremum[0] + func_val_extremum[1] + func_val_extremum[2] < 7.65) {
                             interestPoints[e][i - 1](x, y) = -1;
                             continue;
+                        }
+
+                        f32_t hessian_tr = dxx + dyy;
+                        f32_t hessian_det = dxx * dyy - std::pow(dxy, 2);
+
+                        if (hessian_det < 0) {
+                            interestPoints[e][i - 1](x, y) = -1;
+                            continue;
+                        }
+
+                        if (std::pow(hessian_tr, 2) / hessian_det > std::pow(2550 + 1, 2) / 2550) {
+                            interestPoints[e][i - 1](x, y) = -1;
                         }
                     }
                 }
