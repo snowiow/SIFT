@@ -93,9 +93,6 @@ void Sift::_keypointLocation(interest_point_epochs& interestPoints, const img_ep
                         sec_deriv(2, 2) = dss;
 
                         vigra::TinyVector<f32_t, 3> deriv(dx, dy, ds);
-                        deriv[0] = dx;
-                        deriv[1] = dy;
-                        deriv[2] = ds;
                         auto extremum =  vigra::linalg::operator*(vigra::linalg::inverse(sec_deriv), deriv); 
 
                         //Calculated up 0.5 from paper to image values [0,255]
@@ -110,8 +107,7 @@ void Sift::_keypointLocation(interest_point_epochs& interestPoints, const img_ep
                         func_val_extremum[1] += d(x,y);
                         func_val_extremum[2] += d(x,y);
                         //Calculated up 0.03 from paper to image values[0, 255]
-                        if (func_val_extremum[0] < 7.65 && func_val_extremum[1] > 7.65 
-                                && func_val_extremum[2] < 7.65) {
+                        if (func_val_extremum[0] + func_val_extremum[1] + func_val_extremum[2] < 7.65) {
                             interestPoints[e][i - 1](x, y) = -1;
                             continue;
                         }
