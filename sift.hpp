@@ -8,7 +8,6 @@
 #include "matrix.hpp"
 
 using img_epochs = Matrix<vigra::MultiArray<2, f32_t>>;
-using interest_point_epochs = Matrix<Matrix<f32_t>>; 
 
 class Sift {
 public:
@@ -28,13 +27,13 @@ private:
     * @param the vector with epochs and the keypoints as tuples inside the epochs, which will be
     * filtered
     */
-    void _eliminateEdgeResponses(interest_point_epochs&, const img_epochs&) const;
+    void _eliminateEdgeResponses(Matrix<Matrix<f32_t>>&, const img_epochs&) const;
 
     /*
     * Finds the Scale space extrema.
     * @param a vector of vectors of DOGs
     */
-    const interest_point_epochs _findScaleSpaceExtrema(const img_epochs& dogs) const;
+    const Matrix<Matrix<f32_t>> _findScaleSpaceExtrema(const img_epochs& dogs) const;
 
     /*
      * Calculates the first order derivative of the image, at the coordinates

@@ -58,7 +58,7 @@ void Sift::calculate(
     exportImage(img_output2, vigra::ImageExportInfo("images/after_filter.png"));
 }
 
-void Sift::_eliminateEdgeResponses(interest_point_epochs& interestPoints, const img_epochs& dogs) const {
+void Sift::_eliminateEdgeResponses(Matrix<Matrix<f32_t>>& interestPoints, const img_epochs& dogs) const {
     for(u16_t e = 0; e < dogs.width(); e++) {
         for (u16_t i = 1; i < dogs.height() - 1; i++) {
             for (u16_t x = 1; x < dogs(e, i).shape(0) - 1; x++) {
@@ -154,9 +154,9 @@ const vigra::MultiArray<2, f32_t> Sift::_soDerivative(const vigra::MultiArray<2,
     return sec_deriv;
 }
 
-const interest_point_epochs Sift::_findScaleSpaceExtrema(const img_epochs& dogs) const {
+const Matrix<Matrix<f32_t>> Sift::_findScaleSpaceExtrema(const img_epochs& dogs) const {
     //A matrix of matrix. Outer dogs will be ignored, because we need a upper and lower neighbor
-    interest_point_epochs interestPoints(dogs.width(), dogs.height() - 2);
+    Matrix<Matrix<f32_t>> interestPoints(dogs.width(), dogs.height() - 2);
     for (u16_t e = 0; e < dogs.width(); e++) {
         for (u16_t i = 1; i < dogs.height() - 1; i++) {
             interestPoints(e, i - 1) = Matrix<f32_t>(dogs(e, i).width(), dogs(e, i).height(), -1);
