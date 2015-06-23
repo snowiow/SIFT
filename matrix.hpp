@@ -24,7 +24,7 @@ public:
     Matrix() = default;
     
     explicit Matrix(u16_t width, u16_t height, const T& def = T()) : _height(height), _width(width) {
-        assert(width > 1 && height > 1);
+        assert(width > 0 && height > 0);
         
         const u32_t size = _width * _height;
 

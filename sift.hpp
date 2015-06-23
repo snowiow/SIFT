@@ -7,8 +7,8 @@
 #include "types.hpp"
 #include "matrix.hpp"
 
-using img_epochs = std::vector<std::vector<vigra::MultiArray<2, f32_t>>>;
-using interest_point_epochs = std::vector<std::vector<Matrix<f32_t>>>; 
+using img_epochs = Matrix<vigra::MultiArray<2, f32_t>>;
+using interest_point_epochs = Matrix<Matrix<f32_t>>; 
 
 class Sift {
 public:
@@ -90,7 +90,7 @@ private:
     * @param higher the image which lies higher in an octave
     * @return the laplacian of gaussian image, which contains our interest points
     */
-    const vigra::MultiArray<2, f32_t> _DOG(const vigra::MultiArray<2, f32_t>&, 
+    const vigra::MultiArray<2, f32_t> _dog(const vigra::MultiArray<2, f32_t>&, 
             const vigra::MultiArray<2, f32_t>&) const;
 };
 
