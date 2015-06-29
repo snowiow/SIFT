@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
         vigra::importImage(info, img);
 
         Sift sift;
-        sift.calculate(img, 3);
+        sift.calculate(img);
     } catch (std::exception& ex) {
         std::cerr << ex.what() << std::endl;
     }

@@ -17,10 +17,9 @@
 
 using namespace vigra::multi_math;
 
-void Sift::calculate(
-        vigra::MultiArray<2, f32_t>& img, u16_t epochs, f32_t sigma, f32_t k, u16_t dogPerEpoch) const
+void Sift::calculate(vigra::MultiArray<2, f32_t>& img) 
 {
-    auto dogs = _createDOGs(img, epochs, sigma, k, dogPerEpoch);
+    auto dogs = _createDOGs(img);
     //Save DoGs for Demonstration purposes
     for (u16_t i = 0; i < dogs.width(); i++) {
         for (u16_t j = 0; j < dogs.height(); j++) {
@@ -58,7 +57,24 @@ void Sift::calculate(
     exportImage(img_output2, vigra::ImageExportInfo("images/after_filter.png"));
 }
 
-void Sift::_eliminateEdgeResponses(Matrix<Matrix<f32_t>>& interestPoints, const img_epochs& dogs) const {
+
+void _orientationAssignment(Matrix<Matrix<f32_t>> interestPoints) {
+    //for (u16_t e = 0; e < interestPoints.width(); e++) {
+        //for (u16_t i = 0; i < interestPoints.height(); i++) {
+            //auto bottomLaplacianScale = _calculateScale(e, i, _sigma, _k, _dogsPerEpoch); 
+            //auto topLaplacianScale = 
+        //}
+    //}
+}
+
+f32_t Sift::_calculateScale(u16_t epoch, u16_t index, f32_t sigma, f32_t k, u16_t dogsPerEpoch) const {
+    if (epoch == 0) {
+        return std::pow(k, index) * sigma;
+    }
+    return (epoch * (dogsPerEpoch - 2) + index) * sigma;
+}
+
+void Sift::_eliminateEdgeResponses(Matrix<Matrix<f32_t>>& interestPoints, const Matrix<vigra::MultiArray<2, f32_t>>& dogs) const {
     for(u16_t e = 0; e < dogs.width(); e++) {
         for (u16_t i = 1; i < dogs.height() - 1; i++) {
             for (u16_t x = 1; x < dogs(e, i).shape(0) - 1; x++) {
@@ -154,7 +170,7 @@ const vigra::MultiArray<2, f32_t> Sift::_soDerivative(const vigra::MultiArray<2,
     return sec_deriv;
 }
 
-const Matrix<Matrix<f32_t>> Sift::_findScaleSpaceExtrema(const img_epochs& dogs) const {
+const Matrix<Matrix<f32_t>> Sift::_findScaleSpaceExtrema(const Matrix<vigra::MultiArray<2, f32_t>>& dogs) const {
     //A matrix of matrix. Outer dogs will be ignored, because we need a upper and lower neighbor
     Matrix<Matrix<f32_t>> interestPoints(dogs.width(), dogs.height() - 2);
     for (u16_t e = 0; e < dogs.width(); e++) {
@@ -188,22 +204,21 @@ const Matrix<Matrix<f32_t>> Sift::_findScaleSpaceExtrema(const img_epochs& dogs)
     return interestPoints; // TODO: by ref entgegen nehmen, um copy zu vermeiden?
 }
 
-const img_epochs Sift::_createDOGs(vigra::MultiArray<2, f32_t>& img, u16_t epochs, f32_t sigma, 
-        f32_t k, u16_t dogPerEpoch) const {
+const Matrix<vigra::MultiArray<2, f32_t>> Sift::_createDOGs(vigra::MultiArray<2, f32_t>& img) {
 
-    assert(epochs > 0); // pre condition
-    assert(dogPerEpoch >= 3); // pre condition
+    assert(_epochs > 0); // pre condition
+    assert(_dogsPerEpoch >= 3); // pre condition
 
-    img_epochs gaussians(epochs, dogPerEpoch + 2);
-    img_epochs dogs(epochs, dogPerEpoch);
+    Matrix<vigra::MultiArray<2, f32_t>> gaussians(_epochs, _dogsPerEpoch + 2);
+    Matrix<vigra::MultiArray<2, f32_t>> dogs(_epochs, _dogsPerEpoch);
 
-    gaussians(0, 0) = _convolveWithGauss(img, sigma);
+    gaussians(0, 0) = _convolveWithGauss(img, _sigma);
 
     //TODO: More elegant way?
     u16_t exp = 0;
-    for (i16_t i = 0; i < epochs; i++) {
-        for (i16_t j = 1; j < dogPerEpoch + 1; j++) {
-            gaussians(i, j) = _convolveWithGauss(gaussians(i, j - 1), std::pow(k, exp) * sigma);
+    for (i16_t i = 0; i < _epochs; i++) {
+        for (i16_t j = 1; j < _dogsPerEpoch + 1; j++) {
+            gaussians(i, j) = _convolveWithGauss(gaussians(i, j - 1), std::pow(_k, exp) * _sigma);
             dogs(i, j - 1) = _dog(gaussians(i, j - 1), gaussians(i, j));
             exp++;
         }
@@ -211,19 +226,20 @@ const img_epochs Sift::_createDOGs(vigra::MultiArray<2, f32_t>& img, u16_t epoch
          * If we aren't in the last epoch populate the next level with the second
          * last element, scaled by a half, of images of current epoch.
          */
-        if (i < (epochs - 1)) {
-            auto scaledElem = _reduceToNextLevel(gaussians(i, dogPerEpoch - 1), sigma);
+        if (i < (_epochs - 1)) {
+            auto scaledElem = _reduceToNextLevel(gaussians(i, _dogsPerEpoch - 1), _sigma);
             gaussians(i + 1, 0) = scaledElem;
 
             exp -= 2;
         }
     }
+    _gaussians = gaussians;
     return dogs; // TODO: by ref entgegen nehmen um copy zu vermeiden?
 }
 
 const vigra::MultiArray<2, f32_t> Sift::_reduceToNextLevel(const vigra::MultiArray<2, f32_t>& in, 
         f32_t sigma) const {
-    
+
     // image size at current level
     const vigra::Shape2 s((in.width()+ 1) / 2, (in.height() + 1) / 2);
 
