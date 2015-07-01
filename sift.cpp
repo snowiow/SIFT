@@ -98,18 +98,10 @@ void Sift::_orientationAssignment(Matrix<Matrix<f32_t>> interestPoints) {
 }
 
 void Sift::_createPeak(std::array<f32_t, 36>& histo) {
-    f32_t max = 0;
-    for (f32_t& elem : histo) {
-        if (elem > max) 
-            max = elem;
-    } 
+    f32_t max = *(std::max_element(histo.begin(), histo.end()));
     //allowed range(80% of max)
     f32_t range = max / 5;
-    for (f32_t& elem : histo) {
-        if (elem < range) {
-            elem = -1;
-        }
-    }
+    std::for_each(histo.begin(), histo.end(), [&](f32_t& elem) { if (elem < range) elem = -1; });
 }
 
 f32_t Sift::_calculateScale(u16_t e, u16_t i) const {
@@ -348,8 +340,8 @@ const vigra::MultiArray<2, f32_t> Sift::_dog(const vigra::MultiArray<2, f32_t>& 
         const vigra::MultiArray<2, f32_t>& higher) const {
 
     vigra::MultiArray<2, f32_t> result(vigra::Shape2(lower.shape()));
-    for(u16_t x = 0; x < lower.shape(0); x++) {
-        for(u16_t y = 0; y < lower.shape(1); y++) {
+    for (u16_t x = 0; x < lower.shape(0); x++) {
+        for (u16_t y = 0; y < lower.shape(1); y++) {
             f32_t dif = higher(x, y) - lower(x, y);
             result(x, y) = 128 + dif;
         }
