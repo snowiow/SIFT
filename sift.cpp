@@ -32,8 +32,8 @@ void Sift::calculate(vigra::MultiArray<2, f32_t>& img)
     //Save img with found interest points for demonstration purposes
     auto img_output1 = img;
     for (u16_t i = 0; i < interestPoints.height(); i++) {
-        for(u16_t x = 0; x < img.width(); x++) {
-            for(u16_t y = 0; y < img.height(); y++) {
+        for (u16_t x = 0; x < img.width(); x++) {
+            for (u16_t y = 0; y < img.height(); y++) {
                 if (interestPoints(0, i)(x, y) > -1) {
                     img_output1(x, y) = 255;
                 }
@@ -46,8 +46,8 @@ void Sift::calculate(vigra::MultiArray<2, f32_t>& img)
     //Save img with filtered interest points for demonstration purposes
     auto img_output2 = img;
     for (u16_t i = 0; i < interestPoints.height(); i++) {
-        for(u16_t x = 0; x < img.width(); x++) {
-            for(u16_t y = 0; y < img.height(); y++) {
+        for (u16_t x = 0; x < img.width(); x++) {
+            for (u16_t y = 0; y < img.height(); y++) {
                 if (interestPoints(0, i)(x, y) > -1) {
                     img_output2(x, y) = 255;
                 }
@@ -55,23 +55,102 @@ void Sift::calculate(vigra::MultiArray<2, f32_t>& img)
         }
     }
     exportImage(img_output2, vigra::ImageExportInfo("images/after_filter.png"));
+    _orientationAssignment(interestPoints);
 }
 
 
-void _orientationAssignment(Matrix<Matrix<f32_t>> interestPoints) {
-    //for (u16_t e = 0; e < interestPoints.width(); e++) {
-        //for (u16_t i = 0; i < interestPoints.height(); i++) {
-            //auto bottomLaplacianScale = _calculateScale(e, i, _sigma, _k, _dogsPerEpoch); 
-            //auto topLaplacianScale = 
-        //}
-    //}
-}
+void Sift::_orientationAssignment(Matrix<Matrix<f32_t>> interestPoints) {
+    for (u16_t e = 0; e < 1; e++) {
+        for (u16_t i = 0; i < interestPoints.height(); i++) {
+            auto closest = _gaussians(e, i);
+            f32_t scale = _calculateScale(e, i);
+            vigra::Shape2 size(closest.width(), closest.height());
+            vigra::MultiArray<2, f32_t> magnitudes(size);
+            vigra::MultiArray<2, f32_t> orientations(size);
+            for (u16_t x = 0; x < 1; x++) {
+                for (u16_t y = 0; y < closest.height(); y++) {
+                    Point p(x, y);
+                    magnitudes(x, y) = _gradientMagnitude(closest, p);
+                    orientations(x, y) = _gradientOrientation(closest, p);
+                }
+            }
+            //TODO: mirror points which are outside of img
+            for (u16_t x = 4; x < interestPoints(e, i).width() - 4; x++) {
+                for (u16_t y = 4; y < interestPoints(e, i).height() - 4; y++) {
+                    if (interestPoints(e, i)(x, y) >= 0) {
+                        auto topLeftCorner = vigra::Shape2(x - 4, y - 4);
+                        auto bottomRightCorner = vigra::Shape2(x + 4, y + 4);
 
-f32_t Sift::_calculateScale(u16_t epoch, u16_t index, f32_t sigma, f32_t k, u16_t dogsPerEpoch) const {
-    if (epoch == 0) {
-        return std::pow(k, index) * sigma;
+                        auto orientation_region = orientations.subarray(topLeftCorner, bottomRightCorner);
+                        auto mag_region = magnitudes.subarray(topLeftCorner, bottomRightCorner);
+
+                        auto histogram = _orientationHistogram(orientation_region, mag_region, scale);
+
+                        _createPeak(histogram);
+
+                        //TODO:: Parabola to the 3 values closest to the peak
+
+                    }
+                }
+            }
+        }
     }
-    return (epoch * (dogsPerEpoch - 2) + index) * sigma;
+}
+
+void Sift::_createPeak(std::array<f32_t, 36>& histo) {
+    f32_t max = 0;
+    for (f32_t& elem : histo) {
+        if (elem > max) 
+            max = elem;
+    } 
+    //allowed range(80% of max)
+    f32_t range = max / 5;
+    for (f32_t& elem : histo) {
+        if (elem < range) {
+            elem = -1;
+        }
+    }
+}
+
+f32_t Sift::_calculateScale(u16_t e, u16_t i) const {
+    if (e < 1) {
+        if (i < 1)  {
+            return _sigma;
+        }   
+        return std::pow(_k, i) * _sigma;
+    } else if (e == 1) {
+        return std::pow(_k, _dogsPerEpoch + i) * _sigma;
+    }
+    //_dogsPerEpoch + 2: count of gaussians per epoch
+    //e - 1: the very last epoch before our
+    // - 2: take the top img from the stack and add i to it
+    return std::pow(_k, (_dogsPerEpoch + 2) * (e - 1) - 2 + i) * _sigma;
+}
+
+const std::array<f32_t, 36> Sift::_orientationHistogram(const vigra::MultiArray<2, f32_t>& orientations,
+        const vigra::MultiArray<2, f32_t>& magnitudes, f32_t scale) const {
+
+    std::array<f32_t, 36> bins;
+    vigra::MultiArray<2, f32_t> gauss_mag = _convolveWithGauss(magnitudes, 1.5 * scale);
+    for (u16_t x = 0; x < orientations.width(); x++) {
+        for (u16_t y = 0; y < orientations.height(); y++) {
+            u16_t i = std::floor(orientations(x, y) / 10);
+                //TODO: Don't know if it can happen, that a orientation is exactly 360°. If not, delete this.
+                i = i > 35 ? 35 : i;
+            bins[i] = gauss_mag(x, y);
+        }
+    }
+    return bins;
+}
+
+f32_t Sift::_gradientMagnitude(const vigra::MultiArray<2, f32_t>& img, const Point& p) const {
+    return std::sqrt(std::pow(img(p.x + 1, p.y) - img(p.x - 1, p.y), 2) + 
+            std::pow(img(p.x, p.y + 1) - img(p.x, p.y - 1), 2));
+}
+
+f32_t Sift::_gradientOrientation(const vigra::MultiArray<2, f32_t>& img, const Point& p) const {
+    return std::atan((img(p.x, p.y + 1) - img(p.x, p.y - 1)) / 
+            (img(p.x + 1, p.y) - img(p.x - 1, p.y)));
 }
 
 void Sift::_eliminateEdgeResponses(Matrix<Matrix<f32_t>>& interestPoints, const Matrix<vigra::MultiArray<2, f32_t>>& dogs) const {
@@ -253,7 +332,7 @@ const vigra::MultiArray<2, f32_t> Sift::_reduceToNextLevel(const vigra::MultiArr
 
 const vigra::MultiArray<2, f32_t> Sift::_convolveWithGauss(const vigra::MultiArray<2, f32_t>& input, 
         f32_t sigma) const {
-
+    
     vigra::Kernel1D<f32_t> filter;
     filter.initGaussian(sigma);
     vigra::MultiArray<2, f32_t> tmp(input.shape());
