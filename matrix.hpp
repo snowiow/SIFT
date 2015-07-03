@@ -13,7 +13,7 @@
 #include "point.hpp"
 
 template <typename T>
-class Matrix {
+class FMatrix {
 private:
     u16_t _width;
     u16_t _height;
@@ -21,9 +21,9 @@ private:
     std::shared_ptr<T> _data;
 
 public:
-    Matrix() = default;
+    FMatrix() = default;
     
-    explicit Matrix(u16_t width, u16_t height, const T& def = T()) : _height(height), _width(width) {
+    explicit FMatrix(u16_t width, u16_t height, const T& def = T()) : _height(height), _width(width) {
         assert(width > 0 && height > 0);
         
         const u32_t size = _width * _height;
@@ -76,7 +76,7 @@ public:
         return &_data.get()[_width * _height];
     }
 
-    friend std::ostream& operator <<(std::ostream& out, Matrix& m) {
+    friend std::ostream& operator <<(std::ostream& out, FMatrix& m) {
         const u32_t size = m._width * m._height;
         
         for (u32_t i = 0, x = 1; i < size; i++, x++) {

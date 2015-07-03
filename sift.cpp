@@ -5,6 +5,7 @@
 #include <string>
 #include <tuple>
 #include <cassert>
+#include <exception>
 
 #include <vigra/convolution.hxx>
 #include <vigra/resizeimage.hxx>
@@ -16,9 +17,9 @@
 #include "point.hpp"
 
 using namespace vigra::multi_math;
+using namespace vigra::linalg;
 
-void Sift::calculate(vigra::MultiArray<2, f32_t>& img) 
-{
+void Sift::calculate(vigra::MultiArray<2, f32_t>& img) {
     auto dogs = _createDOGs(img);
     //Save DoGs for Demonstration purposes
     for (u16_t i = 0; i < dogs.width(); i++) {
@@ -59,7 +60,7 @@ void Sift::calculate(vigra::MultiArray<2, f32_t>& img)
 }
 
 
-void Sift::_orientationAssignment(Matrix<Matrix<f32_t>> interestPoints) {
+void Sift::_orientationAssignment(FMatrix<FMatrix<f32_t>> interestPoints) {
     for (u16_t e = 0; e < 1; e++) {
         for (u16_t i = 0; i < interestPoints.height(); i++) {
             auto closest = _gaussians(e, i);
@@ -74,12 +75,11 @@ void Sift::_orientationAssignment(Matrix<Matrix<f32_t>> interestPoints) {
                     orientations(x, y) = _gradientOrientation(closest, p);
                 }
             }
-            //TODO: mirror points which are outside of img
-            for (u16_t x = 4; x < interestPoints(e, i).width() - 4; x++) {
-                for (u16_t y = 4; y < interestPoints(e, i).height() - 4; y++) {
+            for (u16_t x = 8; x < interestPoints(e, i).width() - 8; x++) {
+                for (u16_t y = 8; y < interestPoints(e, i).height() - 8; y++) {
                     if (interestPoints(e, i)(x, y) >= 0) {
-                        auto topLeftCorner = vigra::Shape2(x - 4, y - 4);
-                        auto bottomRightCorner = vigra::Shape2(x + 4, y + 4);
+                        auto topLeftCorner = vigra::Shape2(x - 8, y - 8);
+                        auto bottomRightCorner = vigra::Shape2(x + 8, y + 8);
 
                         auto orientation_region = orientations.subarray(topLeftCorner, bottomRightCorner);
                         auto mag_region = magnitudes.subarray(topLeftCorner, bottomRightCorner);
@@ -98,9 +98,9 @@ void Sift::_orientationAssignment(Matrix<Matrix<f32_t>> interestPoints) {
 }
 
 void Sift::_createPeak(std::array<f32_t, 36>& histo) {
-    f32_t max = *(std::max_element(histo.begin(), histo.end()));
+    const f32_t max = *(std::max_element(histo.begin(), histo.end()));
     //allowed range(80% of max)
-    f32_t range = max / 5;
+    const f32_t range = max / 5 * 4;
     std::for_each(histo.begin(), histo.end(), [&](f32_t& elem) { if (elem < range) elem = -1; });
 }
 
@@ -129,7 +129,7 @@ const std::array<f32_t, 36> Sift::_orientationHistogram(const vigra::MultiArray<
             u16_t i = std::floor(orientations(x, y) / 10);
                 //TODO: Don't know if it can happen, that a orientation is exactly 360°. If not, delete this.
                 i = i > 35 ? 35 : i;
-            bins[i] = gauss_mag(x, y);
+            bins[i] += gauss_mag(x, y);
         }
     }
     return bins;
@@ -141,11 +141,12 @@ f32_t Sift::_gradientMagnitude(const vigra::MultiArray<2, f32_t>& img, const Poi
 }
 
 f32_t Sift::_gradientOrientation(const vigra::MultiArray<2, f32_t>& img, const Point& p) const {
-    return std::atan((img(p.x, p.y + 1) - img(p.x, p.y - 1)) / 
-            (img(p.x + 1, p.y) - img(p.x - 1, p.y)));
+    return std::atan2(img(p.x, p.y + 1) - img(p.x, p.y - 1), img(p.x + 1, p.y) - img(p.x - 1, p.y));
 }
 
-void Sift::_eliminateEdgeResponses(Matrix<Matrix<f32_t>>& interestPoints, const Matrix<vigra::MultiArray<2, f32_t>>& dogs) const {
+void Sift::_eliminateEdgeResponses(FMatrix<FMatrix<f32_t>>& interestPoints, 
+        const FMatrix<vigra::MultiArray<2, f32_t>>& dogs) const {
+
     for(u16_t e = 0; e < dogs.width(); e++) {
         for (u16_t i = 1; i < dogs.height() - 1; i++) {
             for (u16_t x = 1; x < dogs(e, i).shape(0) - 1; x++) {
@@ -155,29 +156,29 @@ void Sift::_eliminateEdgeResponses(Matrix<Matrix<f32_t>>& interestPoints, const 
 
                         const vigra::MultiArray<2, f32_t> param[3] = {dogs(e, i - 1), dogs(e, i), dogs(e, i + 1)};
                         const Point p(x, y);
-                        auto deriv = _foDerivative(param, p);
-                        auto sec_deriv = _soDerivative(param, p);
+                        vigra::Matrix<f32_t> deriv = _foDerivative(param, p);
+                        vigra::Matrix<f32_t> sec_deriv = _soDerivative(param, p);
 
-                        auto neg_sec_deriv = sec_deriv;
-                        for (auto elem : neg_sec_deriv) {
-                            elem *= -1;
+                        vigra::Matrix<f32_t> neg_sec_deriv = sec_deriv ;
+                        neg_sec_deriv *=  -1;
+
+                        vigra::MultiArray<2, f32_t> extremum(vigra::Shape2(3, 1));
+                        if (!linearSolve(inverse(neg_sec_deriv), deriv, extremum)) {
+                            std::cerr << "Couldn't solve linear system" << std::endl;
+                            throw;
                         }
 
-                        auto extremum =  vigra::linalg::operator*(vigra::linalg::inverse(sec_deriv), deriv); 
-
                         //Calculated up 0.5 from paper to own image values [0,255]
-                        if (extremum[0] > 127.5 || extremum[1] > 127.5 || extremum[2] > 127.5) {
+                        if (extremum(0, 0) > 127.5 || extremum(1, 0) > 127.5 || extremum(2, 0) > 127.5) {
                             interestPoints(e, i - 1)(x, y) = -1;
                             continue;
                         } 
+                        vigra::Matrix<f32_t> deriv_transpose = deriv.transpose();
+                        f32_t func_val_extremum = dot(deriv_transpose, extremum);
+                        func_val_extremum *= 0.5 + d(x, y);
 
-                        auto func_val_extremum = vigra::operator*(deriv, extremum);
-                        func_val_extremum *= 0.5;
-                        func_val_extremum[0] += d(x,y);
-                        func_val_extremum[1] += d(x,y);
-                        func_val_extremum[2] += d(x,y);
                         //Calculated up 0.03 from paper to own image values[0, 255]
-                        if (func_val_extremum[0] + func_val_extremum[1] + func_val_extremum[2] < 7.65) {
+                        if (func_val_extremum < 7.65) {
                             interestPoints(e, i - 1)(x, y) = -1;
                             continue;
                         }
@@ -185,13 +186,14 @@ void Sift::_eliminateEdgeResponses(Matrix<Matrix<f32_t>>& interestPoints, const 
                         //dxx + dyy
                         f32_t hessian_tr = sec_deriv(0, 0) + sec_deriv(1, 1);
                         //dxx * dyy - dxy^2
-                        f32_t hessian_det = sec_deriv(0, 0) * sec_deriv(1, 1) - std::pow(sec_deriv(1, 0), 2);
+                        f32_t hessian_det = sec_deriv(0, 0) * sec_deriv(1, 1) - std::pow(sec_deriv(0, 1), 2);
 
                         if (hessian_det < 0) {
                             interestPoints(e, i - 1)(x, y) = -1;
                             continue;
                         }
 
+                        //Original r = 10, calculated up to own image values[0, 255]
                         if (std::pow(hessian_tr, 2) / hessian_det > std::pow(2550 + 1, 2) / 2550) {
                             interestPoints(e, i - 1)(x, y) = -1;
                         }
@@ -202,51 +204,54 @@ void Sift::_eliminateEdgeResponses(Matrix<Matrix<f32_t>>& interestPoints, const 
     }
 }
 
-const vigra::TinyVector<f32_t, 3> Sift::_foDerivative(const vigra::MultiArray<2, f32_t> img[3], 
+const vigra::Matrix<f32_t> Sift::_foDerivative(const vigra::MultiArray<2, f32_t> img[3], 
         const Point& p) const {
 
     f32_t dx = (img[1](p.x - 1, p.y) - img[1](p.x + 1, p.y)) / 2;
     f32_t dy = (img[1](p.x, p.y - 1) - img[1](p.x, p.y + 1)) / 2;
     f32_t ds = (img[0](p.x, p.y) - img[2](p.x, p.y)) / 2;
-
-    return vigra::TinyVector<f32_t, 3>(dx, dy, ds);
+    vigra::Matrix<f32_t> result(vigra::Shape2(3, 1));
+    result(0, 0) = dx;
+    result(1, 0) = dy;
+    result(2, 0) = ds;
+    return result;
 }
 
-const vigra::MultiArray<2, f32_t> Sift::_soDerivative(const vigra::MultiArray<2, f32_t> img[3], 
+const vigra::Matrix<f32_t> Sift::_soDerivative(const vigra::MultiArray<2, f32_t> img[3], 
         const Point& p) const {
 
     f32_t dxx = img[1](p.x + 1, p.y) + img[1](p.x - 1, p.y) - 2 * img[1](p.x, p.y);
     f32_t dyy = img[1](p.x, p.y + 1) + img[1](p.x, p.y - 1) - 2 * img[1](p.x, p.y);
     f32_t dss = img[2](p.x, p.y) + img[0](p.x, p.y) - 2 * img[1](p.x, p.y);
-    f32_t dxy = img[1](p.x + 1, p.y + 1) - img[1](p.x - 1, p.y + 1) - img[1](p.x + 1, p.y - 1) 
-        + img[1](p.x - 1, p.y - 1);
+    f32_t dxy = (img[1](p.x + 1, p.y + 1) - img[1](p.x - 1, p.y + 1) - img[1](p.x + 1, p.y - 1) 
+        + img[1](p.x - 1, p.y - 1)) / 2;
 
-    f32_t dxs = img[2](p.x + 1, p.y) - img[2](p.x - 1, p.y) 
-        - img[0](p.x + 1, p.y) + img[0](p.x - 1, p.y);
+    f32_t dxs = (img[2](p.x + 1, p.y) - img[2](p.x - 1, p.y) 
+        - img[0](p.x + 1, p.y) + img[0](p.x - 1, p.y)) / 2;
 
-    f32_t dys = img[2](p.x, p.y + 1) - img[2](p.x, p.y + 1)
-        - img[0](p.x, p.y + 1) + img[0](p.x, p.y - 1);
+    f32_t dys = (img[2](p.x, p.y + 1) - img[2](p.x, p.y + 1)
+        - img[0](p.x, p.y + 1) + img[0](p.x, p.y - 1)) / 2;
     vigra::MultiArray<2, f32_t> sec_deriv(vigra::Shape2(3, 3));
 
     sec_deriv(0, 0) = dxx;
-    sec_deriv(0, 1) = dxy;
-    sec_deriv(0, 2) = dxs;
     sec_deriv(1, 0) = dxy;
-    sec_deriv(1, 1) = dyy;
-    sec_deriv(1, 2) = dys;
     sec_deriv(2, 0) = dxs;
+    sec_deriv(0, 1) = dxy;
+    sec_deriv(1, 1) = dyy;
     sec_deriv(2, 1) = dys;
+    sec_deriv(0, 2) = dxs;
+    sec_deriv(1, 2) = dys;
     sec_deriv(2, 2) = dss;
 
     return sec_deriv;
 }
 
-const Matrix<Matrix<f32_t>> Sift::_findScaleSpaceExtrema(const Matrix<vigra::MultiArray<2, f32_t>>& dogs) const {
+const FMatrix<FMatrix<f32_t>> Sift::_findScaleSpaceExtrema(const FMatrix<vigra::MultiArray<2, f32_t>>& dogs) const {
     //A matrix of matrix. Outer dogs will be ignored, because we need a upper and lower neighbor
-    Matrix<Matrix<f32_t>> interestPoints(dogs.width(), dogs.height() - 2);
+    FMatrix<FMatrix<f32_t>> interestPoints(dogs.width(), dogs.height() - 2);
     for (u16_t e = 0; e < dogs.width(); e++) {
         for (u16_t i = 1; i < dogs.height() - 1; i++) {
-            interestPoints(e, i - 1) = Matrix<f32_t>(dogs(e, i).width(), dogs(e, i).height(), -1);
+            interestPoints(e, i - 1) = FMatrix<f32_t>(dogs(e, i).width(), dogs(e, i).height(), -1);
             for (i16_t x = 0; x < dogs(e, i).shape(0); x++) {
                 for (i16_t y = 0; y < dogs(e, i).shape(1); y++) {
                     auto leftUpCorner = vigra::Shape2(x - 1, y - 1);
@@ -275,13 +280,13 @@ const Matrix<Matrix<f32_t>> Sift::_findScaleSpaceExtrema(const Matrix<vigra::Mul
     return interestPoints; // TODO: by ref entgegen nehmen, um copy zu vermeiden?
 }
 
-const Matrix<vigra::MultiArray<2, f32_t>> Sift::_createDOGs(vigra::MultiArray<2, f32_t>& img) {
+const FMatrix<vigra::MultiArray<2, f32_t>> Sift::_createDOGs(vigra::MultiArray<2, f32_t>& img) {
 
     assert(_epochs > 0); // pre condition
     assert(_dogsPerEpoch >= 3); // pre condition
 
-    Matrix<vigra::MultiArray<2, f32_t>> gaussians(_epochs, _dogsPerEpoch + 2);
-    Matrix<vigra::MultiArray<2, f32_t>> dogs(_epochs, _dogsPerEpoch);
+    FMatrix<vigra::MultiArray<2, f32_t>> gaussians(_epochs, _dogsPerEpoch + 2);
+    FMatrix<vigra::MultiArray<2, f32_t>> dogs(_epochs, _dogsPerEpoch);
 
     gaussians(0, 0) = _convolveWithGauss(img, _sigma);
 
@@ -324,7 +329,7 @@ const vigra::MultiArray<2, f32_t> Sift::_reduceToNextLevel(const vigra::MultiArr
 
 const vigra::MultiArray<2, f32_t> Sift::_convolveWithGauss(const vigra::MultiArray<2, f32_t>& input, 
         f32_t sigma) const {
-    
+
     vigra::Kernel1D<f32_t> filter;
     filter.initGaussian(sigma);
     vigra::MultiArray<2, f32_t> tmp(input.shape());
