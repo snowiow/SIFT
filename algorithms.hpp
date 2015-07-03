@@ -1,7 +1,6 @@
 #ifndef ALGORITHMS_HPP
 #define ALGORITHMS_HPP
 
-
 #include <vigra/multi_array.hxx>
 #include <vigra/matrix.hxx>
 
@@ -83,7 +82,6 @@ namespace sift {
          */
         const std::array<f32_t, 36> orientationHistogram(const vigra::MultiArray<2, f32_t>&, 
                 const vigra::MultiArray<2, f32_t>& , f32_t);
-
     }
 }
 #endif //ALGORITHMS_HPP

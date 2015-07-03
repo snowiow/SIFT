@@ -1,13 +1,9 @@
 #include "sift.hpp"
 
 #include <iostream>
-#include <vector>
 #include <string>
-#include <tuple>
 #include <cassert>
-#include <exception>
 
-#include <vigra/resizeimage.hxx>
 #include <vigra/impex.hxx>
 #include <vigra/multi_math.hxx>
 #include <vigra/linear_algebra.hxx>
