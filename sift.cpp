@@ -165,7 +165,8 @@ namespace sift {
                             }
 
                             //Original r = 10, calculated up to own image values[0, 255]
-                            if (std::pow(hessian_tr, 2) / hessian_det > std::pow(2550 + 1, 2) / 2550) {
+                            //Question: The value 10 isn't based on the greyvalues? 
+                            if (std::pow(hessian_tr, 2) / hessian_det > std::pow(10 + 1, 2) / 10) {
                                 interestPoints(e, i - 1)(x, y) = -1;
                             }
                         }
@@ -181,8 +182,8 @@ namespace sift {
         for (u16_t e = 0; e < dogs.width(); e++) {
             for (u16_t i = 1; i < dogs.height() - 1; i++) {
                 interestPoints(e, i - 1) = Matrix<f32_t>(dogs(e, i).width(), dogs(e, i).height(), -1);
-                for (i16_t x = 0; x < dogs(e, i).shape(0); x++) {
-                    for (i16_t y = 0; y < dogs(e, i).shape(1); y++) {
+                for (i16_t x = 1; x < dogs(e, i).width() - 1; x++) {
+                    for (i16_t y = 1; y < dogs(e, i).height() - 1; y++) {
                         auto leftUpCorner = vigra::Shape2(x - 1, y - 1);
                         auto rightDownCorner = vigra::Shape2(x + 1, y + 1);
 
