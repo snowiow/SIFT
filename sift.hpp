@@ -50,7 +50,7 @@ namespace sift {
              * orientations within a 80% range. Everything outside the range will be set to -1.
              * @param histo The given histogram on which the peak calculation finds place
              */
-            void _createPeak(std::array<f32_t, 36>&);
+            const std::array<f32_t, 36> _findPeaks(const std::array<f32_t, 36>&) const;
 
             /*
              * Calculates the scale based on the given parameters

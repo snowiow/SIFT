@@ -64,28 +64,29 @@ namespace sift {
                 vigra::Shape2 size(closest.width(), closest.height());
                 vigra::MultiArray<2, f32_t> magnitudes(size);
                 vigra::MultiArray<2, f32_t> orientations(size);
-                for (u16_t x = 0; x < 1; x++) {
+                for (u16_t x = 0; x < closest.width(); x++) {
                     for (u16_t y = 0; y < closest.height(); y++) {
-                        Point p(x, y);
+                        Point<u16_t, u16_t> p(x, y);
                         magnitudes(x, y) = alg::gradientMagnitude(closest, p);
                         orientations(x, y) = alg::gradientOrientation(closest, p);
                     }
                 }
-                for (u16_t x = 8; x < interestPoints(e, i).width() - 8; x++) {
-                    for (u16_t y = 8; y < interestPoints(e, i).height() - 8; y++) {
+                //Region around the Keypoint
+                u16_t region = 8;
+                closest = alg::convolveWithGauss(closest, 1.5 * scale);
+                for (u16_t x = region; x < interestPoints(e, i).width() - region; x++) {
+                    for (u16_t y = region; y < interestPoints(e, i).height() - region; y++) {
                         if (interestPoints(e, i)(x, y) >= 0) {
-                            auto topLeftCorner = vigra::Shape2(x - 8, y - 8);
-                            auto bottomRightCorner = vigra::Shape2(x + 8, y + 8);
+                            auto topLeftCorner = vigra::Shape2(x - region, y - region);
+                            auto bottomRightCorner = vigra::Shape2(x + region, y + region);
 
                             auto orientation_region = orientations.subarray(topLeftCorner, bottomRightCorner);
                             auto mag_region = magnitudes.subarray(topLeftCorner, bottomRightCorner);
+                            auto gauss_region = closest.subarray(topLeftCorner, bottomRightCorner);
 
-                            auto histogram = alg::orientationHistogram(orientation_region, mag_region, scale);
+                            auto histogram = alg::orientationHistogram(orientation_region, mag_region, gauss_region);
 
-                            _createPeak(histogram);
-
-                            //TODO:: Parabola to the 3 values closest to the peak
-
+                            auto peaks = _findPeaks(histogram);
                         }
                     }
                 }
@@ -93,11 +94,38 @@ namespace sift {
         }
     }
 
-    void Sift::_createPeak(std::array<f32_t, 36>& histo) {
-        const f32_t max = *(std::max_element(histo.begin(), histo.end()));
-        //allowed range(80% of max)
-        const f32_t range = max / 5 * 4;
-        std::for_each(histo.begin(), histo.end(), [&](f32_t& elem) { if (elem < range) elem = -1; });
+    const std::array<f32_t, 36> Sift::_findPeaks(const std::array<f32_t, 36>& histo) const {
+        auto peaks_only = histo;
+        auto result_iter = std::max_element(histo.begin(), histo.end());
+        u16_t  max_index = std::distance(histo.begin(), result_iter);
+        while (max_index < 1 || max_index >= histo.size() - 1) {
+            peaks_only[max_index] = -1;
+            result_iter = std::max_element(histo.begin(), histo.end());
+            max_index = std::distance(histo.begin(), result_iter);
+        }
+        //ignore edges, because they cant be aproximated appropiately
+        peaks_only[0] = -1;
+        peaks_only[peaks_only.size() - 1] = -1;
+
+        //allowed range(80% of max) 
+        const f32_t range = (*result_iter) * (4 / 5);
+        std::for_each(peaks_only.begin(), peaks_only.end(), [&](f32_t& elem) { if (elem < range) elem = -1; }); 
+        //aproximate peak with vertex parabola. Here we need the 360° space. +5 Because we just have
+        //10° bins, so we just take the middle of the bin.
+        Point<u16_t, f32_t> ln((max_index - 1) * 10 + 5, histo[max_index - 1]);
+        Point<u16_t, f32_t> peak(max_index * 10 + 5, histo[max_index]);
+        Point<u16_t, f32_t> rn((max_index + 1) * 10 + 5, histo[max_index + 1]);
+        peaks_only[max_index] = alg::vertexParabola(ln, peak, rn);
+
+        for (u16_t i = 0; i < peaks_only.size(); i++) {
+            if (peaks_only[i] > - 1 && i != max_index) {
+                Point<u16_t, f32_t> ln((i - 1) * 10 + 5, histo[i - 1]);
+                Point<u16_t, f32_t> peak(i * 10 + 5, histo[i]);
+                Point<u16_t, f32_t> rn((i + 1) * 10 + 5, histo[i + 1]);
+                peaks_only[i] = alg::vertexParabola(ln, peak, rn);
+            }
+        }
+        return peaks_only;
     }
 
     f32_t Sift::_calculateScale(u16_t e, u16_t i) const {
@@ -126,7 +154,7 @@ namespace sift {
                             auto d = dogs(e, i);
 
                             const vigra::MultiArray<2, f32_t> param[3] = {dogs(e, i - 1), dogs(e, i), dogs(e, i + 1)};
-                            const Point p(x, y);
+                            const Point<u16_t,u16_t> p(x, y);
                             vigra::Matrix<f32_t> deriv = alg::foDerivative(param, p);
                             vigra::Matrix<f32_t> sec_deriv = alg::soDerivative(param, p);
 

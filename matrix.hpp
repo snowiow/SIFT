@@ -43,7 +43,7 @@ namespace sift {
                     return _height;
                 }
 
-                T& operator [](const Point& vec) {
+                T& operator [](const Point<u16_t, u16_t>& vec) {
                     assert(vec.x < _width && vec.y < _height);
 
                     const u32_t index = vec.x * _height + vec.y;
@@ -52,7 +52,7 @@ namespace sift {
                     return _data.get()[index];
                 }
 
-                const T& operator [](const Point& vec) const {
+                const T& operator [](const Point<u16_t, u16_t>& vec) const {
                     assert(vec.x < _width && vec.y < _height);
 
                     const u32_t index = vec.x * _height + vec.y;
@@ -62,11 +62,11 @@ namespace sift {
                 }
 
                 T& operator()(u16_t x, u16_t y) {
-                    return (*this)[Point(x, y)];
+                    return (*this)[Point<u16_t, u16_t>(x, y)];
                 }
 
                 const T& operator()(u16_t x, u16_t y) const {
-                    return (*this)[Point(x, y)];
+                    return (*this)[Point<u16_t, u16_t>(x, y)];
                 }
 
                 T* begin() {

@@ -1,6 +1,9 @@
 #include "algorithms.hpp"
 
 #include <vigra/convolution.hxx>
+#include <vigra/linear_algebra.hxx>
+
+using namespace vigra::linalg;
 
 namespace sift {
     namespace alg {
@@ -46,7 +49,7 @@ namespace sift {
         }
 
         const vigra::Matrix<f32_t> foDerivative(const vigra::MultiArray<2, f32_t> img[3], 
-                const Point& p) {
+                const Point<u16_t, u16_t>& p) {
 
             f32_t dx = (img[1](p.x - 1, p.y) - img[1](p.x + 1, p.y)) / 2;
             f32_t dy = (img[1](p.x, p.y - 1) - img[1](p.x, p.y + 1)) / 2;
@@ -59,7 +62,7 @@ namespace sift {
         }
 
         const vigra::Matrix<f32_t> soDerivative(const vigra::MultiArray<2, f32_t> img[3], 
-                const Point& p) {
+                const Point<u16_t, u16_t>& p) {
 
             f32_t dxx = img[1](p.x + 1, p.y) + img[1](p.x - 1, p.y) - 2 * img[1](p.x, p.y);
             f32_t dyy = img[1](p.x, p.y + 1) + img[1](p.x, p.y - 1) - 2 * img[1](p.x, p.y);
@@ -87,28 +90,57 @@ namespace sift {
             return sec_deriv;
         }
 
-        f32_t gradientMagnitude(const vigra::MultiArray<2, f32_t>& img, const Point& p) {
+        f32_t gradientMagnitude(const vigra::MultiArray<2, f32_t>& img, const Point<u16_t, u16_t>& p) {
             return std::sqrt(std::pow(img(p.x + 1, p.y) - img(p.x - 1, p.y), 2) + 
                     std::pow(img(p.x, p.y + 1) - img(p.x, p.y - 1), 2));
         }
 
-        f32_t gradientOrientation(const vigra::MultiArray<2, f32_t>& img, const Point& p) {
+        f32_t gradientOrientation(const vigra::MultiArray<2, f32_t>& img, const Point<u16_t, u16_t>& p) {
             return std::atan2(img(p.x, p.y + 1) - img(p.x, p.y - 1), img(p.x + 1, p.y) - img(p.x - 1, p.y));
         }
 
-        const std::array<f32_t, 36> orientationHistogram(const vigra::MultiArray<2, f32_t>& orientations,
-                const vigra::MultiArray<2, f32_t>& magnitudes, f32_t scale) {
+        const std::array<f32_t, 36> orientationHistogram(
+                const vigra::MultiArray<2, f32_t>& orientations,
+                const vigra::MultiArray<2, f32_t>& magnitudes, 
+                const vigra::MultiArray<2, f32_t>& current_gauss) {
 
             std::array<f32_t, 36> bins;
-            vigra::MultiArray<2, f32_t> gauss_mag = convolveWithGauss(magnitudes, 1.5 * scale);
             for (u16_t x = 0; x < orientations.width(); x++) {
                 for (u16_t y = 0; y < orientations.height(); y++) {
+                    f32_t sum = magnitudes(x, y)  * current_gauss(x, y);
                     u16_t i = std::floor(orientations(x, y) / 10);
                     i = i > 35 ? 0 : i;
-                    bins[i] += gauss_mag(x, y);
+                    bins[i] += sum;
                 }
             }
             return bins;
+        }
+
+        f32_t vertexParabola(const Point<u16_t, f32_t>& ln, const Point<u16_t, f32_t>& peak, 
+                const Point<u16_t, f32_t>& rn) {
+
+            vigra::MultiArray<2, f32_t> a(vigra::Shape2(3, 3));
+            a(0, 0) = std::pow(ln.x, 2);
+            a(1, 0) = std::pow(peak.x, 2);
+            a(2, 0) = std::pow(rn.x, 2); 
+
+            a(0, 1) = ln.x;
+            a(1, 1) = peak.x;
+            a(2, 1) = rn.x;
+
+            a(0, 2) = 0;
+            a(1, 2) = 0;
+            a(2, 2) = 0;
+
+            vigra::MultiArray<2, f32_t> b(vigra::Shape2(3, 1));
+            b(0, 0) = ln.y;
+            b(1, 0) = peak.y;
+            b(2, 0) = rn.y;
+
+            vigra::MultiArray<2, f32_t> res(vigra::Shape2(3, 1));
+            linearSolve(a, b, res);
+
+            return res(0, 0) * std::pow(ln.x, 2) + res(1, 0) * peak.x + res(0, 2);
         }
     }
 }

@@ -42,7 +42,7 @@ namespace sift {
          * @param p the point at which the derivative is taken
          * @return the derivative as a vector (dx, dy, ds) 
          */
-        const vigra::Matrix<f32_t> foDerivative(const vigra::MultiArray<2, f32_t>[3], const Point&);
+        const vigra::Matrix<f32_t> foDerivative(const vigra::MultiArray<2, f32_t>[3], const Point<u16_t, u16_t>&);
 
         /*
          * Calculates the second order derivative of the image, at the coordinates
@@ -53,7 +53,7 @@ namespace sift {
          * (dyx, dyy, dys)
          * (dsx, dsy, dss) 
          */
-        const vigra::Matrix<f32_t> soDerivative(const vigra::MultiArray<2, f32_t>[3], const Point&);
+        const vigra::Matrix<f32_t> soDerivative(const vigra::MultiArray<2, f32_t>[3], const Point<u16_t, u16_t>&);
 
         /**
          * Calculates the gradient magnitude of the given image at the given position
@@ -61,7 +61,7 @@ namespace sift {
          * @param p the current point
          * @return the gradient magnitude value
          */
-        f32_t gradientMagnitude(const vigra::MultiArray<2, f32_t>&, const Point&);
+        f32_t gradientMagnitude(const vigra::MultiArray<2, f32_t>&, const Point<u16_t, u16_t>&);
 
         /**
          * Calculates the gradient orientation of the given image at the given position
@@ -69,7 +69,7 @@ namespace sift {
          * @param p the current point
          * @return the gradient orientation value
          */
-        f32_t gradientOrientation(const vigra::MultiArray<2, f32_t>&, const Point&);
+        f32_t gradientOrientation(const vigra::MultiArray<2, f32_t>&, const Point<u16_t, u16_t>&);
 
         /*
          * Creates the orientation Histogram of a given
@@ -81,7 +81,17 @@ namespace sift {
          * @return histogram with 36 bins which are weighted by magnitudes and gaussian
          */
         const std::array<f32_t, 36> orientationHistogram(const vigra::MultiArray<2, f32_t>&, 
-                const vigra::MultiArray<2, f32_t>& , f32_t);
+                const vigra::MultiArray<2, f32_t>& , const vigra::MultiArray<2, f32_t>&);
+
+        /**
+         * Calculates the vertex of a parabola, by taking a max value and its 2 neigbours
+         * @param ln the left neighbor of the peak
+         * @param peak the peak value
+         * @param rn the right neighbor of the peak
+         * @return the vertex value
+         */
+        f32_t vertexParabola(const Point<u16_t, f32_t>&, const Point<u16_t, f32_t>&, 
+                const Point<u16_t, f32_t>&);
     }
 }
 #endif //ALGORITHMS_HPP

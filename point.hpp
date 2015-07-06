@@ -4,11 +4,12 @@
 #include "types.hpp"
 
 namespace sift {
+    template <typename T, typename U>
     struct Point {
-        u32_t x;
-        u32_t y;
+        T x;
+        U y;
 
-        Point(u32_t x, u32_t y) : x(x), y(y) {
+        Point(T x, U y) : x(x), y(y) {
 
         }
     };
