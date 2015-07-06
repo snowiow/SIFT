@@ -137,8 +137,8 @@ namespace sift {
         } else if (e == 1) {
             return std::pow(_k, _dogsPerEpoch + i) * _sigma;
         }
-        //_dogsPerEpoch + 2: count of gaussians per epoch
-        //e - 1: the very last epoch before our
+        //_dogsPerEpoch + 2: count of gaussians per octaves
+        //e - 1: the very last octave before our
         // - 2: take the top img from the stack and add i to it
         return std::pow(_k, (_dogsPerEpoch + 2) * (e - 1) - 2 + i) * _sigma;
     }
@@ -240,27 +240,27 @@ namespace sift {
 
     const Matrix<vigra::MultiArray<2, f32_t>> Sift::_createDOGs(vigra::MultiArray<2, f32_t>& img) {
 
-        assert(_epochs > 0); // pre condition
+        assert(_octaves > 0); // pre condition
         assert(_dogsPerEpoch >= 3); // pre condition
 
-        Matrix<vigra::MultiArray<2, f32_t>> gaussians(_epochs, _dogsPerEpoch + 2);
-        Matrix<vigra::MultiArray<2, f32_t>> dogs(_epochs, _dogsPerEpoch);
+        Matrix<vigra::MultiArray<2, f32_t>> gaussians(_octaves, _dogsPerEpoch + 2);
+        Matrix<vigra::MultiArray<2, f32_t>> dogs(_octaves, _dogsPerEpoch);
 
         gaussians(0, 0) = alg::convolveWithGauss(img, _sigma);
 
         //TODO: More elegant way?
         u16_t exp = 0;
-        for (i16_t i = 0; i < _epochs; i++) {
+        for (i16_t i = 0; i < _octaves; i++) {
             for (i16_t j = 1; j < _dogsPerEpoch + 1; j++) {
                 gaussians(i, j) = alg::convolveWithGauss(gaussians(i, j - 1), std::pow(_k, exp) * _sigma);
                 dogs(i, j - 1) = alg::dog(gaussians(i, j - 1), gaussians(i, j));
                 exp++;
             }
             /*
-             * If we aren't in the last epoch populate the next level with the second
-             * last element, scaled by a half, of images of current epoch.
+             * If we aren't in the last octave populate the next level with the second
+             * last element, scaled by a half, of images of current octave.
              */
-            if (i < (_epochs - 1)) {
+            if (i < (_octaves - 1)) {
                 auto scaledElem = alg::reduceToNextLevel(gaussians(i, _dogsPerEpoch - 1), _sigma);
                 gaussians(i + 1, 0) = scaledElem;
 

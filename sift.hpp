@@ -16,19 +16,19 @@ namespace sift {
             const f32_t _sigma;
             const f32_t _k;
             const u16_t _dogsPerEpoch;
-            const u16_t _epochs;
+            const u16_t _octaves;
             Matrix<vigra::MultiArray<2, f32_t>> _gaussians;
 
         public:
             /*
              * @param with standard value 1.6
              * @param with standard value square root of 2
-             * @param How many DOGs should be created per epoch
-             * @param with how many epochs should be calculated
+             * @param How many DOGs should be created per octave
+             * @param with how many octaves should be calculated
              */
             explicit 
-                Sift(f32_t sigma = 1.6, f32_t k = std::sqrt(2), u16_t dogsPerEpoch = 3, u16_t epochs = 3) : 
-                    _sigma(sigma), _k(k), _dogsPerEpoch(dogsPerEpoch), _epochs(epochs) {
+                Sift(f32_t sigma = 1.6, f32_t k = std::sqrt(2), u16_t dogsPerEpoch = 3, u16_t octaves = 3) : 
+                    _sigma(sigma), _k(k), _dogsPerEpoch(dogsPerEpoch), _octaves(octaves) {
                     }
 
             /*
@@ -54,8 +54,8 @@ namespace sift {
 
             /*
              * Calculates the scale based on the given parameters
-             * @param epoch the current epoch of the img
-             * @param i the current index in the epoch
+             * @param octave the current octave of the img
+             * @param i the current index in the octave
              */
             f32_t _calculateScale(u16_t, u16_t) const;
 
@@ -73,9 +73,9 @@ namespace sift {
             const Matrix<Matrix<f32_t>> _findScaleSpaceExtrema(const Matrix<vigra::MultiArray<2, f32_t>>& dogs) const;
 
             /*
-             * Creates the Laplacians of Gaussians for the count of epochs.
+             * Creates the Laplacians of Gaussians for the count of octave.
              * @param the given img
-             * @return a vector with the epochs, which contains DOGs
+             * @return a vector with the octtave, which contains DOGs
              */
             const Matrix<vigra::MultiArray<2, f32_t>> _createDOGs(vigra::MultiArray<2, f32_t>&);
     };
