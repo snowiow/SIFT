@@ -3,12 +3,15 @@
 
 #include <cmath>
 #include <array>
+#include <vector>
 
 #include <vigra/multi_array.hxx>
 #include <vigra/matrix.hxx>
 
 #include "types.hpp"
 #include "matrix.hpp"
+#include "octaveelem.hpp"
+#include "interestpoint.hpp"
 
 namespace sift {
     class Sift {
@@ -17,7 +20,7 @@ namespace sift {
             const f32_t _k;
             const u16_t _dogsPerEpoch;
             const u16_t _octaves;
-            Matrix<vigra::MultiArray<2, f32_t>> _gaussians;
+            Matrix<OctaveElem> _gaussians;
 
         public:
             /*
@@ -40,10 +43,10 @@ namespace sift {
         private:
             /*
              * Keypoint Location uses Taylor expansion to filter the weak interest points.
-             * @param the vector with epochs and the keypoints as tuples inside the epochs, which will be
+             * @param the vector with octaves and the keypoints as tuples inside the octaves, which will be
              * filtered
              */
-            void _eliminateEdgeResponses(Matrix<Matrix<f32_t>>&, const Matrix<vigra::MultiArray<2, f32_t>>&) const;
+            void _eliminateEdgeResponses(std::vector<InterestPoint>&,  const Matrix<OctaveElem>&) const;
 
             /*
              * Searches for the highest Element in the orientation histogram and searches for other 
@@ -52,32 +55,32 @@ namespace sift {
              */
             const std::array<f32_t, 36> _findPeaks(const std::array<f32_t, 36>&) const;
 
-            /*
-             * Calculates the scale based on the given parameters
-             * @param octave the current octave of the img
-             * @param i the current index in the octave
-             */
-            f32_t _calculateScale(u16_t, u16_t) const;
-
             /**
              * Calculates the orientation assignments for the interestPoints
              * @param interestPoints the found interestPoints
              * @param dogs the Difference of Gaussians
              */     
-            void _orientationAssignment(Matrix<Matrix<f32_t>>);
+            void _orientationAssignment(std::vector<InterestPoint>&);
+
+            /**
+             * Finds the nearest gaussian, based on the scale given
+             * @param scale the scale
+             * @return the nearest gaussian
+             */
+            const OctaveElem& _findNearestGaussian(f32_t);
 
             /*
              * Finds the Scale space extrema.
              * @param a vector of vectors of DOGs
              */
-            const Matrix<Matrix<f32_t>> _findScaleSpaceExtrema(const Matrix<vigra::MultiArray<2, f32_t>>& dogs) const;
+            const std::vector<InterestPoint> _findScaleSpaceExtrema(const Matrix<OctaveElem>& dogs) const;
 
             /*
              * Creates the Laplacians of Gaussians for the count of octave.
              * @param the given img
              * @return a vector with the octtave, which contains DOGs
              */
-            const Matrix<vigra::MultiArray<2, f32_t>> _createDOGs(vigra::MultiArray<2, f32_t>&);
+            const Matrix<OctaveElem> _createDOGs(vigra::MultiArray<2, f32_t>&);
     };
 }
 #endif //SIFT_HPP

@@ -9,6 +9,7 @@ namespace sift {
         T x;
         U y;
 
+        Point() = default;
         Point(T x, U y) : x(x), y(y) {
 
         }

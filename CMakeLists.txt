@@ -5,7 +5,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 
 FIND_PACKAGE(Vigra)
 
-set(HEADER_FILES sift.hpp types.hpp point.hpp matrix.hpp algorithms.hpp)
+set(HEADER_FILES sift.hpp types.hpp point.hpp matrix.hpp algorithms.hpp octaveelem.hpp interestpoint.hpp)
 set(SOURCE_FILES algorithms.cpp sift.cpp main.cpp  )
 
 add_executable(sift ${SOURCE_FILES})
