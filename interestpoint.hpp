@@ -10,10 +10,11 @@ namespace sift {
             Point<u16_t, u16_t> loc;
             f32_t scale;
             f32_t orientation;
+            u16_t octave;
             bool filtered = false;
 
             InterestPoint() = default;
-            explicit InterestPoint(Point<u16_t, u16_t> loc, f32_t scale) : loc(loc), scale(scale) {
+            explicit InterestPoint(Point<u16_t, u16_t> loc, f32_t scale, u16_t octave) : loc(loc), scale(scale) , octave(octave){
             }
 
             static bool cmpByFilter(const InterestPoint &a, const InterestPoint &b) {

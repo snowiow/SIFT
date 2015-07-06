@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
         vigra::MultiArray<2, f32_t> img(vigra::Shape2(info.shape()));
         vigra::importImage(info, img);
 
-        sift::Sift sift;
+        sift::Sift sift(3, 4);
         sift.calculate(img);
     } catch (std::exception& ex) {
         std::cerr << ex.what() << std::endl;

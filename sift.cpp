@@ -7,6 +7,8 @@
 #include <vigra/impex.hxx>
 #include <vigra/multi_math.hxx>
 #include <vigra/linear_algebra.hxx>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
 
 #include "point.hpp"
 #include "algorithms.hpp"
@@ -27,12 +29,6 @@ namespace sift {
 
         std::vector<InterestPoint> interestPoints = _findScaleSpaceExtrema(dogs);
         //Save img with found interest points for demonstration purposes
-        auto img_output1 = img;
-        for (InterestPoint p : interestPoints) {
-            img_output1(p.loc.x, p.loc.y) = 255;
-        }
-
-        exportImage(img_output1, vigra::ImageExportInfo("images/interest_points.png"));
         _eliminateEdgeResponses(interestPoints, dogs);
 
         //Cleanup
@@ -42,13 +38,20 @@ namespace sift {
 
         u16_t size = std::distance(interestPoints.begin(), result);
         interestPoints.resize(size);
+        cv::Mat image;
+        image = cv::imread("images/papagei.jpg", CV_LOAD_IMAGE_COLOR);
+
+        for (InterestPoint p : interestPoints) {
+            u16_t x = p.loc.x * std::pow(2, p.octave);
+            u16_t y = p.loc.y * std::pow(2, p.octave);
+            cv::rectangle(image, cv::Point2f(x, y), 
+                    cv::Point2f(x + p.scale * 10, y + p.scale * 10),
+                    cv::Scalar(255, 0, 0));
+        }
+
+        cv::imwrite("images/bäume_points_filtered.png", image);
 
         //Save img with filtered interest points for demonstration purposes
-        auto img_output2 = img;
-        for (InterestPoint& p : interestPoints) {
-            img_output2(p.loc.x, p.loc.y) = 255;
-        }
-        exportImage(img_output2, vigra::ImageExportInfo("images/after_filter.png"));
         _orientationAssignment(interestPoints);
     }
 
@@ -216,7 +219,7 @@ namespace sift {
                                  !any(under < dogs(e, i).img(x, y)) &&
                                  !any(above < dogs(e, i).img(x, y))))
                         {
-                            interestPoints.emplace_back(InterestPoint(Point<u16_t, u16_t>(x, y), dogs(e, i).scale));
+                            interestPoints.emplace_back(InterestPoint(Point<u16_t, u16_t>(x, y), dogs(e, i).scale, e));
                         }
                     }
                 }
