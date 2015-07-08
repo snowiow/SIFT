@@ -26,10 +26,11 @@ namespace sift {
                 exportImage(dogs(i, j).img, vigra::ImageExportInfo(fnStr.c_str()));
             }
         }
+        std::vector<InterestPoint> interestPoints;
+        _findScaleSpaceExtrema(dogs, interestPoints);
 
-        std::vector<InterestPoint> interestPoints = _findScaleSpaceExtrema(dogs);
         _eliminateEdgeResponses(interestPoints, dogs);
-        
+        std::cout << interestPoints.size() << std::endl;
         //Save image with filtered and unfiltered values. For demonstration
         cv::Mat image;
         image = cv::imread("images/papagei.jpg", CV_LOAD_IMAGE_COLOR);
@@ -60,6 +61,7 @@ namespace sift {
         u16_t size = std::distance(interestPoints.begin(), result);
         interestPoints.resize(size);
 
+        std::cout << interestPoints.size() << std::endl;
         //Save image with filtered keypoints for demonstration.
         image = cv::imread("images/papagei.jpg", CV_LOAD_IMAGE_COLOR);
 
@@ -74,7 +76,7 @@ namespace sift {
 
         //Save img with filtered interest points for demonstration purposes
         _orientationAssignment(interestPoints);
-        
+
         //Cleanup
         std::sort(interestPoints.begin(), interestPoints.end(), InterestPoint::cmpByFilter);
         result = std::find_if(interestPoints.begin(), interestPoints.end(), 
@@ -82,6 +84,7 @@ namespace sift {
 
         size = std::distance(interestPoints.begin(), result);
         interestPoints.resize(size);
+        std::cout << interestPoints.size() << std::endl;
         return interestPoints;
     }
 
@@ -213,7 +216,9 @@ namespace sift {
                 for (InterestPoint& p : interestPoints) {
                     if (p.scale == dogs(e, i).scale) {
                         auto d = dogs(e, i);
-                        const vigra::MultiArray<2, f32_t> param[3] = {dogs(e, i - 1).img, dogs(e, i).img, dogs(e, i + 1).img};
+                        const std::array<vigra::MultiArray<2, f32_t>, 3> param = 
+                            {{dogs(e, i - 1).img, dogs(e, i).img, dogs(e, i + 1).img}};
+
                         vigra::Matrix<f32_t> deriv = alg::foDerivative(param, p.loc);
                         vigra::Matrix<f32_t> sec_deriv = alg::soDerivative(param, p.loc);
 
@@ -261,9 +266,10 @@ namespace sift {
         }
     }
 
-    const std::vector<InterestPoint> Sift::_findScaleSpaceExtrema(const Matrix<OctaveElem>& dogs) const {
+    void Sift::_findScaleSpaceExtrema(const Matrix<OctaveElem>& dogs, 
+            std::vector<InterestPoint>& interestPoints) const {
+
         //A matrix of matrix. Outer dogs will be ignored, because we need a upper and lower neighbor
-        std::vector<InterestPoint> interestPoints;
         for (u16_t e = 0; e < dogs.width(); e++) {
             for (u16_t i = 1; i < dogs.height() - 1; i++) {
                 for (i16_t x = 1; x < dogs(e, i).img.width() - 1; x++) {
@@ -291,7 +297,6 @@ namespace sift {
                 }
             }
         }
-        return interestPoints; // TODO: by ref entgegen nehmen, um copy zu vermeiden?
     }
 
     const Matrix<OctaveElem> Sift::_createDOGs(vigra::MultiArray<2, f32_t>& img) {

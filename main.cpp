@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
         vigra::MultiArray<2, f32_t> img(vigra::Shape2(info.shape()));
         vigra::importImage(info, img);
 
-        sift::Sift sift(4, 4);
+        sift::Sift sift(3, 4);
         std::vector<sift::InterestPoint> interestPoints = sift.calculate(img);
 
         auto image = cv::imread(img_file.c_str(), CV_LOAD_IMAGE_COLOR);

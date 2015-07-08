@@ -42,7 +42,7 @@ namespace sift {
          * @param p the point at which the derivative is taken
          * @return the derivative as a vector (dx, dy, ds) 
          */
-        const vigra::Matrix<f32_t> foDerivative(const vigra::MultiArray<2, f32_t>[3], const Point<u16_t, u16_t>&);
+        const vigra::Matrix<f32_t> foDerivative(const std::array<vigra::MultiArray<2, f32_t>, 3>&, const Point<u16_t, u16_t>&);
 
         /*
          * Calculates the second order derivative of the image, at the coordinates
@@ -53,7 +53,7 @@ namespace sift {
          * (dyx, dyy, dys)
          * (dsx, dsy, dss) 
          */
-        const vigra::Matrix<f32_t> soDerivative(const vigra::MultiArray<2, f32_t>[3], const Point<u16_t, u16_t>&);
+        const vigra::Matrix<f32_t> soDerivative(const std::array<vigra::MultiArray<2, f32_t>, 3>&, const Point<u16_t, u16_t>&);
 
         /**
          * Calculates the gradient magnitude of the given image at the given position

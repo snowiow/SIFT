@@ -73,8 +73,7 @@ namespace sift {
              * Finds the Scale space extrema.
              * @param a vector of vectors of DOGs
              */
-            const std::vector<InterestPoint> _findScaleSpaceExtrema(const Matrix<OctaveElem>& dogs) const;
-
+            void _findScaleSpaceExtrema(const Matrix<OctaveElem>&, std::vector<InterestPoint>&) const;
             /*
              * Creates the Laplacians of Gaussians for the count of octave.
              * @param the given img

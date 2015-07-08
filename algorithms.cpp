@@ -48,7 +48,7 @@ namespace sift {
             return result;
         }
 
-        const vigra::Matrix<f32_t> foDerivative(const vigra::MultiArray<2, f32_t> img[3], 
+        const vigra::Matrix<f32_t> foDerivative(const std::array<vigra::MultiArray<2, f32_t>, 3>& img, 
                 const Point<u16_t, u16_t>& p) {
 
             f32_t dx = (img[1](p.x - 1, p.y) - img[1](p.x + 1, p.y)) / 2;
@@ -61,7 +61,7 @@ namespace sift {
             return result;
         }
 
-        const vigra::Matrix<f32_t> soDerivative(const vigra::MultiArray<2, f32_t> img[3], 
+        const vigra::Matrix<f32_t> soDerivative(const std::array<vigra::MultiArray<2, f32_t>, 3>& img, 
                 const Point<u16_t, u16_t>& p) {
 
             f32_t dxx = img[1](p.x + 1, p.y) + img[1](p.x - 1, p.y) - 2 * img[1](p.x, p.y);
