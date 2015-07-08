@@ -38,7 +38,7 @@ namespace sift {
              * Processes the whole Sift calculation
              * @param the given image
              */
-            void calculate(vigra::MultiArray<2, f32_t>&);
+            std::vector<InterestPoint> calculate(vigra::MultiArray<2, f32_t>&);
 
         private:
             /*

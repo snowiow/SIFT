@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.2)
 project(sift)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -O3")
 
 FIND_PACKAGE(Vigra)
 FIND_PACKAGE(OpenCV)

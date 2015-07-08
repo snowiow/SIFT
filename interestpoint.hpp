@@ -9,14 +9,14 @@
 namespace sift {
     struct InterestPoint {
         public:
-            Point<u16_t, u16_t> loc;
             f32_t scale;
-            std::set<f32_t> orientation;
             u16_t octave;
             bool filtered = false;
+            Point<u16_t, u16_t> loc;
+            std::set<f32_t> orientation;
 
             InterestPoint() = default;
-            explicit InterestPoint(Point<u16_t, u16_t> loc, f32_t scale, u16_t octave) : loc(loc), scale(scale) , octave(octave){
+            explicit InterestPoint(Point<u16_t, u16_t> loc, f32_t scale, u16_t octave) :  scale(scale), octave(octave), loc(loc){
             }
 
             static bool cmpByFilter(const InterestPoint &a, const InterestPoint &b) {

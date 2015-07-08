@@ -17,7 +17,7 @@ using namespace vigra::multi_math;
 using namespace vigra::linalg;
 
 namespace sift {
-    void Sift::calculate(vigra::MultiArray<2, f32_t>& img) {
+    std::vector<InterestPoint> Sift::calculate(vigra::MultiArray<2, f32_t>& img) {
         auto dogs = _createDOGs(img);
         //Save DoGs for Demonstration purposes
         for (u16_t i = 0; i < dogs.width(); i++) {
@@ -34,7 +34,7 @@ namespace sift {
         cv::Mat image;
         image = cv::imread("images/papagei.jpg", CV_LOAD_IMAGE_COLOR);
 
-        for (InterestPoint p : interestPoints) {
+        for (const InterestPoint& p : interestPoints) {
             if (p.filtered) {
                 u16_t x = p.loc.x * std::pow(2, p.octave);
                 u16_t y = p.loc.y * std::pow(2, p.octave);
@@ -63,9 +63,9 @@ namespace sift {
         //Save image with filtered keypoints for demonstration.
         image = cv::imread("images/papagei.jpg", CV_LOAD_IMAGE_COLOR);
 
-        for (InterestPoint p : interestPoints) {
-            u16_t x = p.loc.x * std::pow(2, p.octave);
-            u16_t y = p.loc.y * std::pow(2, p.octave);
+        for (const InterestPoint& p : interestPoints) {
+            const u16_t x = p.loc.x * std::pow(2, p.octave);
+            const u16_t y = p.loc.y * std::pow(2, p.octave);
             cv::rectangle(image, cv::Point2f(x, y), 
                     cv::Point2f(x + p.scale * 10, y + p.scale * 10),
                     cv::Scalar(255, 0, 0));
@@ -82,23 +82,7 @@ namespace sift {
 
         size = std::distance(interestPoints.begin(), result);
         interestPoints.resize(size);
-
-        for (const InterestPoint& p : interestPoints) {
-            u16_t x = p.loc.x * std::pow(2, p.octave);
-            u16_t y = p.loc.y * std::pow(2, p.octave);
-            cv::RotatedRect r(cv::Point2f(x, y), 
-                              cv::Size(p.scale * 10, p.scale * 10),
-                              *(p.orientation.begin()));
-            std::cout << r.angle << std::endl;
-            cv::Point2f points[4]; 
-            r.points( points );
-            cv::line(image, points[0], points[1], cv::Scalar(255, 0, 0));
-            cv::line(image, points[0], points[3], cv::Scalar(255, 0, 0));
-            cv::line(image, points[2], points[3], cv::Scalar(255, 0, 0));
-            cv::line(image, points[1], points[2], cv::Scalar(255, 0, 0));
-        }
-
-        cv::imwrite("images/papagei_orientation.png", image);
+        return interestPoints;
     }
 
 
@@ -141,7 +125,7 @@ namespace sift {
         OctaveElem& nearest_gauss = _gaussians(0, 0);
         for (u16_t o = 0; o < _gaussians.width(); o++) {
             for (u16_t i = 0; i < _gaussians.height(); i++) {
-                f32_t cur_scale = std::abs(_gaussians(o, i).scale - scale);
+                const f32_t cur_scale = std::abs(_gaussians(o, i).scale - scale);
                 if (cur_scale < lowest_diff) {
                     lowest_diff = cur_scale;
                     nearest_gauss = _gaussians(o, i);
@@ -156,10 +140,10 @@ namespace sift {
         auto peaks_only = histo;
 
         auto result_iter = std::max_element(peaks_only.begin(), peaks_only.end());
-        u16_t max_index = std::distance(peaks_only.begin(), result_iter);
+        const u16_t max_index = std::distance(peaks_only.begin(), result_iter);
 
         //filter all values which are under the allowed range(80% of max) 
-        f32_t range = histo[max_index] * 0.8;
+        const f32_t range = histo[max_index] * 0.8;
 
         std::for_each(peaks_only.begin(), peaks_only.end(), [&](f32_t& elem) { if (elem < range) elem = -1; }); 
 

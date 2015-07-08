@@ -1,6 +1,5 @@
 #include "algorithms.hpp"
 
-#include <iostream>
 #include <vigra/convolution.hxx>
 #include <vigra/linear_algebra.hxx>
 
@@ -97,7 +96,7 @@ namespace sift {
         }
 
         f32_t gradientOrientation(const vigra::MultiArray<2, f32_t>& img, const Point<u16_t, u16_t>& p) {
-            f32_t result = std::atan2(img(p.x, p.y + 1) - img(p.x, p.y - 1), img(p.x + 1, p.y) - img(p.x - 1, p.y));
+            const f32_t result = std::atan2(img(p.x, p.y + 1) - img(p.x, p.y - 1), img(p.x + 1, p.y) - img(p.x - 1, p.y));
             return std::fmod(result + 360, 360);
         }
 
