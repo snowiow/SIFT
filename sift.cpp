@@ -28,8 +28,29 @@ namespace sift {
         }
 
         std::vector<InterestPoint> interestPoints = _findScaleSpaceExtrema(dogs);
-        //Save img with found interest points for demonstration purposes
         _eliminateEdgeResponses(interestPoints, dogs);
+        
+        //Save image with filtered and unfiltered values. For demonstration
+        cv::Mat image;
+        image = cv::imread("images/papagei.jpg", CV_LOAD_IMAGE_COLOR);
+
+        for (InterestPoint p : interestPoints) {
+            if (p.filtered) {
+                u16_t x = p.loc.x * std::pow(2, p.octave);
+                u16_t y = p.loc.y * std::pow(2, p.octave);
+                cv::rectangle(image, cv::Point2f(x, y), 
+                        cv::Point2f(x + p.scale * 10, y + p.scale * 10),
+                        cv::Scalar(0, 0, 255));
+
+            } else {
+                u16_t x = p.loc.x * std::pow(2, p.octave);
+                u16_t y = p.loc.y * std::pow(2, p.octave);
+                cv::rectangle(image, cv::Point2f(x, y), 
+                        cv::Point2f(x + p.scale * 10, y + p.scale * 10),
+                        cv::Scalar(255, 0, 0));
+            }
+        }
+        cv::imwrite("images/papagei_unfiltered.png", image);
 
         //Cleanup
         std::sort(interestPoints.begin(), interestPoints.end(), InterestPoint::cmpByFilter);
@@ -38,7 +59,8 @@ namespace sift {
 
         u16_t size = std::distance(interestPoints.begin(), result);
         interestPoints.resize(size);
-        cv::Mat image;
+
+        //Save image with filtered keypoints for demonstration.
         image = cv::imread("images/papagei.jpg", CV_LOAD_IMAGE_COLOR);
 
         for (InterestPoint p : interestPoints) {
@@ -48,11 +70,35 @@ namespace sift {
                     cv::Point2f(x + p.scale * 10, y + p.scale * 10),
                     cv::Scalar(255, 0, 0));
         }
-
-        cv::imwrite("images/bäume_points_filtered.png", image);
+        cv::imwrite("images/papagei_filtered.png", image);
 
         //Save img with filtered interest points for demonstration purposes
         _orientationAssignment(interestPoints);
+        
+        //Cleanup
+        std::sort(interestPoints.begin(), interestPoints.end(), InterestPoint::cmpByFilter);
+        result = std::find_if(interestPoints.begin(), interestPoints.end(), 
+                [](const InterestPoint& p) { return p.filtered; });
+
+        size = std::distance(interestPoints.begin(), result);
+        interestPoints.resize(size);
+
+        for (const InterestPoint& p : interestPoints) {
+            u16_t x = p.loc.x * std::pow(2, p.octave);
+            u16_t y = p.loc.y * std::pow(2, p.octave);
+            cv::RotatedRect r(cv::Point2f(x, y), 
+                              cv::Size(p.scale * 10, p.scale * 10),
+                              *(p.orientation.begin()));
+            std::cout << r.angle << std::endl;
+            cv::Point2f points[4]; 
+            r.points( points );
+            cv::line(image, points[0], points[1], cv::Scalar(255, 0, 0));
+            cv::line(image, points[0], points[3], cv::Scalar(255, 0, 0));
+            cv::line(image, points[2], points[3], cv::Scalar(255, 0, 0));
+            cv::line(image, points[1], points[2], cv::Scalar(255, 0, 0));
+        }
+
+        cv::imwrite("images/papagei_orientation.png", image);
     }
 
 
@@ -63,12 +109,11 @@ namespace sift {
             u16_t region = 8;
             //Is Keypoint inside image boundaries of gaussian
             if ((p.loc.x < region || p.loc.x >= closest.img.width() - region) ||
-                    (p.loc.y < region && p.loc.y >= closest.img.height() - region)) {
+                    (p.loc.y < region || p.loc.y >= closest.img.height() - region)) {
 
                 p.filtered = true;
                 continue;
             }
-
             auto topLeftCorner = vigra::Shape2(p.loc.x - region, p.loc.y - region);
             auto bottomRightCorner = vigra::Shape2(p.loc.x + region, p.loc.y + region);
             auto gauss_region = closest.img.subarray(topLeftCorner, bottomRightCorner);
@@ -76,17 +121,18 @@ namespace sift {
             vigra::MultiArray<2, f32_t> magnitudes(vigra::Shape2(region * 2, region * 2));
             vigra::MultiArray<2, f32_t> orientations(vigra::Shape2(region * 2, region * 2));
 
-            for (u16_t x = 0; x < magnitudes.width(); x++) {
-                for (u16_t y = 0; y < magnitudes.height(); y++) {
+            for (u16_t x = 1; x < magnitudes.width() - 1; x++) {
+                for (u16_t y = 1; y < magnitudes.height() - 1; y++) {
                     Point<u16_t, u16_t> point(x, y);
                     magnitudes(x, y) = alg::gradientMagnitude(closest.img, point);
                     orientations(x, y) = alg::gradientOrientation(closest.img, point);
 
                 }
             }
+
             auto gauss_convolved = alg::convolveWithGauss(gauss_region, 1.5 * p.scale);
             auto histogram = alg::orientationHistogram(orientations, magnitudes, gauss_region);
-            auto peaks = _findPeaks(histogram);
+            p.orientation = _findPeaks(histogram);
         }
     }
 
@@ -94,47 +140,83 @@ namespace sift {
         f32_t lowest_diff = 100;
         OctaveElem& nearest_gauss = _gaussians(0, 0);
         for (u16_t o = 0; o < _gaussians.width(); o++) {
-            //TODO: Abrechen wenn scale nur noch ansteigt
             for (u16_t i = 0; i < _gaussians.height(); i++) {
-                if (std::abs(_gaussians(o, i).scale - scale) < lowest_diff)
+                f32_t cur_scale = std::abs(_gaussians(o, i).scale - scale);
+                if (cur_scale < lowest_diff) {
+                    lowest_diff = cur_scale;
                     nearest_gauss = _gaussians(o, i);
+                }
             }
         }
         return nearest_gauss;
     }
 
-    const std::array<f32_t, 36> Sift::_findPeaks(const std::array<f32_t, 36>& histo) const {
+    const std::set<f32_t> Sift::_findPeaks(const std::array<f32_t, 36>& histo) const {
+        std::set<f32_t> result;
         auto peaks_only = histo;
-        auto result_iter = std::max_element(histo.begin(), histo.end());
-        u16_t  max_index = std::distance(histo.begin(), result_iter);
-        while (max_index < 1 || max_index >= histo.size() - 1) {
-            peaks_only[max_index] = -1;
-            result_iter = std::max_element(histo.begin(), histo.end());
-            max_index = std::distance(histo.begin(), result_iter);
-        }
-        //ignore edges, because they cant be aproximated appropiately
-        peaks_only[0] = -1;
-        peaks_only[peaks_only.size() - 1] = -1;
 
-        //allowed range(80% of max) 
-        const f32_t range = (*result_iter) * (4 / 5);
+        auto result_iter = std::max_element(peaks_only.begin(), peaks_only.end());
+        u16_t max_index = std::distance(peaks_only.begin(), result_iter);
+
+        //filter all values which are under the allowed range(80% of max) 
+        f32_t range = histo[max_index] * 0.8;
+
         std::for_each(peaks_only.begin(), peaks_only.end(), [&](f32_t& elem) { if (elem < range) elem = -1; }); 
+
+        //filter every value which isn't a local maximum
+        for (u16_t i = 1; i < peaks_only.size() - 1; i++) {
+            if (peaks_only[i] < peaks_only[i - 1] || peaks_only[i] < peaks_only[i + 1])
+                peaks_only[i] = -1;
+        }
+
         //aproximate peak with vertex parabola. Here we need the 360° space. +5 Because we just have
-        //10° bins, so we just take the middle of the bin.
-        Point<u16_t, f32_t> ln((max_index - 1) * 10 + 5, histo[max_index - 1]);
+        //10° bins, so we take the middle of the bin.
+        Point<u16_t, f32_t> ln;
+        Point<u16_t, f32_t> rn;
         Point<u16_t, f32_t> peak(max_index * 10 + 5, histo[max_index]);
-        Point<u16_t, f32_t> rn((max_index + 1) * 10 + 5, histo[max_index + 1]);
-        peaks_only[max_index] = alg::vertexParabola(ln, peak, rn);
+
+        if (max_index == 0) {
+            ln.x = (histo.size() - 1) * 10 + 5;
+            ln.y =  histo[histo.size() - 1];
+        } else {
+            ln.x = (max_index - 1) * 10 + 5;
+            ln.y = histo[max_index - 1];
+        }
+
+        if (max_index == histo.size() - 1) {
+            rn.x = 5;
+            rn.y = histo[0];
+        } else {
+            rn.x = (max_index + 1) * 10 + 5;
+            rn.y = histo[max_index + 1];
+        }
+
+        result.emplace(alg::vertexParabola(ln, peak, rn));
 
         for (u16_t i = 0; i < peaks_only.size(); i++) {
             if (peaks_only[i] > - 1 && i != max_index) {
-                Point<u16_t, f32_t> ln((i - 1) * 10 + 5, histo[i - 1]);
+                Point<u16_t, f32_t> ln;
+                Point<u16_t, f32_t> rn;
                 Point<u16_t, f32_t> peak(i * 10 + 5, histo[i]);
-                Point<u16_t, f32_t> rn((i + 1) * 10 + 5, histo[i + 1]);
-                peaks_only[i] = alg::vertexParabola(ln, peak, rn);
+                if (i == 0) {
+                    ln.x = (histo.size() - 1) * 10 + 5;
+                    ln.y =  histo[histo.size() - 1];
+                } else {
+                    ln.x = (i - 1) * 10 + 5;
+                    ln.y = histo[i - 1];
+                }
+
+                if (i == histo.size() - 1) {
+                    rn.x = 5;
+                    rn.y = histo[0];
+                } else {
+                    rn.x = (i + 1) * 10 + 5;
+                    rn.y = histo[i + 1];
+                }
+                result.emplace(alg::vertexParabola(ln, peak, rn));
             }
         }
-        return peaks_only;
+        return result;
     }
 
     void Sift::_eliminateEdgeResponses(std::vector<InterestPoint>& interestPoints, 
@@ -232,7 +314,7 @@ namespace sift {
         assert(_octaves > 0); // pre condition
         assert(_dogsPerEpoch >= 3); // pre condition
 
-        Matrix<OctaveElem> gaussians(_octaves, _dogsPerEpoch + 2);
+        Matrix<OctaveElem> gaussians(_octaves, _dogsPerEpoch + 1);
         Matrix<OctaveElem> dogs(_octaves, _dogsPerEpoch);
 
         gaussians(0, 0).scale = _sigma;
@@ -263,6 +345,7 @@ namespace sift {
                 exp -= 2;
             }
         }
+
         _gaussians = gaussians;
         return dogs; // TODO: by ref entgegen nehmen um copy zu vermeiden?
     }

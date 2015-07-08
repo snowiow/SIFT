@@ -53,7 +53,7 @@ namespace sift {
              * orientations within a 80% range. Everything outside the range will be set to -1.
              * @param histo The given histogram on which the peak calculation finds place
              */
-            const std::array<f32_t, 36> _findPeaks(const std::array<f32_t, 36>&) const;
+            const std::set<f32_t> _findPeaks(const std::array<f32_t, 36>&) const;
 
             /**
              * Calculates the orientation assignments for the interestPoints

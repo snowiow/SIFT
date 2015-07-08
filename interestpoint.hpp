@@ -1,6 +1,8 @@
 #ifndef INTERESTPOINT_HPP
 #define INTERESTPOINT_HPP
 
+#include <set>
+
 #include "types.hpp"
 #include "point.hpp"
 
@@ -9,7 +11,7 @@ namespace sift {
         public:
             Point<u16_t, u16_t> loc;
             f32_t scale;
-            f32_t orientation;
+            std::set<f32_t> orientation;
             u16_t octave;
             bool filtered = false;
 

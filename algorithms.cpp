@@ -1,5 +1,6 @@
 #include "algorithms.hpp"
 
+#include <iostream>
 #include <vigra/convolution.hxx>
 #include <vigra/linear_algebra.hxx>
 
@@ -96,7 +97,8 @@ namespace sift {
         }
 
         f32_t gradientOrientation(const vigra::MultiArray<2, f32_t>& img, const Point<u16_t, u16_t>& p) {
-            return std::atan2(img(p.x, p.y + 1) - img(p.x, p.y - 1), img(p.x + 1, p.y) - img(p.x - 1, p.y));
+            f32_t result = std::atan2(img(p.x, p.y + 1) - img(p.x, p.y - 1), img(p.x + 1, p.y) - img(p.x - 1, p.y));
+            return std::fmod(result + 360, 360);
         }
 
         const std::array<f32_t, 36> orientationHistogram(
@@ -104,10 +106,10 @@ namespace sift {
                 const vigra::MultiArray<2, f32_t>& magnitudes, 
                 const vigra::MultiArray<2, f32_t>& current_gauss) {
 
-            std::array<f32_t, 36> bins;
+            std::array<f32_t, 36> bins = {{0}};
             for (u16_t x = 0; x < orientations.width(); x++) {
                 for (u16_t y = 0; y < orientations.height(); y++) {
-                    f32_t sum = magnitudes(x, y)  * current_gauss(x, y);
+                    f32_t sum = magnitudes(x, y) * current_gauss(x, y);
                     u16_t i = std::floor(orientations(x, y) / 10);
                     i = i > 35 ? 0 : i;
                     bins[i] += sum;
@@ -140,7 +142,7 @@ namespace sift {
             vigra::MultiArray<2, f32_t> res(vigra::Shape2(3, 1));
             linearSolve(a, b, res);
 
-            return res(0, 0) * std::pow(ln.x, 2) + res(1, 0) * peak.x + res(0, 2);
+            return -res(1, 0) / (2 * res(0, 0));
         }
     }
 }
