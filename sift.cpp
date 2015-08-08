@@ -19,6 +19,7 @@ using namespace vigra::linalg;
 namespace sift {
     std::vector<InterestPoint> Sift::calculate(vigra::MultiArray<2, f32_t>& img) {
         auto dogs = _createDOGs(img);
+        std::cout << "step 0" << std::endl;
         //Save DoGs for Demonstration purposes
         for (u16_t i = 0; i < dogs.width(); i++) {
             for (u16_t j = 0; j < dogs.height(); j++) {
@@ -28,9 +29,9 @@ namespace sift {
         }
         std::vector<InterestPoint> interestPoints;
         _findScaleSpaceExtrema(dogs, interestPoints);
-
+        std::cout << "step 1" << std::endl;
         _eliminateEdgeResponses(interestPoints, dogs);
-        std::cout << interestPoints.size() << std::endl;
+        std::cout << "step 2" << std::endl;
         //Save image with filtered and unfiltered values. For demonstration
         cv::Mat image;
         image = cv::imread("images/papagei.jpg", CV_LOAD_IMAGE_COLOR);
@@ -61,7 +62,6 @@ namespace sift {
         u16_t size = std::distance(interestPoints.begin(), result);
         interestPoints.resize(size);
 
-        std::cout << interestPoints.size() << std::endl;
         //Save image with filtered keypoints for demonstration.
         image = cv::imread("images/papagei.jpg", CV_LOAD_IMAGE_COLOR);
 
@@ -72,6 +72,7 @@ namespace sift {
                     cv::Point2f(x + p.scale * 10, y + p.scale * 10),
                     cv::Scalar(255, 0, 0));
         }
+
         cv::imwrite("images/papagei_filtered.png", image);
 
         //Save img with filtered interest points for demonstration purposes
@@ -209,60 +210,52 @@ namespace sift {
     void Sift::_eliminateEdgeResponses(std::vector<InterestPoint>& interestPoints, 
             const Matrix<OctaveElem>& dogs) const {
 
-        for(u16_t e = 0; e < dogs.width(); e++) {
-            for (u16_t i = 1; i < dogs.height() - 1; i++) {
-                //TODO: Hier braucht jeder Punkt nur einmal durchlaufen werden und nicht in jeder
-                //Iteration erneut
-                for (InterestPoint& p : interestPoints) {
-                    if (p.scale == dogs(e, i).scale) {
-                        auto d = dogs(e, i);
-                        const std::array<vigra::MultiArray<2, f32_t>, 3> param = 
-                            {{dogs(e, i - 1).img, dogs(e, i).img, dogs(e, i + 1).img}};
+        for (InterestPoint& p : interestPoints) {
+            auto d = dogs(p.octave, p.index);
+            const std::array<vigra::MultiArray<2, f32_t>, 3> param = 
+            {{dogs(p.octave, p.index - 1).img, dogs(p.octave, p.index).img, dogs(p.octave, p.index + 1).img}};
 
-                        vigra::Matrix<f32_t> deriv = alg::foDerivative(param, p.loc);
-                        vigra::Matrix<f32_t> sec_deriv = alg::soDerivative(param, p.loc);
+            vigra::Matrix<f32_t> deriv = alg::foDerivative(param, p.loc);
+            vigra::Matrix<f32_t> sec_deriv = alg::soDerivative(param, p.loc);
 
-                        vigra::Matrix<f32_t> neg_sec_deriv = sec_deriv ;
-                        neg_sec_deriv *=  -1;
+            vigra::Matrix<f32_t> neg_sec_deriv = sec_deriv ;
+            neg_sec_deriv *=  -1;
 
-                        vigra::MultiArray<2, f32_t> extremum(vigra::Shape2(3, 1));
-                        if (!linearSolve(inverse(neg_sec_deriv), deriv, extremum)) {
-                            std::cerr << "Couldn't solve linear system" << std::endl;
-                            throw;
-                        }
-
-                        //Calculated up 0.5 from paper to own image values [0,255]
-                        if (extremum(0, 0) > 127.5 || extremum(1, 0) > 127.5 || extremum(2, 0) > 127.5) {
-                            p.filtered = true;
-                            continue;
-                        } 
-                        vigra::Matrix<f32_t> deriv_transpose = deriv.transpose();
-                        f32_t func_val_extremum = dot(deriv_transpose, extremum);
-                        func_val_extremum *= 0.5 + d.img(p.loc.x, p.loc.y);
-
-                        //Calculated up 0.03 from paper to own image values[0, 255]
-                        if (func_val_extremum < 7.65) {
-                            p.filtered = true;
-                            continue;
-                        }
-
-                        //dxx + dyy
-                        f32_t hessian_tr = sec_deriv(0, 0) + sec_deriv(1, 1);
-                        //dxx * dyy - dxy^2
-                        f32_t hessian_det = sec_deriv(0, 0) * sec_deriv(1, 1) - std::pow(sec_deriv(0, 1), 2);
-
-                        if (hessian_det < 0) {
-                            p.filtered = true;
-                            continue;
-                        }
-
-                        //Original r = 10, calculated up to own image values[0, 255]
-                        //Question: The value 10 isn't based on the greyvalues? 
-                        if (std::pow(hessian_tr, 2) / hessian_det > std::pow(10 + 1, 2) / 10) 
-                            p.filtered = true;
-                    }
-                }
+            vigra::MultiArray<2, f32_t> extremum(vigra::Shape2(3, 1));
+            if (!linearSolve(inverse(neg_sec_deriv), deriv, extremum)) {
+                std::cerr << "Couldn't solve linear system" << std::endl;
+                throw;
             }
+
+            //Calculated up 0.5 from paper to own image values [0,255]
+            if (extremum(0, 0) > 127.5 || extremum(1, 0) > 127.5 || extremum(2, 0) > 127.5) {
+                p.filtered = true;
+                continue;
+            } 
+            vigra::Matrix<f32_t> deriv_transpose = deriv.transpose();
+            f32_t func_val_extremum = dot(deriv_transpose, extremum);
+            func_val_extremum *= 0.5 + d.img(p.loc.x, p.loc.y);
+
+            //Calculated up 0.03 from paper to own image values[0, 255]
+            if (func_val_extremum < 7.65) {
+                p.filtered = true;
+                continue;
+            }
+
+            //dxx + dyy
+            f32_t hessian_tr = sec_deriv(0, 0) + sec_deriv(1, 1);
+            //dxx * dyy - dxy^2
+            f32_t hessian_det = sec_deriv(0, 0) * sec_deriv(1, 1) - std::pow(sec_deriv(0, 1), 2);
+
+            if (hessian_det < 0) {
+                p.filtered = true;
+                continue;
+            }
+
+            //Original r = 10, calculated up to own image values[0, 255]
+            //Question: The value 10 isn't based on the greyvalues? 
+            if (std::pow(hessian_tr, 2) / hessian_det > std::pow(10 + 1, 2) / 10) 
+                p.filtered = true;
         }
     }
 
@@ -291,7 +284,7 @@ namespace sift {
                                  !any(under < dogs(e, i).img(x, y)) &&
                                  !any(above < dogs(e, i).img(x, y))))
                         {
-                            interestPoints.emplace_back(InterestPoint(Point<u16_t, u16_t>(x, y), dogs(e, i).scale, e));
+                            interestPoints.emplace_back(InterestPoint(Point<u16_t, u16_t>(x, y), dogs(e, i).scale, e, i));
                         }
                     }
                 }
