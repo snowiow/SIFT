@@ -1,14 +1,11 @@
 cmake_minimum_required(VERSION 3.2)
 project(sift)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -O3")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -O3 -pg")
 
 FIND_PACKAGE(Vigra)
 FIND_PACKAGE(OpenCV)
 FIND_PACKAGE(Boost COMPONENTS program_options REQUIRED)
-message(status "** Boost Include: ${Boost_INCLUDE_DIR}")
-message(status "** Boost Libraries: ${Boost_LIBRARY_DIRS}")
-message(status "** Boost Libraries: ${Boost_LIBRARIES}")
 
 set(HEADER_FILES sift.hpp types.hpp point.hpp matrix.hpp algorithms.hpp octaveelem.hpp interestpoint.hpp)
 set(SOURCE_FILES algorithms.cpp sift.cpp main.cpp  )

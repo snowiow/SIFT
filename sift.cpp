@@ -211,6 +211,8 @@ namespace sift {
             const Matrix<OctaveElem>& dogs) const {
 
         vigra::MultiArray<2, f32_t> extremum(vigra::Shape2(3, 1));
+        vigra::MultiArray<2, f32_t> inverse_matrix(vigra::Shape2(3, 3));
+
         const f32_t t = std::pow(10 + 1, 2) / 10;
         for (InterestPoint& p : interestPoints) {
             auto& d = dogs(p.octave, p.index);
@@ -223,7 +225,12 @@ namespace sift {
             vigra::Matrix<f32_t> neg_sec_deriv = sec_deriv ;
             neg_sec_deriv *=  -1;
 
-            if (!linearSolve(inverse(neg_sec_deriv), deriv, extremum)) {
+            if (!inverse(neg_sec_deriv, inverse_matrix)) {
+                p.filtered = true;
+                continue;
+            }
+
+            if (!linearSolve(inverse_matrix, deriv, extremum)) {
                 p.filtered = true;
                 continue;
             }
@@ -233,7 +240,7 @@ namespace sift {
                 p.filtered = true;
                 continue;
             } 
-            vigra::Matrix<f32_t> deriv_transpose = deriv.transpose();
+            const vigra::Matrix<f32_t> deriv_transpose = deriv.transpose();
             f32_t func_val_extremum = dot(deriv_transpose, extremum);
             func_val_extremum *= 0.5 + d.img(p.loc.x, p.loc.y);
 
