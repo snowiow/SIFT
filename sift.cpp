@@ -210,21 +210,22 @@ namespace sift {
     void Sift::_eliminateEdgeResponses(std::vector<InterestPoint>& interestPoints, 
             const Matrix<OctaveElem>& dogs) const {
 
+        vigra::MultiArray<2, f32_t> extremum(vigra::Shape2(3, 1));
+        const f32_t t = std::pow(10 + 1, 2) / 10;
         for (InterestPoint& p : interestPoints) {
-            auto d = dogs(p.octave, p.index);
-            const std::array<vigra::MultiArray<2, f32_t>, 3> param = 
+            auto& d = dogs(p.octave, p.index);
+            const std::array<vigra::MultiArray<2, f32_t>, 3>& param = 
             {{dogs(p.octave, p.index - 1).img, dogs(p.octave, p.index).img, dogs(p.octave, p.index + 1).img}};
 
-            vigra::Matrix<f32_t> deriv = alg::foDerivative(param, p.loc);
-            vigra::Matrix<f32_t> sec_deriv = alg::soDerivative(param, p.loc);
+            const vigra::Matrix<f32_t> deriv = alg::foDerivative(param, p.loc);
+            const vigra::Matrix<f32_t> sec_deriv = alg::soDerivative(param, p.loc);
 
             vigra::Matrix<f32_t> neg_sec_deriv = sec_deriv ;
             neg_sec_deriv *=  -1;
 
-            vigra::MultiArray<2, f32_t> extremum(vigra::Shape2(3, 1));
             if (!linearSolve(inverse(neg_sec_deriv), deriv, extremum)) {
-                std::cerr << "Couldn't solve linear system" << std::endl;
-                throw;
+                p.filtered = true;
+                continue;
             }
 
             //Calculated up 0.5 from paper to own image values [0,255]
@@ -242,10 +243,12 @@ namespace sift {
                 continue;
             }
 
+            const auto dxx = sec_deriv(0, 0);
+            const auto dyy = sec_deriv(1, 1);
             //dxx + dyy
-            f32_t hessian_tr = sec_deriv(0, 0) + sec_deriv(1, 1);
+            const f32_t hessian_tr = dxx + dyy;
             //dxx * dyy - dxy^2
-            f32_t hessian_det = sec_deriv(0, 0) * sec_deriv(1, 1) - std::pow(sec_deriv(0, 1), 2);
+            const f32_t hessian_det = dxx *  dyy - std::pow(sec_deriv(0, 1), 2);
 
             if (hessian_det < 0) {
                 p.filtered = true;
@@ -254,7 +257,7 @@ namespace sift {
 
             //Original r = 10, calculated up to own image values[0, 255]
             //Question: The value 10 isn't based on the greyvalues? 
-            if (std::pow(hessian_tr, 2) / hessian_det > std::pow(10 + 1, 2) / 10) 
+            if (std::pow(hessian_tr, 2) / hessian_det > t) 
                 p.filtered = true;
         }
     }
