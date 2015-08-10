@@ -71,3 +71,4 @@ k is the constant, which is calculated onto sigma in each step of the Gaussian c
 image 2: sigma * k ^ 1 = sigma * k  
 image 3: sigma * k ^ 2 = ...  
 ```
+  
