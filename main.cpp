@@ -56,10 +56,10 @@ int main(int argc, char** argv) {
         std::vector<sift::InterestPoint> interestPoints = sift.calculate(img);
 
         auto image = cv::imread(img_file.c_str(), CV_LOAD_IMAGE_COLOR);
-        u16_t subpixel = sift.subpixel ? 2 : 1;
+        u16_t subpixel_divisor = sift.subpixel ? 2 : 1;
         for (const sift::InterestPoint& p : interestPoints) {
-            u16_t x = (p.loc.x * std::pow(2, p.octave)) / subpixel;
-            u16_t y = (p.loc.y * std::pow(2, p.octave)) / subpixel;
+            u16_t x = (p.loc.x * std::pow(2, p.octave)) / subpixel_divisor;
+            u16_t y = (p.loc.y * std::pow(2, p.octave)) / subpixel_divisor;
             cv::RotatedRect r(cv::Point2f(x, y), 
                               cv::Size(p.scale * 10, p.scale * 10),
                               *(p.orientation.begin()));
