@@ -20,15 +20,15 @@ CMake: A cross-platform open-source make system.
 ## Installation Process
 With the needed libraries installed and the help of CMake, the isntallation is as easy as three commands.
 First download this repository by cloning or whatever way you prefer. Switch into the directory afterwards.
-Now you want to make an extra directory for your build files. For Example:
-`mkdir build
-Switch into the created directory
-`cd build
+Now you want to make an extra directory for your build files. For Example:  
+`mkdir build  
+Switch into the created directory  
+`cd build  
 Then you want to create your prefered make files from cmake. On all unix like systems this will be 
-GNU Makefiles.
-`cmake -G "Unix Makefiles" ..
-For other supported build systems check the official documentation of cmake.
-The final step is to build your executable from the Makefiles
-`make
+GNU Makefiles.  
+`cmake -G "Unix Makefiles" ..  
+For other supported build systems check the official documentation of cmake.  
+The final step is to build your executable from the Makefiles  
+`make  
 You should now have an executable named sift in your build directory. Please refer to the next section
 to check how it is used and which possibilities you got, by executing it.
