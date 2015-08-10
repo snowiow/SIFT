@@ -61,6 +61,7 @@ The flag indicator is optional as seen in the first example of the user guide. T
 - ~300x300 px: ~0.7 seconds
 - ~600x600 px: ~15 seconds
 - ~1500x1500 px: ~11 minutes  
+  
 ## -s [ --sigma ] arg (=1.60000002)
 sigma is the standard deviation of the gaussian curve. It is used extensively throughout the algorithm. For example when creating the Difference of Gaussian(DoG) pyramid. 
 
