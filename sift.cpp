@@ -18,8 +18,10 @@ using namespace vigra::linalg;
 
 namespace sift {
     std::vector<InterestPoint> Sift::calculate(vigra::MultiArray<2, f32_t>& img) {
+        if (subpixel)
+            img = alg::increaseToNextLevel(img, 1.0);
+
         auto dogs = _createDOGs(img);
-        std::cout << "step 0" << std::endl;
         //Save DoGs for Demonstration purposes
         for (u16_t i = 0; i < dogs.width(); i++) {
             for (u16_t j = 0; j < dogs.height(); j++) {
@@ -29,9 +31,7 @@ namespace sift {
         }
         std::vector<InterestPoint> interestPoints;
         _findScaleSpaceExtrema(dogs, interestPoints);
-        std::cout << "step 1" << std::endl;
         _eliminateEdgeResponses(interestPoints, dogs);
-        std::cout << "step 2" << std::endl;
         //Save image with filtered and unfiltered values. For demonstration
         cv::Mat image;
         image = cv::imread("images/papagei.jpg", CV_LOAD_IMAGE_COLOR);

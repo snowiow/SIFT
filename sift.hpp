@@ -15,6 +15,8 @@
 
 namespace sift {
     class Sift {
+        public:
+            const bool subpixel;
         private:
             const f32_t _sigma;
             const f32_t _k;
@@ -30,8 +32,10 @@ namespace sift {
              * @param with how many octaves should be calculated
              */
             explicit 
-                Sift(u16_t dogsPerEpoch = 3, u16_t octaves = 3, f32_t sigma = 1.6, f32_t k = std::sqrt(2)) : 
-                    _sigma(sigma), _k(k), _dogsPerEpoch(dogsPerEpoch), _octaves(octaves) {
+                Sift(u16_t dogsPerEpoch = 3, u16_t octaves = 3, f32_t sigma = 1.6, 
+                        f32_t k = std::sqrt(2), bool subpixel = false) : 
+                        subpixel(subpixel), _sigma(sigma), _k(k), _dogsPerEpoch(dogsPerEpoch), 
+                        _octaves(octaves) {
                     }
 
             /*

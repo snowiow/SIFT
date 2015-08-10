@@ -23,6 +23,7 @@ int main(int argc, char** argv) {
     std::string img_file;
     f32_t sigma, k; 
     u16_t octaves, dogsPerEpoch; 
+    bool subpixel;
 
     po::options_description desc("Options");
 
@@ -33,6 +34,7 @@ int main(int argc, char** argv) {
       ("k,k", po::value<f32_t>(&k)->default_value(std::sqrt(2)), "The constant which is calculated on sigma for the DoGs")
       ("octaves,o", po::value<u16_t>(&octaves)->default_value(4), "How many octaves should be calculated")
       ("dogsPerEpoch,d", po::value<u16_t>(&dogsPerEpoch)->default_value(3), "How many DoGs should be created per epoch")
+      ("subpixel,p", po::value<bool>(&subpixel)->default_value(false), "Starts with the doubled size of initial")
       ;  
     po::positional_options_description p; 
     p.add("img", 1);
@@ -50,13 +52,14 @@ int main(int argc, char** argv) {
         vigra::MultiArray<2, f32_t> img(vigra::Shape2(info.shape()));
         vigra::importImage(info, img);
 
-        sift::Sift sift(dogsPerEpoch, octaves, sigma, k);
+        sift::Sift sift(dogsPerEpoch, octaves, sigma, k, subpixel);
         std::vector<sift::InterestPoint> interestPoints = sift.calculate(img);
 
         auto image = cv::imread(img_file.c_str(), CV_LOAD_IMAGE_COLOR);
+        u16_t subpixel = sift.subpixel ? 2 : 1;
         for (const sift::InterestPoint& p : interestPoints) {
-            u16_t x = p.loc.x * std::pow(2, p.octave);
-            u16_t y = p.loc.y * std::pow(2, p.octave);
+            u16_t x = (p.loc.x * std::pow(2, p.octave)) / subpixel;
+            u16_t y = (p.loc.y * std::pow(2, p.octave)) / subpixel;
             cv::RotatedRect r(cv::Point2f(x, y), 
                               cv::Size(p.scale * 10, p.scale * 10),
                               *(p.orientation.begin()));

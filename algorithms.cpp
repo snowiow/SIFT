@@ -35,6 +35,20 @@ namespace sift {
             return out; // TODO by ref entgegen nehmen um copy zu vermeiden?
         }
 
+        const vigra::MultiArray<2, f32_t> increaseToNextLevel(const vigra::MultiArray<2, f32_t>& in,
+                f32_t sigma) {
+            // image size at current level
+            const vigra::Shape2 s(in.width() * 2, in.height() * 2);
+
+            // resize result image to appropriate size
+            vigra::MultiArray<2, f32_t> out(s);
+            // downsample smoothed image
+            resizeImageNoInterpolation(convolveWithGauss(in, sigma), out);
+
+            return out; // TODO by ref entgegen nehmen um copy zu vermeiden?
+        }
+
+
         const vigra::MultiArray<2, f32_t> dog(const vigra::MultiArray<2, f32_t>& lower, 
                 const vigra::MultiArray<2, f32_t>& higher) {
 

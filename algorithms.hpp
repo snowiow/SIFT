@@ -26,6 +26,14 @@ namespace sift {
         const vigra::MultiArray<2, f32_t> reduceToNextLevel(const vigra::MultiArray<2, f32_t>&, 
                 f32_t);
 
+        /*
+         * Resamples an image by 2
+         * @param in the input image
+         * @return the output image
+         */
+        const vigra::MultiArray<2, f32_t> increaseToNextLevel(const vigra::MultiArray<2, f32_t>&,
+                f32_t);
+
         /**
          * Calculates the Laplacian of Gaussian, which is the differnce between 2
          * images which were convolved with gaussian under usage of a constant K
