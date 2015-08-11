@@ -11,10 +11,10 @@ Mubarak Shah, which was held at the University of Central Florida.
 
 # Installation
 ## Requirements
-Vigra: A generic C++ library for image analysis(used for most of the calculations and image transformations)  
-OpenCV: Open Source Computer Vision library(used for visualisation of the found sift features)  
-Boost program_options: An easy to use layer for handling program arguments. Part of the Boost Library.  
-CMake: A cross-platform open-source make system.  
+- Vigra: A generic C++ library for image analysis(used for most of the calculations and image transformations)  
+- OpenCV: Open Source Computer Vision library(used for visualisation of the found sift features)  
+- Boost program_options: An easy to use layer for handling program arguments. Part of the Boost Library.  
+- CMake: A cross-platform open-source make system.  
 
 ## Installation Process
 With the needed libraries installed and the help of CMake, the installation is as easy as three commands.
