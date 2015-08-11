@@ -2,7 +2,6 @@
 - [Intro](#intro)
 - [Installation](#installation)
 - [User Guide](#user-guide)
-- [License](#license)
 
 # Intro
 This is a C++ implementation of the SIFT algorithm, which was originally presented by David G. Lowe
@@ -72,3 +71,17 @@ image 2: sigma * k ^ 1 = sigma * k
 image 3: sigma * k ^ 2 = ...  
 ```
   
+## -o [ --octaves ] arg (=4)
+The count of octaves to be calulated for the DoG pyramid. 
+
+## -d [ --dogsPerEpoch ] arg (=3)
+The count of DoGs created per epoch. Attention: these are the DoGs, there will be +4 Gaussians. 
+Minimum is 3, because we need at least one DoG with an upper and lower neighbour. To process further
+calculation steps of the algorithm.
+
+## -p [ --subpixel ] arg (=0)
+Sets the subpixel flag to on(1) or off(0). If it is set to on, the algorithm works on subpixel 
+accuracy. This is accomplished through doubling the size of the inital image and and set a Gaussian
+with sigma=1.0 onto it. Like mentioned in the paper, a base sigma of 0.5 is assumed in the original 
+image. Every further calulation is based on the doubled version. If this flag is set to off, the 
+algorithm starts with the initial image.
