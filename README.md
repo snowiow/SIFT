@@ -19,14 +19,14 @@ Mubarak Shah, which was held at the University of Central Florida.
 ## Installation Process
 With the needed libraries installed and the help of CMake, the installation is as easy as three commands.
 First download this repository by cloning or whatever way you prefer. Switch into the directory afterwards.
-Now you want to make an extra directory for your build files. For Example:  
+Now you want to make an extra directory for your buildfiles. For Example:  
 `mkdir build`  
 Switch into the created directory  
 `cd build`  
-Then you want to create your prefered make files with cmake. On all unix like systems this will be 
+Then you want to create your preferred make files with CMake. On all unix like systems this will be 
 GNU Makefiles.  
 `cmake -G "Unix Makefiles" ..`  
-For other supported build systems check the official documentation of cmake.  
+For other supported build systems check the official documentation of CMake.  
 The final step is to build your executable from the Makefiles  
 `make`  
 You should now have an executable named sift in your build directory. Please refer to the next section
@@ -62,7 +62,7 @@ The flag indicator is optional as seen in the first example of the user guide. T
 - ~1500x1500 px: ~11 minutes  
   
 ## -s [ --sigma ] arg (=1.60000002)
-sigma is the standard deviation of the gaussian curve. It is used extensively throughout the algorithm. For example when creating the Difference of Gaussian(DoG) pyramid. 
+sigma is the standard deviation of the Gaussian curve. It is used extensively throughout the algorithm. For example when creating the Difference of Gaussian(DoG) pyramid. 
 
 ## -k [ --k ] arg (=1.41421354)
 k is the constant, which is calculated onto sigma in each step of the Gaussian creation process. For example the process in the first octave of the algorithm looks like the following:  
@@ -72,7 +72,7 @@ image 3: sigma * k ^ 2 = ...
 ```
   
 ## -o [ --octaves ] arg (=4)
-The count of octaves to be calulated for the DoG pyramid. 
+The count of octaves to be calculated for the DoG pyramid. 
 
 ## -d [ --dogsPerEpoch ] arg (=3)
 The count of DoGs created per epoch. Attention: these are the DoGs, there will be +4 Gaussians. 
@@ -81,7 +81,7 @@ calculation steps of the algorithm.
 
 ## -p [ --subpixel ] arg (=0)
 Sets the subpixel flag to on(1) or off(0). If it is set to on, the algorithm works on subpixel 
-accuracy. This is accomplished through doubling the size of the inital image and and set a Gaussian
+accuracy. This is accomplished through doubling the size of the initial image and set a Gaussian
 with sigma=1.0 onto it. Like mentioned in the paper, a base sigma of 0.5 is assumed in the original 
-image. Every further calulation is based on the doubled version. If this flag is set to off, the 
+image. Every further calculation is based on the doubled version. If this flag is set to off, the 
 algorithm starts with the initial image.
