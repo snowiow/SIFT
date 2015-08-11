@@ -65,8 +65,9 @@ The flag indicator is optional as seen in the first example of the user guide. T
 sigma is the standard deviation of the Gaussian curve. It is used extensively throughout the algorithm. For example when creating the Difference of Gaussian(DoG) pyramid. 
 
 ## -k [ --k ] arg (=1.41421354)
-k is the constant, which is calculated onto sigma in each step of the Gaussian creation process. For example the process in the first octave of the algorithm looks like the following:  
-``` image 1: sigma
+k is the constant, which is calculated onto sigma in each step of the Gaussian creation process. For example the process in the first octave of the algorithm looks like the following:
+``` 
+image 1: sigma
 image 2: sigma * k ^ 1 = sigma * k
 image 3: sigma * k ^ 2 = ...
 ```
