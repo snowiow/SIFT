@@ -1,0 +1,57 @@
+
+\begin{DoxyItemize}
+\item \href{#intro}{\tt Intro}
+\item \href{#installation}{\tt Installation}
+\item \href{#user-guide}{\tt User Guide}
+\end{DoxyItemize}
+
+\section*{Intro}
+
+This is a C++ implementation of the S\+I\+F\+T algorithm, which was originally presented by David G. Lowe in the International Journal of Computer Vision 60 in January 2004. This algorithm is mostly implemented after the principles described in Lowe\textquotesingle{}s paper. Also some elements were taken from the lecture of Dr. Mubarak Shah, which was held at the University of Central Florida.
+
+\section*{Installation}
+
+\subsection*{Requirements}
+
+
+\begin{DoxyItemize}
+\item Vigra\+: A generic C++ library for image analysis(used for most of the calculations and image transformations)
+\item Open\+C\+V\+: Open Source Computer Vision library(used for visualisation of the found sift features)
+\item Boost program\+\_\+options\+: An easy to use layer for handling program arguments. Part of the Boost Library.
+\item C\+Make\+: A cross-\/platform open-\/source make system.
+\end{DoxyItemize}
+
+\subsection*{Installation Process}
+
+With the needed libraries installed and the help of C\+Make, the installation is as easy as three commands. First download this repository by cloning or whatever way you prefer. Switch into the directory afterwards. Now you want to make an extra directory for your buildfiles. For Example\+: {\ttfamily mkdir build} Switch into the created directory {\ttfamily cd build} Then you want to create your preferred make files with C\+Make. On all unix like systems this will be G\+N\+U Makefiles. {\ttfamily cmake -\/\+G \char`\"{}\+Unix Makefiles\char`\"{} ..} For other supported build systems check the official documentation of C\+Make. The final step is to build your executable from the Makefiles {\ttfamily make} You should now have an executable named sift in your build directory. Please refer to the next section to check how it is used and which possibilities you got, by executing it.
+
+\section*{User Guide}
+
+This is a C\+L\+I only application and there is no intention to make a G\+U\+I based application out of it. However the usage isn\textquotesingle{}t very complicated. The easiest way to start of is just throwing an image in and get a new image back, with the sift features drawn on it. The file is called {\ttfamily \mbox{[}file\mbox{]}\+\_\+features.\+png} and can be found in the same directory as the original file. The command to produce this file is {\ttfamily ./sift path/to/file.\+jpg} But there are many possible parameters on which you can screw the values. The following list shows the possibilities ```\+Options\+: --help Print help message -\/i \mbox{[} --img \mbox{]} arg The image on which sift will be executed -\/s \mbox{[} --sigma \mbox{]} arg (=1.\+60000002) The sigma value of the Gaussian calculations -\/k \mbox{[} --k \mbox{]} arg (=1.\+41421354) The constant which is calculated on sigma for the Do\+Gs -\/o \mbox{[} --octaves \mbox{]} arg (=4) How many octaves should be calculated -\/d \mbox{[} --dogs\+Per\+Epoch \mbox{]} arg (=3) How many Do\+Gs should be created per epoch -\/p \mbox{[} --subpixel \mbox{]} arg (=0) Starts with the doubled size of initial ``` This overview can also be called by {\ttfamily ./sift -\/-\/help} The first flag is the shorthand and can generally be written by {\ttfamily ./sift path/to/file.\+jpg -\/\mbox{[}shorthand\mbox{]} \mbox{[}value\mbox{]}} The second value inside the square brackets is the longhand and may be more readable, but it\textquotesingle{}s also more typing. The general theme looks like this {\ttfamily ./sift path/to/file.\+jpg -\/-\/\mbox{[}longhand\mbox{]}=\mbox{[}value\mbox{]}} following after is the default value, which is set, if no argument is given by the user. These default values are based on the studies of David Lowe\textquotesingle{}s paper and seem to give the most stable results overall. The following chapters cover every flag in detail \subsection*{-\/i \mbox{[} --img \mbox{]} arg}
+
+The flag indicator is optional as seen in the first example of the user guide. This is also the only possible option which can be handled without a flag indicator. It takes an image file(tested\+: jpg, png) in R\+G\+B or Greyscale. Currently the algorithm gets slower by the size of the image dramatically. A small list with different image sizes shows the calculation time on my P\+C(i7 v\+Pro)
+\begin{DoxyItemize}
+\item $\sim$300x300 px\+: $\sim$0.7 seconds
+\item $\sim$600x600 px\+: $\sim$15 seconds
+\item $\sim$1500x1500 px\+: $\sim$11 minutes
+\end{DoxyItemize}
+
+\subsection*{-\/s \mbox{[} --sigma \mbox{]} arg (=1.\+60000002)}
+
+sigma is the standard deviation of the Gaussian curve. It is used extensively throughout the algorithm. For example when creating the Difference of Gaussian(\+Do\+G) pyramid.
+
+\subsection*{-\/k \mbox{[} --k \mbox{]} arg (=1.\+41421354)}
+
+k is the constant, which is calculated onto sigma in each step of the Gaussian creation process. For example the process in the first octave of the algorithm looks like the following\+: ``` image 1\+: sigma image 2\+: sigma $\ast$ k $^\wedge$ 1 = sigma $\ast$ k image 3\+: sigma $\ast$ k $^\wedge$ 2 = ... ```
+
+\subsection*{-\/o \mbox{[} --octaves \mbox{]} arg (=4)}
+
+The count of octaves to be calculated for the Do\+G pyramid.
+
+\subsection*{-\/d \mbox{[} --dogs\+Per\+Epoch \mbox{]} arg (=3)}
+
+The count of Do\+Gs created per epoch. Attention\+: these are the Do\+Gs, there will be +4 Gaussians. Minimum is 3, because we need at least one Do\+G with an upper and lower neighbour. To process further calculation steps of the algorithm.
+
+\subsection*{-\/p \mbox{[} --subpixel \mbox{]} arg (=0)}
+
+Sets the subpixel flag to on(1) or off(0). If it is set to on, the algorithm works on subpixel accuracy. This is accomplished through doubling the size of the initial image and set a Gaussian with sigma=1.\+0 onto it. Like mentioned in the paper, a base sigma of 0.\+5 is assumed in the original image. Every further calculation is based on the doubled version. If this flag is set to off, the algorithm starts with the initial image. 

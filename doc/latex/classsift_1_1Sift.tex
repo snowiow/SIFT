@@ -1,0 +1,205 @@
+\hypertarget{classsift_1_1Sift}{}\section{sift\+:\+:Sift Class Reference}
+\label{classsift_1_1Sift}\index{sift\+::\+Sift@{sift\+::\+Sift}}
+
+
+{\ttfamily \#include $<$sift.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classsift_1_1Sift_a782dc76e2fcca6e04cd3cb2398e06eb0}{Sift} (\hyperlink{types_8hpp_a4f53bd979bf45b1ce27e5f43e3a0d33b}{u16\+\_\+t} dogs\+Per\+Epoch=3, \hyperlink{types_8hpp_a4f53bd979bf45b1ce27e5f43e3a0d33b}{u16\+\_\+t} octaves=3, \hyperlink{types_8hpp_a37279f6a792de218cef11dff445d532a}{f32\+\_\+t} sigma=1.\+6, \hyperlink{types_8hpp_a37279f6a792de218cef11dff445d532a}{f32\+\_\+t} k=std\+::sqrt(2), bool \hyperlink{classsift_1_1Sift_ab083661626a1f1f50ceafaf3134f573d}{subpixel}=false)
+\item 
+std\+::vector$<$ \hyperlink{classsift_1_1InterestPoint}{Interest\+Point} $>$ \hyperlink{classsift_1_1Sift_a55e96b5f3bf9e340633aa874dbc18efe}{calculate} (vigra\+::\+Multi\+Array$<$ 2, \hyperlink{types_8hpp_a37279f6a792de218cef11dff445d532a}{f32\+\_\+t} $>$ \&)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const bool \hyperlink{classsift_1_1Sift_ab083661626a1f1f50ceafaf3134f573d}{subpixel}
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classsift_1_1Sift_aafccbb67a8e541bdd6219325d2234d27}{\+\_\+eliminate\+Edge\+Responses} (std\+::vector$<$ \hyperlink{classsift_1_1InterestPoint}{Interest\+Point} $>$ \&, const \hyperlink{classsift_1_1Matrix}{Matrix}$<$ \hyperlink{classsift_1_1OctaveElem}{Octave\+Elem} $>$ \&) const 
+\item 
+const std\+::set$<$ \hyperlink{types_8hpp_a37279f6a792de218cef11dff445d532a}{f32\+\_\+t} $>$ \hyperlink{classsift_1_1Sift_a982fd0b562f9c648d14e7f373d2a07ae}{\+\_\+find\+Peaks} (const std\+::array$<$ \hyperlink{types_8hpp_a37279f6a792de218cef11dff445d532a}{f32\+\_\+t}, 36 $>$ \&) const 
+\item 
+void \hyperlink{classsift_1_1Sift_a692af8b13be66a3cea929035d2717b72}{\+\_\+orientation\+Assignment} (std\+::vector$<$ \hyperlink{classsift_1_1InterestPoint}{Interest\+Point} $>$ \&)
+\item 
+const \hyperlink{classsift_1_1OctaveElem}{Octave\+Elem} \& \hyperlink{classsift_1_1Sift_a72562c5d59baf166d32def09b92bd41f}{\+\_\+find\+Nearest\+Gaussian} (\hyperlink{types_8hpp_a37279f6a792de218cef11dff445d532a}{f32\+\_\+t})
+\item 
+void \hyperlink{classsift_1_1Sift_aecb428dabc93fec06f5a44058fa5e62a}{\+\_\+find\+Scale\+Space\+Extrema} (const \hyperlink{classsift_1_1Matrix}{Matrix}$<$ \hyperlink{classsift_1_1OctaveElem}{Octave\+Elem} $>$ \&, std\+::vector$<$ \hyperlink{classsift_1_1InterestPoint}{Interest\+Point} $>$ \&) const 
+\item 
+const \hyperlink{classsift_1_1Matrix}{Matrix}$<$ \hyperlink{classsift_1_1OctaveElem}{Octave\+Elem} $>$ \hyperlink{classsift_1_1Sift_aa7212080cba809a25cad7ef625febf7a}{\+\_\+create\+D\+O\+Gs} (vigra\+::\+Multi\+Array$<$ 2, \hyperlink{types_8hpp_a37279f6a792de218cef11dff445d532a}{f32\+\_\+t} $>$ \&)
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{types_8hpp_a37279f6a792de218cef11dff445d532a}{f32\+\_\+t} \hyperlink{classsift_1_1Sift_a29f9dbb5de3aaed524aebaa6cddc4d50}{\+\_\+sigma}
+\item 
+const \hyperlink{types_8hpp_a37279f6a792de218cef11dff445d532a}{f32\+\_\+t} \hyperlink{classsift_1_1Sift_ae1b7ec852e3b6a0fa171b6ad1a5da300}{\+\_\+k}
+\item 
+const \hyperlink{types_8hpp_a4f53bd979bf45b1ce27e5f43e3a0d33b}{u16\+\_\+t} \hyperlink{classsift_1_1Sift_af19650a2ebf77ebeab8971275d74e3d2}{\+\_\+dogs\+Per\+Epoch}
+\item 
+const \hyperlink{types_8hpp_a4f53bd979bf45b1ce27e5f43e3a0d33b}{u16\+\_\+t} \hyperlink{classsift_1_1Sift_abfc7b5cabd32b25b0eba8d830477bab6}{\+\_\+octaves}
+\item 
+\hyperlink{classsift_1_1Matrix}{Matrix}$<$ \hyperlink{classsift_1_1OctaveElem}{Octave\+Elem} $>$ \hyperlink{classsift_1_1Sift_ae32f5839b1a8b29eb4196953175ed61b}{\+\_\+gaussians}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classsift_1_1Sift_a782dc76e2fcca6e04cd3cb2398e06eb0}{}\index{sift\+::\+Sift@{sift\+::\+Sift}!Sift@{Sift}}
+\index{Sift@{Sift}!sift\+::\+Sift@{sift\+::\+Sift}}
+\subsubsection[{Sift}]{\setlength{\rightskip}{0pt plus 5cm}sift\+::\+Sift\+::\+Sift (
+\begin{DoxyParamCaption}
+\item[{{\bf u16\+\_\+t}}]{dogs\+Per\+Epoch = {\ttfamily 3}, }
+\item[{{\bf u16\+\_\+t}}]{octaves = {\ttfamily 3}, }
+\item[{{\bf f32\+\_\+t}}]{sigma = {\ttfamily 1.6}, }
+\item[{{\bf f32\+\_\+t}}]{k = {\ttfamily std\+:\+:sqrt(2)}, }
+\item[{bool}]{subpixel = {\ttfamily false}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{classsift_1_1Sift_a782dc76e2fcca6e04cd3cb2398e06eb0}
+
+\begin{DoxyParams}{Parameters}
+{\em sigma} & standard value 1.\+6 \\
+\hline
+{\em k} & standard value square root of 2 \\
+\hline
+{\em dogs\+Per\+Epoch} & How many D\+O\+Gs should be created per octave \\
+\hline
+{\em octaves} & how many octaves should be calculated \\
+\hline
+{\em subpixel} & wether the calculation is based on subpixel basis or not \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classsift_1_1Sift_aa7212080cba809a25cad7ef625febf7a}{}\index{sift\+::\+Sift@{sift\+::\+Sift}!\+\_\+create\+D\+O\+Gs@{\+\_\+create\+D\+O\+Gs}}
+\index{\+\_\+create\+D\+O\+Gs@{\+\_\+create\+D\+O\+Gs}!sift\+::\+Sift@{sift\+::\+Sift}}
+\subsubsection[{\+\_\+create\+D\+O\+Gs}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Matrix}$<$ {\bf Octave\+Elem} $>$ sift\+::\+Sift\+::\+\_\+create\+D\+O\+Gs (
+\begin{DoxyParamCaption}
+\item[{vigra\+::\+Multi\+Array$<$ 2, {\bf f32\+\_\+t} $>$ \&}]{img}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}\label{classsift_1_1Sift_aa7212080cba809a25cad7ef625febf7a}
+Creates the Difference of Gaussians for the count of octaves. 
+\begin{DoxyParams}{Parameters}
+{\em img} & the given img \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a matrix with the octaves as width and octave elements as height, which contain the Do\+Gs 
+\end{DoxyReturn}
+\hypertarget{classsift_1_1Sift_aafccbb67a8e541bdd6219325d2234d27}{}\index{sift\+::\+Sift@{sift\+::\+Sift}!\+\_\+eliminate\+Edge\+Responses@{\+\_\+eliminate\+Edge\+Responses}}
+\index{\+\_\+eliminate\+Edge\+Responses@{\+\_\+eliminate\+Edge\+Responses}!sift\+::\+Sift@{sift\+::\+Sift}}
+\subsubsection[{\+\_\+eliminate\+Edge\+Responses}]{\setlength{\rightskip}{0pt plus 5cm}void sift\+::\+Sift\+::\+\_\+eliminate\+Edge\+Responses (
+\begin{DoxyParamCaption}
+\item[{std\+::vector$<$ {\bf Interest\+Point} $>$ \&}]{interest\+Points, }
+\item[{const {\bf Matrix}$<$ {\bf Octave\+Elem} $>$ \&}]{dogs}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [private]}}\label{classsift_1_1Sift_aafccbb67a8e541bdd6219325d2234d27}
+Keypoint Location using Taylor expansion to filter the weak interest points. Those interest points, which get filtered get their filtered flag set to true 
+\begin{DoxyParams}{Parameters}
+{\em interestpoints} & the vector with interestpoints \\
+\hline
+{\em dogs} & the dogs which were calculated in an earlier step \\
+\hline
+\end{DoxyParams}
+\hypertarget{classsift_1_1Sift_a72562c5d59baf166d32def09b92bd41f}{}\index{sift\+::\+Sift@{sift\+::\+Sift}!\+\_\+find\+Nearest\+Gaussian@{\+\_\+find\+Nearest\+Gaussian}}
+\index{\+\_\+find\+Nearest\+Gaussian@{\+\_\+find\+Nearest\+Gaussian}!sift\+::\+Sift@{sift\+::\+Sift}}
+\subsubsection[{\+\_\+find\+Nearest\+Gaussian}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Octave\+Elem} \& sift\+::\+Sift\+::\+\_\+find\+Nearest\+Gaussian (
+\begin{DoxyParamCaption}
+\item[{{\bf f32\+\_\+t}}]{scale}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}\label{classsift_1_1Sift_a72562c5d59baf166d32def09b92bd41f}
+Finds the nearest gaussian, based on the scale given 
+\begin{DoxyParams}{Parameters}
+{\em scale} & the scale \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a reference to the nearest gaussian 
+\end{DoxyReturn}
+\hypertarget{classsift_1_1Sift_a982fd0b562f9c648d14e7f373d2a07ae}{}\index{sift\+::\+Sift@{sift\+::\+Sift}!\+\_\+find\+Peaks@{\+\_\+find\+Peaks}}
+\index{\+\_\+find\+Peaks@{\+\_\+find\+Peaks}!sift\+::\+Sift@{sift\+::\+Sift}}
+\subsubsection[{\+\_\+find\+Peaks}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::set$<$ {\bf f32\+\_\+t} $>$ sift\+::\+Sift\+::\+\_\+find\+Peaks (
+\begin{DoxyParamCaption}
+\item[{const std\+::array$<$ {\bf f32\+\_\+t}, 36 $>$ \&}]{histo}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [private]}}\label{classsift_1_1Sift_a982fd0b562f9c648d14e7f373d2a07ae}
+Searches for the highest Element in the orientation histogram and searches for other orientations within a 80\% range. Everything outside the range will be set to -\/1. 
+\begin{DoxyParams}{Parameters}
+{\em histo} & The given histogram on which the peak calculation finds place \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+an array with 36 elements, standing for the 36 bins of orientation possibilities 
+\end{DoxyReturn}
+\hypertarget{classsift_1_1Sift_aecb428dabc93fec06f5a44058fa5e62a}{}\index{sift\+::\+Sift@{sift\+::\+Sift}!\+\_\+find\+Scale\+Space\+Extrema@{\+\_\+find\+Scale\+Space\+Extrema}}
+\index{\+\_\+find\+Scale\+Space\+Extrema@{\+\_\+find\+Scale\+Space\+Extrema}!sift\+::\+Sift@{sift\+::\+Sift}}
+\subsubsection[{\+\_\+find\+Scale\+Space\+Extrema}]{\setlength{\rightskip}{0pt plus 5cm}void sift\+::\+Sift\+::\+\_\+find\+Scale\+Space\+Extrema (
+\begin{DoxyParamCaption}
+\item[{const {\bf Matrix}$<$ {\bf Octave\+Elem} $>$ \&}]{dogs, }
+\item[{std\+::vector$<$ {\bf Interest\+Point} $>$ \&}]{interest\+Points}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [private]}}\label{classsift_1_1Sift_aecb428dabc93fec06f5a44058fa5e62a}
+Finds the Scale space extrema aka Interest\+Points 
+\begin{DoxyParams}{Parameters}
+{\em dogs} & a matrix of D\+O\+Gs \\
+\hline
+{\em interest\+Points} & a vector which holds interest\+Points. Will be filled with the found interest points \\
+\hline
+\end{DoxyParams}
+\hypertarget{classsift_1_1Sift_a692af8b13be66a3cea929035d2717b72}{}\index{sift\+::\+Sift@{sift\+::\+Sift}!\+\_\+orientation\+Assignment@{\+\_\+orientation\+Assignment}}
+\index{\+\_\+orientation\+Assignment@{\+\_\+orientation\+Assignment}!sift\+::\+Sift@{sift\+::\+Sift}}
+\subsubsection[{\+\_\+orientation\+Assignment}]{\setlength{\rightskip}{0pt plus 5cm}void sift\+::\+Sift\+::\+\_\+orientation\+Assignment (
+\begin{DoxyParamCaption}
+\item[{std\+::vector$<$ {\bf Interest\+Point} $>$ \&}]{interest\+Points}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}\label{classsift_1_1Sift_a692af8b13be66a3cea929035d2717b72}
+Calculates the orientation assignments for the interest\+Points 
+\begin{DoxyParams}{Parameters}
+{\em interest\+Points} & the found interest\+Points for whom the orientation should be calulated \\
+\hline
+\end{DoxyParams}
+\hypertarget{classsift_1_1Sift_a55e96b5f3bf9e340633aa874dbc18efe}{}\index{sift\+::\+Sift@{sift\+::\+Sift}!calculate@{calculate}}
+\index{calculate@{calculate}!sift\+::\+Sift@{sift\+::\+Sift}}
+\subsubsection[{calculate}]{\setlength{\rightskip}{0pt plus 5cm}std\+::vector$<$ {\bf Interest\+Point} $>$ sift\+::\+Sift\+::calculate (
+\begin{DoxyParamCaption}
+\item[{vigra\+::\+Multi\+Array$<$ 2, {\bf f32\+\_\+t} $>$ \&}]{img}
+\end{DoxyParamCaption}
+)}\label{classsift_1_1Sift_a55e96b5f3bf9e340633aa874dbc18efe}
+Processes the whole \hyperlink{classsift_1_1Sift}{Sift} calculation 
+\begin{DoxyParams}{Parameters}
+{\em img} & the given image \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a vector containing the filtered sift features 
+\end{DoxyReturn}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classsift_1_1Sift_af19650a2ebf77ebeab8971275d74e3d2}{}\index{sift\+::\+Sift@{sift\+::\+Sift}!\+\_\+dogs\+Per\+Epoch@{\+\_\+dogs\+Per\+Epoch}}
+\index{\+\_\+dogs\+Per\+Epoch@{\+\_\+dogs\+Per\+Epoch}!sift\+::\+Sift@{sift\+::\+Sift}}
+\subsubsection[{\+\_\+dogs\+Per\+Epoch}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf u16\+\_\+t} sift\+::\+Sift\+::\+\_\+dogs\+Per\+Epoch\hspace{0.3cm}{\ttfamily [private]}}\label{classsift_1_1Sift_af19650a2ebf77ebeab8971275d74e3d2}
+How many Do\+Gs will be calculated per epoch. Minimum is 3. \hypertarget{classsift_1_1Sift_ae32f5839b1a8b29eb4196953175ed61b}{}\index{sift\+::\+Sift@{sift\+::\+Sift}!\+\_\+gaussians@{\+\_\+gaussians}}
+\index{\+\_\+gaussians@{\+\_\+gaussians}!sift\+::\+Sift@{sift\+::\+Sift}}
+\subsubsection[{\+\_\+gaussians}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Matrix}$<${\bf Octave\+Elem}$>$ sift\+::\+Sift\+::\+\_\+gaussians\hspace{0.3cm}{\ttfamily [private]}}\label{classsift_1_1Sift_ae32f5839b1a8b29eb4196953175ed61b}
+The Gaussians calculated during the algorithm. \hypertarget{classsift_1_1Sift_ae1b7ec852e3b6a0fa171b6ad1a5da300}{}\index{sift\+::\+Sift@{sift\+::\+Sift}!\+\_\+k@{\+\_\+k}}
+\index{\+\_\+k@{\+\_\+k}!sift\+::\+Sift@{sift\+::\+Sift}}
+\subsubsection[{\+\_\+k}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf f32\+\_\+t} sift\+::\+Sift\+::\+\_\+k\hspace{0.3cm}{\ttfamily [private]}}\label{classsift_1_1Sift_ae1b7ec852e3b6a0fa171b6ad1a5da300}
+The constant which is multiplied with sigma to get the Gaussians and Do\+Gs. \hypertarget{classsift_1_1Sift_abfc7b5cabd32b25b0eba8d830477bab6}{}\index{sift\+::\+Sift@{sift\+::\+Sift}!\+\_\+octaves@{\+\_\+octaves}}
+\index{\+\_\+octaves@{\+\_\+octaves}!sift\+::\+Sift@{sift\+::\+Sift}}
+\subsubsection[{\+\_\+octaves}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf u16\+\_\+t} sift\+::\+Sift\+::\+\_\+octaves\hspace{0.3cm}{\ttfamily [private]}}\label{classsift_1_1Sift_abfc7b5cabd32b25b0eba8d830477bab6}
+How many octaves of Do\+Gs will be calculated. \hypertarget{classsift_1_1Sift_a29f9dbb5de3aaed524aebaa6cddc4d50}{}\index{sift\+::\+Sift@{sift\+::\+Sift}!\+\_\+sigma@{\+\_\+sigma}}
+\index{\+\_\+sigma@{\+\_\+sigma}!sift\+::\+Sift@{sift\+::\+Sift}}
+\subsubsection[{\+\_\+sigma}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf f32\+\_\+t} sift\+::\+Sift\+::\+\_\+sigma\hspace{0.3cm}{\ttfamily [private]}}\label{classsift_1_1Sift_a29f9dbb5de3aaed524aebaa6cddc4d50}
+The sigma value is used for the standard derivation of the Gaussian calculations. \hypertarget{classsift_1_1Sift_ab083661626a1f1f50ceafaf3134f573d}{}\index{sift\+::\+Sift@{sift\+::\+Sift}!subpixel@{subpixel}}
+\index{subpixel@{subpixel}!sift\+::\+Sift@{sift\+::\+Sift}}
+\subsubsection[{subpixel}]{\setlength{\rightskip}{0pt plus 5cm}const bool sift\+::\+Sift\+::subpixel}\label{classsift_1_1Sift_ab083661626a1f1f50ceafaf3134f573d}
+Wether to process the algorithm based on subpixel basis or not 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{sift_8hpp}{sift.\+hpp}\item 
+\hyperlink{sift_8cpp}{sift.\+cpp}\end{DoxyCompactItemize}

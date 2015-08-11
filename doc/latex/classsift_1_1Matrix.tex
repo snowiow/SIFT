@@ -1,0 +1,156 @@
+\hypertarget{classsift_1_1Matrix}{}\section{sift\+:\+:Matrix$<$ T $>$ Class Template Reference}
+\label{classsift_1_1Matrix}\index{sift\+::\+Matrix$<$ T $>$@{sift\+::\+Matrix$<$ T $>$}}
+
+
+{\ttfamily \#include $<$matrix.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classsift_1_1Matrix_ade60ce7eb94a47ea781236541e6dac6a}{Matrix} ()=default
+\item 
+\hyperlink{classsift_1_1Matrix_a8620e2f90c85d3eb1f929043be06af89}{Matrix} (\hyperlink{types_8hpp_a4f53bd979bf45b1ce27e5f43e3a0d33b}{u16\+\_\+t} \hyperlink{classsift_1_1Matrix_a89f2de95ccd41c087fe100f102082afa}{width}, \hyperlink{types_8hpp_a4f53bd979bf45b1ce27e5f43e3a0d33b}{u16\+\_\+t} \hyperlink{classsift_1_1Matrix_ae8458afb8d81cd4dc54ee7cf468656e1}{height}, const T \&def=T())
+\item 
+\hyperlink{types_8hpp_a4f53bd979bf45b1ce27e5f43e3a0d33b}{u16\+\_\+t} \hyperlink{classsift_1_1Matrix_a89f2de95ccd41c087fe100f102082afa}{width} () const 
+\item 
+\hyperlink{types_8hpp_a4f53bd979bf45b1ce27e5f43e3a0d33b}{u16\+\_\+t} \hyperlink{classsift_1_1Matrix_ae8458afb8d81cd4dc54ee7cf468656e1}{height} () const 
+\item 
+T \& \hyperlink{classsift_1_1Matrix_a9485647c725a8d1763099e632c01fa1d}{operator\mbox{[}$\,$\mbox{]}} (const \hyperlink{classsift_1_1Point}{Point}$<$ \hyperlink{types_8hpp_a4f53bd979bf45b1ce27e5f43e3a0d33b}{u16\+\_\+t}, \hyperlink{types_8hpp_a4f53bd979bf45b1ce27e5f43e3a0d33b}{u16\+\_\+t} $>$ \&vec)
+\item 
+const T \& \hyperlink{classsift_1_1Matrix_a272099b4f7781c96363484fb35dca216}{operator\mbox{[}$\,$\mbox{]}} (const \hyperlink{classsift_1_1Point}{Point}$<$ \hyperlink{types_8hpp_a4f53bd979bf45b1ce27e5f43e3a0d33b}{u16\+\_\+t}, \hyperlink{types_8hpp_a4f53bd979bf45b1ce27e5f43e3a0d33b}{u16\+\_\+t} $>$ \&vec) const 
+\item 
+T \& \hyperlink{classsift_1_1Matrix_ad5aedd1c3fa69a2964fbbec24c4f183d}{operator()} (\hyperlink{types_8hpp_a4f53bd979bf45b1ce27e5f43e3a0d33b}{u16\+\_\+t} x, \hyperlink{types_8hpp_a4f53bd979bf45b1ce27e5f43e3a0d33b}{u16\+\_\+t} y)
+\item 
+const T \& \hyperlink{classsift_1_1Matrix_a433507187c9403136c2e5babc0cc6c66}{operator()} (\hyperlink{types_8hpp_a4f53bd979bf45b1ce27e5f43e3a0d33b}{u16\+\_\+t} x, \hyperlink{types_8hpp_a4f53bd979bf45b1ce27e5f43e3a0d33b}{u16\+\_\+t} y) const 
+\item 
+T $\ast$ \hyperlink{classsift_1_1Matrix_ad86f15c5d8e9f1958e5c014e36385c67}{begin} ()
+\item 
+T $\ast$ \hyperlink{classsift_1_1Matrix_ab39098a1b58c287c927fc8bea6d417a0}{end} ()
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{types_8hpp_a4f53bd979bf45b1ce27e5f43e3a0d33b}{u16\+\_\+t} \hyperlink{classsift_1_1Matrix_a3bc8d66f33931caf24217206bcb250bc}{\+\_\+width}
+\item 
+\hyperlink{types_8hpp_a4f53bd979bf45b1ce27e5f43e3a0d33b}{u16\+\_\+t} \hyperlink{classsift_1_1Matrix_abd4a9f6560702c72c3971abbd1792a82}{\+\_\+height}
+\item 
+std\+::shared\+\_\+ptr$<$ T $>$ \hyperlink{classsift_1_1Matrix_adbf96fd27d6b5b6c82a9469f2eefe342}{\+\_\+data}
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+std\+::ostream \& \hyperlink{classsift_1_1Matrix_a798ab5e87d069ed4723fb1ea051eb9d6}{operator$<$$<$} (std\+::ostream \&out, \hyperlink{classsift_1_1Matrix}{Matrix} \&m)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$class sift\+::\+Matrix$<$ T $>$}
+
+A class which allows 2-\/dimensional access, but saves the data in an one-\/dimensional data structure 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classsift_1_1Matrix_ade60ce7eb94a47ea781236541e6dac6a}{}\index{sift\+::\+Matrix@{sift\+::\+Matrix}!Matrix@{Matrix}}
+\index{Matrix@{Matrix}!sift\+::\+Matrix@{sift\+::\+Matrix}}
+\subsubsection[{Matrix}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf sift\+::\+Matrix}$<$ T $>$\+::{\bf Matrix} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [default]}}\label{classsift_1_1Matrix_ade60ce7eb94a47ea781236541e6dac6a}
+\hypertarget{classsift_1_1Matrix_a8620e2f90c85d3eb1f929043be06af89}{}\index{sift\+::\+Matrix@{sift\+::\+Matrix}!Matrix@{Matrix}}
+\index{Matrix@{Matrix}!sift\+::\+Matrix@{sift\+::\+Matrix}}
+\subsubsection[{Matrix}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf sift\+::\+Matrix}$<$ T $>$\+::{\bf Matrix} (
+\begin{DoxyParamCaption}
+\item[{{\bf u16\+\_\+t}}]{width, }
+\item[{{\bf u16\+\_\+t}}]{height, }
+\item[{const T \&}]{def = {\ttfamily T()}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}\label{classsift_1_1Matrix_a8620e2f90c85d3eb1f929043be06af89}
+allocates a data structure with the given dimensions and sets everything to a default value 
+
+\subsection{Member Function Documentation}
+\hypertarget{classsift_1_1Matrix_ad86f15c5d8e9f1958e5c014e36385c67}{}\index{sift\+::\+Matrix@{sift\+::\+Matrix}!begin@{begin}}
+\index{begin@{begin}!sift\+::\+Matrix@{sift\+::\+Matrix}}
+\subsubsection[{begin}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ T$\ast$ {\bf sift\+::\+Matrix}$<$ T $>$\+::begin (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classsift_1_1Matrix_ad86f15c5d8e9f1958e5c014e36385c67}
+\hypertarget{classsift_1_1Matrix_ab39098a1b58c287c927fc8bea6d417a0}{}\index{sift\+::\+Matrix@{sift\+::\+Matrix}!end@{end}}
+\index{end@{end}!sift\+::\+Matrix@{sift\+::\+Matrix}}
+\subsubsection[{end}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ T$\ast$ {\bf sift\+::\+Matrix}$<$ T $>$\+::end (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classsift_1_1Matrix_ab39098a1b58c287c927fc8bea6d417a0}
+\hypertarget{classsift_1_1Matrix_ae8458afb8d81cd4dc54ee7cf468656e1}{}\index{sift\+::\+Matrix@{sift\+::\+Matrix}!height@{height}}
+\index{height@{height}!sift\+::\+Matrix@{sift\+::\+Matrix}}
+\subsubsection[{height}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf u16\+\_\+t} {\bf sift\+::\+Matrix}$<$ T $>$\+::height (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classsift_1_1Matrix_ae8458afb8d81cd4dc54ee7cf468656e1}
+\hypertarget{classsift_1_1Matrix_ad5aedd1c3fa69a2964fbbec24c4f183d}{}\index{sift\+::\+Matrix@{sift\+::\+Matrix}!operator()@{operator()}}
+\index{operator()@{operator()}!sift\+::\+Matrix@{sift\+::\+Matrix}}
+\subsubsection[{operator()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ T\& {\bf sift\+::\+Matrix}$<$ T $>$\+::operator() (
+\begin{DoxyParamCaption}
+\item[{{\bf u16\+\_\+t}}]{x, }
+\item[{{\bf u16\+\_\+t}}]{y}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classsift_1_1Matrix_ad5aedd1c3fa69a2964fbbec24c4f183d}
+\hypertarget{classsift_1_1Matrix_a433507187c9403136c2e5babc0cc6c66}{}\index{sift\+::\+Matrix@{sift\+::\+Matrix}!operator()@{operator()}}
+\index{operator()@{operator()}!sift\+::\+Matrix@{sift\+::\+Matrix}}
+\subsubsection[{operator()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ const T\& {\bf sift\+::\+Matrix}$<$ T $>$\+::operator() (
+\begin{DoxyParamCaption}
+\item[{{\bf u16\+\_\+t}}]{x, }
+\item[{{\bf u16\+\_\+t}}]{y}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classsift_1_1Matrix_a433507187c9403136c2e5babc0cc6c66}
+\hypertarget{classsift_1_1Matrix_a9485647c725a8d1763099e632c01fa1d}{}\index{sift\+::\+Matrix@{sift\+::\+Matrix}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
+\index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!sift\+::\+Matrix@{sift\+::\+Matrix}}
+\subsubsection[{operator[]}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ T\& {\bf sift\+::\+Matrix}$<$ T $>$\+::operator\mbox{[}$\,$\mbox{]} (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point}$<$ {\bf u16\+\_\+t}, {\bf u16\+\_\+t} $>$ \&}]{vec}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classsift_1_1Matrix_a9485647c725a8d1763099e632c01fa1d}
+\hypertarget{classsift_1_1Matrix_a272099b4f7781c96363484fb35dca216}{}\index{sift\+::\+Matrix@{sift\+::\+Matrix}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
+\index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!sift\+::\+Matrix@{sift\+::\+Matrix}}
+\subsubsection[{operator[]}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ const T\& {\bf sift\+::\+Matrix}$<$ T $>$\+::operator\mbox{[}$\,$\mbox{]} (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point}$<$ {\bf u16\+\_\+t}, {\bf u16\+\_\+t} $>$ \&}]{vec}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classsift_1_1Matrix_a272099b4f7781c96363484fb35dca216}
+\hypertarget{classsift_1_1Matrix_a89f2de95ccd41c087fe100f102082afa}{}\index{sift\+::\+Matrix@{sift\+::\+Matrix}!width@{width}}
+\index{width@{width}!sift\+::\+Matrix@{sift\+::\+Matrix}}
+\subsubsection[{width}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf u16\+\_\+t} {\bf sift\+::\+Matrix}$<$ T $>$\+::width (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\label{classsift_1_1Matrix_a89f2de95ccd41c087fe100f102082afa}
+
+
+\subsection{Friends And Related Function Documentation}
+\hypertarget{classsift_1_1Matrix_a798ab5e87d069ed4723fb1ea051eb9d6}{}\index{sift\+::\+Matrix@{sift\+::\+Matrix}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!sift\+::\+Matrix@{sift\+::\+Matrix}}
+\subsubsection[{operator$<$$<$}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ std\+::ostream\& operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{std\+::ostream \&}]{out, }
+\item[{{\bf Matrix}$<$ T $>$ \&}]{m}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\label{classsift_1_1Matrix_a798ab5e87d069ed4723fb1ea051eb9d6}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classsift_1_1Matrix_adbf96fd27d6b5b6c82a9469f2eefe342}{}\index{sift\+::\+Matrix@{sift\+::\+Matrix}!\+\_\+data@{\+\_\+data}}
+\index{\+\_\+data@{\+\_\+data}!sift\+::\+Matrix@{sift\+::\+Matrix}}
+\subsubsection[{\+\_\+data}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ std\+::shared\+\_\+ptr$<$T$>$ {\bf sift\+::\+Matrix}$<$ T $>$\+::\+\_\+data\hspace{0.3cm}{\ttfamily [private]}}\label{classsift_1_1Matrix_adbf96fd27d6b5b6c82a9469f2eefe342}
+\hypertarget{classsift_1_1Matrix_abd4a9f6560702c72c3971abbd1792a82}{}\index{sift\+::\+Matrix@{sift\+::\+Matrix}!\+\_\+height@{\+\_\+height}}
+\index{\+\_\+height@{\+\_\+height}!sift\+::\+Matrix@{sift\+::\+Matrix}}
+\subsubsection[{\+\_\+height}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf u16\+\_\+t} {\bf sift\+::\+Matrix}$<$ T $>$\+::\+\_\+height\hspace{0.3cm}{\ttfamily [private]}}\label{classsift_1_1Matrix_abd4a9f6560702c72c3971abbd1792a82}
+\hypertarget{classsift_1_1Matrix_a3bc8d66f33931caf24217206bcb250bc}{}\index{sift\+::\+Matrix@{sift\+::\+Matrix}!\+\_\+width@{\+\_\+width}}
+\index{\+\_\+width@{\+\_\+width}!sift\+::\+Matrix@{sift\+::\+Matrix}}
+\subsubsection[{\+\_\+width}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf u16\+\_\+t} {\bf sift\+::\+Matrix}$<$ T $>$\+::\+\_\+width\hspace{0.3cm}{\ttfamily [private]}}\label{classsift_1_1Matrix_a3bc8d66f33931caf24217206bcb250bc}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\hyperlink{matrix_8hpp}{matrix.\+hpp}\end{DoxyCompactItemize}

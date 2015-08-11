@@ -12,21 +12,21 @@ namespace sift {
         /**
          * Convolves a given image with gaussian with a given sigma
          * @param input the input image which will be convolved
-         * @sigma the standard deviation for the gaussian
+         * @param sigma the standard deviation for the gaussian
          * @return blured image
          */
         const vigra::MultiArray<2, f32_t> convolveWithGauss(const vigra::MultiArray<2, f32_t>&, 
                 f32_t);
 
-        /*
+        /**
          * Resamples an image by 0.5
-         * @param in the input image
+         * @param img the input image
          * @return the output image
          */
         const vigra::MultiArray<2, f32_t> reduceToNextLevel(const vigra::MultiArray<2, f32_t>&, 
                 f32_t);
 
-        /*
+        /**
          * Resamples an image by 2
          * @param in the input image
          * @return the output image
@@ -35,16 +35,16 @@ namespace sift {
                 f32_t);
 
         /**
-         * Calculates the Laplacian of Gaussian, which is the differnce between 2
+         * Calculates the Difference of Gaussian, which is the differnce between 2
          * images which were convolved with gaussian under usage of a constant K
          * @param lower the image which lies lower in an octave
          * @param higher the image which lies higher in an octave
-         * @return the laplacian of gaussian image, which contains our interest points
+         * @return the difference of gaussian image, which contains our interest points
          */
         const vigra::MultiArray<2, f32_t> dog(const vigra::MultiArray<2, f32_t>&, 
                 const vigra::MultiArray<2, f32_t>&);
 
-        /*
+        /**
          * Calculates the first order derivative of the image, at the coordinates
          * @param img the image of which the first derivative is taken.
          * @param p the point at which the derivative is taken
@@ -52,7 +52,7 @@ namespace sift {
          */
         const vigra::Matrix<f32_t> foDerivative(const std::array<vigra::MultiArray<2, f32_t>, 3>&, const Point<u16_t, u16_t>&);
 
-        /*
+        /**
          * Calculates the second order derivative of the image, at the coordinates
          * @param img the image of which the second derivative is taken.
          * @param p the point at which the derivative is taken
@@ -79,7 +79,7 @@ namespace sift {
          */
         f32_t gradientOrientation(const vigra::MultiArray<2, f32_t>&, const Point<u16_t, u16_t>&);
 
-        /*
+        /**
          * Creates the orientation Histogram of a given
          * @param orientations The img of which the histogram is taken from. Needs to be computed by gradient 
          * orientations before

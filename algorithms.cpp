@@ -21,7 +21,7 @@ namespace sift {
             return result;
         }
 
-        const vigra::MultiArray<2, f32_t> reduceToNextLevel(const vigra::MultiArray<2, f32_t>& in, 
+        const vigra::MultiArray<2, f32_t> reduceToNextLevel(const vigra::MultiArray<2, f32_t>& img, 
                 f32_t sigma) {
 
             // image size at current level

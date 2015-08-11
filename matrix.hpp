@@ -14,6 +14,11 @@
 
 namespace sift {
     template <typename T>
+    
+        /**
+         * A class which allows 2-dimensional access, but saves the data in an one-dimensional data
+         * structure
+         */
         class Matrix {
             private:
                 u16_t _width;
@@ -24,6 +29,10 @@ namespace sift {
             public:
                 Matrix() = default;
 
+                /**
+                 * allocates a data structure with the given dimensions and sets everything to a 
+                 * default value
+                 */
                 explicit Matrix(u16_t width, u16_t height, const T& def = T()) : _height(height), _width(width) {
                     assert(width > 0 && height > 0);
 
@@ -89,7 +98,6 @@ namespace sift {
                             out << "\t";
                         }
                     }
-
                     return out;
                 }
         };

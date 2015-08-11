@@ -214,34 +214,52 @@ namespace sift {
         vigra::MultiArray<2, f32_t> inverse_matrix(vigra::Shape2(3, 3));
 
         const f32_t t = std::pow(10 + 1, 2) / 10;
+        std::vector<vigra::Matrix<f32_t>> vec;
+        vec.reserve(2000000);
         for (InterestPoint& p : interestPoints) {
             auto& d = dogs(p.octave, p.index);
             const std::array<vigra::MultiArray<2, f32_t>, 3>& param = 
             {{dogs(p.octave, p.index - 1).img, dogs(p.octave, p.index).img, dogs(p.octave, p.index + 1).img}};
 
-            const vigra::Matrix<f32_t> deriv = alg::foDerivative(param, p.loc);
-            const vigra::Matrix<f32_t> sec_deriv = alg::soDerivative(param, p.loc);
+            //const vigra::Matrix<f32_t> deriv = alg::foDerivative(param, p.loc);
+            //const vigra::Matrix<f32_t> sec_deriv = alg::soDerivative(param, p.loc);
+            vec.emplace_back(alg::foDerivative(param, p.loc));
+            vec.emplace_back(alg::soDerivative(param, p.loc));
 
-            vigra::Matrix<f32_t> neg_sec_deriv = sec_deriv ;
-            neg_sec_deriv *=  -1;
+            //vigra::Matrix<f32_t> neg_sec_deriv = sec_deriv ;
+            vec.emplace_back(vec.back());
+            //neg_sec_deriv *=  -1;
+            vec[vec.size() - 1] *= -1;
 
-            if (!inverse(neg_sec_deriv, inverse_matrix)) {
+            //if (!inverse(neg_sec_deriv, inverse_matrix)) {
+                //p.filtered = true;
+                //continue;
+            //}
+            if (!inverse(vec.back(), inverse_matrix)) {
                 p.filtered = true;
                 continue;
             }
 
-            if (!linearSolve(inverse_matrix, deriv, extremum)) {
+
+            //if (!linearSolve(inverse_matrix, deriv, extremum)) {
+                //p.filtered = true;
+                //continue;
+            //}
+            if (!linearSolve(inverse_matrix, vec[vec.size() - 3], extremum)) {
                 p.filtered = true;
                 continue;
             }
+
 
             //Calculated up 0.5 from paper to own image values [0,255]
             if (extremum(0, 0) > 127.5 || extremum(1, 0) > 127.5 || extremum(2, 0) > 127.5) {
                 p.filtered = true;
                 continue;
             } 
-            const vigra::Matrix<f32_t> deriv_transpose = deriv.transpose();
-            f32_t func_val_extremum = dot(deriv_transpose, extremum);
+            //const vigra::Matrix<f32_t> deriv_transpose = deriv.transpose();
+            vec.emplace_back(vec[vec.size() - 3].transpose());
+            //f32_t func_val_extremum = dot(deriv_transpose, extremum);
+            f32_t func_val_extremum = dot(vec[vec.size() - 1], extremum);
             func_val_extremum *= 0.5 + d.img(p.loc.x, p.loc.y);
 
             //Calculated up 0.03 from paper to own image values[0, 255]
@@ -250,12 +268,15 @@ namespace sift {
                 continue;
             }
 
-            const auto dxx = sec_deriv(0, 0);
-            const auto dyy = sec_deriv(1, 1);
+            //const auto dxx = sec_deriv(0, 0);
+            //const auto dyy = sec_deriv(1, 1);
+            const auto dxx = vec[vec.size() - 3](0, 0);
+            const auto dyy = vec[vec.size() - 3](1, 1);
             //dxx + dyy
             const f32_t hessian_tr = dxx + dyy;
             //dxx * dyy - dxy^2
-            const f32_t hessian_det = dxx *  dyy - std::pow(sec_deriv(0, 1), 2);
+            //const f32_t hessian_det = dxx *  dyy - std::pow(sec_deriv(0, 1), 2);
+            const f32_t hessian_det = dxx *  dyy - std::pow(vec[vec.size() - 3](0, 1), 2);
 
             if (hessian_det < 0) {
                 p.filtered = true;

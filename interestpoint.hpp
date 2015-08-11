@@ -7,36 +7,39 @@
 #include "point.hpp"
 
 namespace sift {
-    struct InterestPoint {
+    /**
+     * A class, which holds all the necessary information about the collected interest points
+     */
+    class InterestPoint {
         public:
             /**
-             * @var the scale of the interestpoint
+             * the scale of the interestpoint
              */
             f32_t scale;
 
             /**
-             * @var The octave of the interestpoint, because scale alone doesn't identify clearly 
+             * The octave of the interestpoint, because scale alone doesn't identify clearly 
              */
             u16_t octave;
             
             /**
-             * @var This is needed because of the fact, the corresponding DoG must not be searched
+             * This is needed because of the fact, the corresponding DoG must not be searched
              * again. And we get a linear access to the corresponding DoG element.
              */
             u16_t index;
 
             /**
-             * @var A flag, which shows if the interestpoint was filtered out by sift
+             * A flag, which shows if the interestpoint was filtered out by sift
              */
             bool filtered = false;
 
             /**
-             * @var the x and y coordinates of the interest point
+             * the x and y coordinates of the interest point
              */
             Point<u16_t, u16_t> loc;
 
             /**
-             * @var The orientations of the interest point
+             * The orientations of the interest point
              */
             std::set<f32_t> orientation;
 
@@ -55,7 +58,6 @@ namespace sift {
                 }
                 return false;
             }
-
     };
 
 }

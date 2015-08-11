@@ -5,14 +5,24 @@
 
 namespace sift {
     template <typename T, typename U>
-    struct Point {
-        T x;
-        U y;
+        /**
+         * A simple Point class which can have two different types for the two coordinates.
+         */
+        class Point {
+            /**
+             * The horizontal coordinate
+             */
+            T x;
 
-        Point() = default;
-        Point(T x, U y) : x(x), y(y) {
+            /**
+             * The vertical coordinate
+             */
+            U y;
 
-        }
-    };
+            Point() = default;
+            Point(T x, U y) : x(x), y(y) {
+
+            }
+        };
 }
 #endif //POINT_HPP
