@@ -1,0 +1,687 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls   s/call   s/call  name    
+ 96.71    566.84   566.84        1   566.84   567.32  sift::Sift::_eliminateEdgeResponses(std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&, sift::Matrix<sift::OctaveElem> const&) const
+  3.11    585.09    18.25        1    18.25    18.61  sift::Sift::_orientationAssignment(std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&)
+  0.06    585.44     0.35   389818     0.00     0.00  void vigra::internalConvolveLineReflect<vigra::IteratorAdaptor<vigra::StridedIteratorPolicy<vigra::ImageIteratorBase<vigra::ConstStridedImageIterator<float>, float, float const&, float const*, vigra::StridedArrayTag> > >, vigra::StandardConstValueAccessor<float>, vigra::IteratorAdaptor<vigra::StridedIteratorPolicy<vigra::ImageIteratorBase<vigra::StridedImageIterator<float>, float, float&, float*, vigra::StridedArrayTag> > >, vigra::StandardValueAccessor<float>, float const*, vigra::StandardConstAccessor<float> >(vigra::IteratorAdaptor<vigra::StridedIteratorPolicy<vigra::ImageIteratorBase<vigra::ConstStridedImageIterator<float>, float, float const&, float const*, vigra::StridedArrayTag> > >, vigra::IteratorAdaptor<vigra::StridedIteratorPolicy<vigra::ImageIteratorBase<vigra::ConstStridedImageIterator<float>, float, float const&, float const*, vigra::StridedArrayTag> > >, vigra::StandardConstValueAccessor<float>, vigra::IteratorAdaptor<vigra::StridedIteratorPolicy<vigra::ImageIteratorBase<vigra::StridedImageIterator<float>, float, float&, float*, vigra::StridedArrayTag> > >, vigra::StandardValueAccessor<float>, float const*, vigra::StandardConstAccessor<float>, int, int, int, int)
+  0.02    585.53     0.09   945826     0.00     0.00  bool vigra::linalg::detail::qrHouseholderStepImpl<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(long, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&)
+  0.01    585.61     0.08   322137     0.00     0.00  unsigned int vigra::linalg::detail::qrTransformToTriangularImpl<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::ArrayVector<long, std::allocator<long> >&, double)
+  0.01    585.67     0.06       12     0.00     0.00  sift::alg::dog(vigra::MultiArray<2u, float, std::allocator<float> > const&, vigra::MultiArray<2u, float, std::allocator<float> > const&)
+  0.01    585.72     0.05  2988759     0.00     0.00  bool vigra::multi_math::any<vigra::multi_math::MultiMathBinaryOperator<vigra::multi_math::MultiMathOperand<vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> >, vigra::multi_math::MultiMathOperand<float>, vigra::multi_math::math_detail::Greater> >(vigra::multi_math::MultiMathOperand<vigra::multi_math::MultiMathBinaryOperator<vigra::multi_math::MultiMathOperand<vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> >, vigra::multi_math::MultiMathOperand<float>, vigra::multi_math::math_detail::Greater> > const&)
+  0.01    585.76     0.04  3339995     0.00     0.00  vigra::MultiArray<2u, float, std::allocator<float> >::MultiArray<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, std::allocator<float> const&)
+  0.01    585.80     0.04  2253216     0.00     0.00  sift::alg::gradientMagnitude(vigra::MultiArray<2u, float, std::allocator<float> > const&, sift::Point<unsigned short, unsigned short> const&)
+  0.01    585.83     0.03  1774292     0.00     0.00  vigra::MultiArray<2u, float, std::allocator<float> >::MultiArray(vigra::TinyVector<long, 2> const&, std::allocator<float> const&)
+  0.01    585.86     0.03   280912     0.00     0.00  bool vigra::linalg::linearSolveUpperTriangular<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>)
+  0.01    585.89     0.03   161041     0.00     0.00  unsigned int vigra::linalg::linearSolveQRReplace<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, double)
+  0.00    585.91     0.02  2890543     0.00     0.00  bool vigra::multi_math::any<vigra::multi_math::MultiMathBinaryOperator<vigra::multi_math::MultiMathOperand<vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> >, vigra::multi_math::MultiMathOperand<float>, vigra::multi_math::math_detail::Less> >(vigra::multi_math::MultiMathOperand<vigra::multi_math::MultiMathBinaryOperator<vigra::multi_math::MultiMathOperand<vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> >, vigra::multi_math::MultiMathOperand<float>, vigra::multi_math::math_detail::Less> > const&)
+  0.00    585.93     0.02   770935     0.00     0.00  std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_M_erase(std::_Rb_tree_node<float>*)
+  0.00    585.95     0.02   530329     0.00     0.00  sift::alg::soDerivative(std::array<vigra::MultiArray<2u, float, std::allocator<float> >, 3ul> const&, sift::Point<unsigned short, unsigned short> const&)
+  0.00    585.97     0.02   322220     0.00     0.00  void vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::copyImpl<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&)
+  0.00    585.99     0.02   140511     0.00     0.00  bool vigra::linalg::qrDecomposition<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, double)
+  0.00    586.01     0.02        1     0.02     0.11  sift::Sift::_findScaleSpaceExtrema(sift::Matrix<sift::OctaveElem> const&, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&) const
+  0.00    586.02     0.02   140511     0.00     0.00  sift::alg::foDerivative(std::array<vigra::MultiArray<2u, float, std::allocator<float> >, 3ul> const&, sift::Point<unsigned short, unsigned short> const&)
+  0.00    586.03     0.01  2833769     0.00     0.00  vigra::NormTraits<float>::SquaredNormType vigra::linalg::dot<float, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&)
+  0.00    586.04     0.01  2693313     0.00     0.00  vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>& vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::operator-=<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&)
+  0.00    586.05     0.01  2253216     0.00     0.00  sift::alg::gradientOrientation(vigra::MultiArray<2u, float, std::allocator<float> > const&, sift::Point<unsigned short, unsigned short> const&)
+  0.00    586.06     0.01   811912     0.00     0.00  vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::subarray(vigra::TinyVector<long, 2>, vigra::TinyVector<long, 2>) const
+  0.00    586.07     0.01   322192     0.00     0.00  void vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::assignImpl<vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&)
+  0.00    586.08     0.01   140511     0.00     0.00  bool vigra::linalg::inverse<float, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&)
+  0.00    586.09     0.01    20585     0.00     0.00  void vigra::linalg::detail::applyHouseholderColumnReflections<float, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&)
+  0.00    586.10     0.01    11512     0.00     0.00  sift::alg::convolveWithGauss(vigra::MultiArray<2u, float, std::allocator<float> > const&, float)
+  0.00    586.11     0.01       19     0.00     0.00  void std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >::_M_emplace_back_aux<sift::InterestPoint>(sift::InterestPoint&&)
+  0.00    586.12     0.01       12     0.00     0.00  void vigra::detail::write_image_band<unsigned char, vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float>, vigra::detail::linear_transform>(vigra::Encoder*, vigra::ConstStridedImageIterator<float>, vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float>, vigra::detail::linear_transform const&)
+  0.00    586.13     0.01        3     0.00     0.00  void vigra::resizeImageNoInterpolation<vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float>, vigra::StridedImageIterator<float>, vigra::StandardValueAccessor<float> >(vigra::ConstStridedImageIterator<float>, vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float>, vigra::StridedImageIterator<float>, vigra::StridedImageIterator<float>, vigra::StandardValueAccessor<float>)
+  0.00    586.14     0.01        2     0.01     0.01  void std::__introsort_loop<__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, long, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)> >(__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, long, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)>) [clone .constprop.243]
+  0.00    586.15     0.01                             void vigra::linalg::detail::incrementalMaxSingularValueApproximation<float, vigra::StridedArrayTag, vigra::StridedArrayTag, float>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, float&)
+  0.00    586.15     0.00  2693313     0.00     0.00  bool vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::arraysOverlap<vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&) const
+  0.00    586.15     0.00   945826     0.00     0.00  vigra::throw_precondition_error(bool, char const*, char const*, int)
+  0.00    586.15     0.00   281022     0.00     0.00  vigra::throw_precondition_error(bool, char const*, char const*, int) [clone .constprop.254]
+  0.00    586.15     0.00   179115     0.00     0.00  std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::operator=(std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >&&)
+  0.00    586.15     0.00   161043     0.00     0.00  bool vigra::linalg::linearSolve<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>, std::string)
+  0.00    586.15     0.00   161041     0.00     0.00  vigra::MultiArray<2u, float, std::allocator<float> >::reshape(vigra::TinyVector<long, 2> const&, float const&)
+  0.00    586.15     0.00   161041     0.00     0.00  frame_dummy
+  0.00    586.15     0.00   152209     0.00     0.00  sift::InterestPoint::cmpByFilter(sift::InterestPoint const&, sift::InterestPoint const&)
+  0.00    586.15     0.00   152180     0.00     0.00  sift::InterestPoint::InterestPoint(sift::InterestPoint&&)
+  0.00    586.15     0.00   152159     0.00     0.00  void std::__unguarded_linear_insert<__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__ops::_Val_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)> >(__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__ops::_Val_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)>)
+  0.00    586.15     0.00   140511     0.00     0.00  vigra::linalg::TemporaryMatrix<float, std::allocator<float> > vigra::linalg::identityMatrix<float>(long)
+  0.00    586.15     0.00   140511     0.00     0.00  unsigned int vigra::linalg::detail::qrTransformToUpperTriangular<float, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::ArrayVector<long, std::allocator<long> >&, double)
+  0.00    586.15     0.00   140498     0.00     0.00  sift::Matrix<sift::OctaveElem>::operator[](sift::Point<unsigned short, unsigned short> const&) [clone .constprop.240]
+  0.00    586.15     0.00   104311     0.00     0.00  void vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::swapDataImpl<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>)
+  0.00    586.15     0.00    20585     0.00     0.00  sift::alg::vertexParabola(sift::Point<unsigned short, float> const&, sift::Point<unsigned short, float> const&, sift::Point<unsigned short, float> const&)
+  0.00    586.15     0.00    20585     0.00     0.00  bool vigra::linalg::linearSolveLowerTriangular<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>)
+  0.00    586.15     0.00    20585     0.00     0.00  unsigned int vigra::linalg::detail::qrTransformToLowerTriangular<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, double)
+  0.00    586.15     0.00    20585     0.00     0.00  std::pair<std::_Rb_tree_iterator<float>, bool> std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_M_emplace_unique<float>(float&&)
+  0.00    586.15     0.00    11650     0.00     0.00  sift::Sift::_findNearestGaussian(float)
+  0.00    586.15     0.00    11512     0.00     0.00  vigra::Gaussian<float>::calculateHermitePolynomial()
+  0.00    586.15     0.00    11512     0.00     0.00  vigra::Kernel1D<float>::initGaussian(double, float, double)
+  0.00    586.15     0.00    11496     0.00     0.00  sift::alg::orientationHistogram(vigra::MultiArray<2u, float, std::allocator<float> > const&, vigra::MultiArray<2u, float, std::allocator<float> > const&, vigra::MultiArray<2u, float, std::allocator<float> > const&)
+  0.00    586.15     0.00    11496     0.00     0.00  sift::Sift::_findPeaks(std::array<float, 36ul> const&) const
+  0.00    586.15     0.00    11496     0.00     0.00  std::_Rb_tree_node<float>* std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_M_copy<std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_Reuse_or_alloc_node>(std::_Rb_tree_node<float> const*, std::_Rb_tree_node<float>*, std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_Reuse_or_alloc_node&)
+  0.00    586.15     0.00       32     0.00     0.00  void vigra::MultiArray<2u, float, std::allocator<float> >::copyOrReshape<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&)
+  0.00    586.15     0.00       24     0.00     0.00  vigra::throw_precondition_error(bool, char const*, char const*, int) [clone .constprop.255]
+  0.00    586.15     0.00       24     0.00     0.00  std::string __gnu_cxx::__to_xstring<std::string, char>(int (*)(char*, unsigned long, char const*, __va_list_tag*), unsigned long, char const*, ...) [clone .constprop.230]
+  0.00    586.15     0.00       12     0.00     0.00  void vigra::detail::exportImage<vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float> >(vigra::ConstStridedImageIterator<float>, vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float>, vigra::ImageExportInfo const&, vigra::VigraTrueType)
+  0.00    586.15     0.00        9     0.00     0.00  sift::Matrix<sift::OctaveElem>::operator[](sift::Point<unsigned short, unsigned short> const&)
+  0.00    586.15     0.00        4     0.00     0.00  boost::any::holder<float>::~holder()
+  0.00    586.15     0.00        4     0.00     0.00  boost::any::holder<unsigned short>::~holder()
+  0.00    586.15     0.00        3     0.00     0.00  sift::alg::reduceToNextLevel(vigra::MultiArray<2u, float, std::allocator<float> > const&, float)
+  0.00    586.15     0.00        3     0.00     0.00  vigra::BasicImage<float, std::allocator<float> >::deallocate()
+  0.00    586.15     0.00        2     0.00     0.00  sift::Matrix<sift::OctaveElem>::Matrix(unsigned short, unsigned short, sift::OctaveElem const&)
+  0.00    586.15     0.00        2     0.00     0.00  boost::detail::lexical_converter_impl<std::string, float>::try_convert(float const&, std::string&)
+  0.00    586.15     0.00        2     0.00     0.00  boost::any::holder<float>::type() const
+  0.00    586.15     0.00        2     0.00     0.00  boost::any::holder<float>::clone() const
+  0.00    586.15     0.00        2     0.00     0.00  boost::any::holder<unsigned short>::type() const
+  0.00    586.15     0.00        2     0.00     0.00  boost::any::holder<unsigned short>::clone() const
+  0.00    586.15     0.00        2     0.00     0.00  std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>::_M_release()
+  0.00    586.15     0.00        2     0.00     0.00  std::_Sp_counted_deleter<sift::OctaveElem*, std::default_delete<sift::OctaveElem []>, std::allocator<void>, (__gnu_cxx::_Lock_policy)2>::_M_dispose()
+  0.00    586.15     0.00        2     0.00     0.00  void std::vector<std::string, std::allocator<std::string> >::_M_emplace_back_aux<std::string>(std::string&&)
+  0.00    586.15     0.00        2     0.00     0.00  void std::__insertion_sort<__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)> >(__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)>) [clone .constprop.248]
+  0.00    586.15     0.00        2     0.00     0.00  void std::swap<sift::InterestPoint>(sift::InterestPoint&, sift::InterestPoint&)
+  0.00    586.15     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN4sift4Sift9calculateERN5vigra10MultiArrayILj2EfSaIfEEE
+  0.00    586.15     0.00        1     0.00     0.00  _GLOBAL__sub_I_main
+  0.00    586.15     0.00        1     0.00     0.07  sift::Sift::_createDOGs(vigra::MultiArray<2u, float, std::allocator<float> >&)
+  0.00    586.15     0.00        1     0.00     0.00  std::_Sp_counted_deleter<sift::OctaveElem*, std::default_delete<sift::OctaveElem []>, std::allocator<void>, (__gnu_cxx::_Lock_policy)2>::_M_destroy()
+  0.00    586.15     0.00        1     0.00     0.00  std::_Rb_tree<std::string, std::string, std::_Identity<std::string>, std::less<std::string>, std::allocator<std::string> >::_M_erase(std::_Rb_tree_node<std::string>*)
+  0.00    586.15     0.00        1     0.00     0.00  std::_Rb_tree<std::string, std::pair<std::string const, boost::program_options::variable_value>, std::_Select1st<std::pair<std::string const, boost::program_options::variable_value> >, std::less<std::string>, std::allocator<std::pair<std::string const, boost::program_options::variable_value> > >::_M_erase(std::_Rb_tree_node<std::pair<std::string const, boost::program_options::variable_value> >*)
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+ 
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this 
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+Copyright (C) 2012-2014 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 2 byte(s) for 0.00% of 586.15 seconds
+
+index % time    self  children    called     name
+                                                 <spontaneous>
+[1]    100.0    0.00  586.14                 sift::Sift::calculate(vigra::MultiArray<2u, float, std::allocator<float> >&) [1]
+              566.84    0.48       1/1           sift::Sift::_eliminateEdgeResponses(std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&, sift::Matrix<sift::OctaveElem> const&) const [2]
+               18.25    0.36       1/1           sift::Sift::_orientationAssignment(std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&) [3]
+                0.02    0.09       1/1           sift::Sift::_findScaleSpaceExtrema(sift::Matrix<sift::OctaveElem> const&, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&) const [13]
+                0.00    0.07       1/1           sift::Sift::_createDOGs(vigra::MultiArray<2u, float, std::allocator<float> >&) [15]
+                0.01    0.00       2/2           void std::__introsort_loop<__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, long, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)> >(__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, long, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)>) [clone .constprop.243] [30]
+                0.00    0.01      12/12          void vigra::detail::exportImage<vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float> >(vigra::ConstStridedImageIterator<float>, vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float>, vigra::ImageExportInfo const&, vigra::VigraTrueType) [37]
+                0.00    0.01  152129/152159      void std::__unguarded_linear_insert<__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__ops::_Val_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)> >(__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__ops::_Val_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)>) [42]
+                0.00    0.00  129015/770935      std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_M_erase(std::_Rb_tree_node<float>*) [25]
+                0.00    0.00       2/161043      bool vigra::linalg::linearSolve<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>, std::string) [8]
+                0.00    0.00       2/2           void std::__insertion_sort<__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)> >(__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)>) [clone .constprop.248] [47]
+                0.00    0.00      24/24          std::string __gnu_cxx::__to_xstring<std::string, char>(int (*)(char*, unsigned long, char const*, __va_list_tag*), unsigned long, char const*, ...) [clone .constprop.230] [73]
+                0.00    0.00       4/140498      sift::Matrix<sift::OctaveElem>::operator[](sift::Point<unsigned short, unsigned short> const&) [clone .constprop.240] [63]
+                0.00    0.00       1/1           std::_Sp_counted_deleter<sift::OctaveElem*, std::default_delete<sift::OctaveElem []>, std::allocator<void>, (__gnu_cxx::_Lock_policy)2>::_M_destroy() [88]
+                0.00    0.00       1/2           std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>::_M_release() [83]
+-----------------------------------------------
+              566.84    0.48       1/1           sift::Sift::calculate(vigra::MultiArray<2u, float, std::allocator<float> >&) [1]
+[2]     96.8  566.84    0.48       1         sift::Sift::_eliminateEdgeResponses(std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&, sift::Matrix<sift::OctaveElem> const&) const [2]
+                0.01    0.18  140511/140511      bool vigra::linalg::inverse<float, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&) [10]
+                0.00    0.18  140456/161043      bool vigra::linalg::linearSolve<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>, std::string) [8]
+                0.01    0.09  140511/530329      sift::alg::soDerivative(std::array<vigra::MultiArray<2u, float, std::allocator<float> >, 3ul> const&, sift::Point<unsigned short, unsigned short> const&) [4]
+                0.02    0.00  140511/140511      sift::alg::foDerivative(std::array<vigra::MultiArray<2u, float, std::allocator<float> >, 3ul> const&, sift::Point<unsigned short, unsigned short> const&) [27]
+                0.00    0.00  140456/3339995     vigra::MultiArray<2u, float, std::allocator<float> >::MultiArray<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, std::allocator<float> const&) [18]
+                0.00    0.00  140456/2833769     vigra::NormTraits<float>::SquaredNormType vigra::linalg::dot<float, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&) [41]
+                0.00    0.00       2/1774292     vigra::MultiArray<2u, float, std::allocator<float> >::MultiArray(vigra::TinyVector<long, 2> const&, std::allocator<float> const&) [20]
+                0.00    0.00  140456/140498      sift::Matrix<sift::OctaveElem>::operator[](sift::Point<unsigned short, unsigned short> const&) [clone .constprop.240] [63]
+-----------------------------------------------
+               18.25    0.36       1/1           sift::Sift::calculate(vigra::MultiArray<2u, float, std::allocator<float> >&) [1]
+[3]      3.2   18.25    0.36       1         sift::Sift::_orientationAssignment(std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&) [3]
+                0.01    0.27   11496/11512       sift::alg::convolveWithGauss(vigra::MultiArray<2u, float, std::allocator<float> > const&, float) [6]
+                0.04    0.00 2253216/2253216     sift::alg::gradientMagnitude(vigra::MultiArray<2u, float, std::allocator<float> > const&, sift::Point<unsigned short, unsigned short> const&) [19]
+                0.00    0.03   11496/11496       sift::Sift::_findPeaks(std::array<float, 36ul> const&) const [23]
+                0.01    0.00 2253216/2253216     sift::alg::gradientOrientation(vigra::MultiArray<2u, float, std::allocator<float> > const&, sift::Point<unsigned short, unsigned short> const&) [34]
+                0.00    0.00   22992/770935      std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_M_erase(std::_Rb_tree_node<float>*) [25]
+                0.00    0.00   22992/3339995     vigra::MultiArray<2u, float, std::allocator<float> >::MultiArray<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, std::allocator<float> const&) [18]
+                0.00    0.00   11496/811912      vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::subarray(vigra::TinyVector<long, 2>, vigra::TinyVector<long, 2>) const [35]
+                0.00    0.00   11650/11650       sift::Sift::_findNearestGaussian(float) [67]
+                0.00    0.00   11496/11496       sift::alg::orientationHistogram(vigra::MultiArray<2u, float, std::allocator<float> > const&, vigra::MultiArray<2u, float, std::allocator<float> > const&, vigra::MultiArray<2u, float, std::allocator<float> > const&) [70]
+                0.00    0.00   11496/11496       std::_Rb_tree_node<float>* std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_M_copy<std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_Reuse_or_alloc_node>(std::_Rb_tree_node<float> const*, std::_Rb_tree_node<float>*, std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_Reuse_or_alloc_node&) [71]
+-----------------------------------------------
+                0.01    0.09  140511/530329      sift::Sift::_eliminateEdgeResponses(std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&, sift::Matrix<sift::OctaveElem> const&) const [2]
+                0.01    0.26  389818/530329      sift::alg::convolveWithGauss(vigra::MultiArray<2u, float, std::allocator<float> > const&, float) [6]
+[4]      0.1    0.02    0.35  530329         sift::alg::soDerivative(std::array<vigra::MultiArray<2u, float, std::allocator<float> >, 3ul> const&, sift::Point<unsigned short, unsigned short> const&) [4]
+                0.35    0.00  389818/389818      void vigra::internalConvolveLineReflect<vigra::IteratorAdaptor<vigra::StridedIteratorPolicy<vigra::ImageIteratorBase<vigra::ConstStridedImageIterator<float>, float, float const&, float const*, vigra::StridedArrayTag> > >, vigra::StandardConstValueAccessor<float>, vigra::IteratorAdaptor<vigra::StridedIteratorPolicy<vigra::ImageIteratorBase<vigra::StridedImageIterator<float>, float, float&, float*, vigra::StridedArrayTag> > >, vigra::StandardValueAccessor<float>, float const*, vigra::StandardConstAccessor<float> >(vigra::IteratorAdaptor<vigra::StridedIteratorPolicy<vigra::ImageIteratorBase<vigra::ConstStridedImageIterator<float>, float, float const&, float const*, vigra::StridedArrayTag> > >, vigra::IteratorAdaptor<vigra::StridedIteratorPolicy<vigra::ImageIteratorBase<vigra::ConstStridedImageIterator<float>, float, float const&, float const*, vigra::StridedArrayTag> > >, vigra::StandardConstValueAccessor<float>, vigra::IteratorAdaptor<vigra::StridedIteratorPolicy<vigra::ImageIteratorBase<vigra::StridedImageIterator<float>, float, float&, float*, vigra::StridedArrayTag> > >, vigra::StandardValueAccessor<float>, float const*, vigra::StandardConstAccessor<float>, int, int, int, int) [5]
+                0.00    0.00  140511/1774292     vigra::MultiArray<2u, float, std::allocator<float> >::MultiArray(vigra::TinyVector<long, 2> const&, std::allocator<float> const&) [20]
+                0.00    0.00  140511/3339995     vigra::MultiArray<2u, float, std::allocator<float> >::MultiArray<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, std::allocator<float> const&) [18]
+-----------------------------------------------
+                0.35    0.00  389818/389818      sift::alg::soDerivative(std::array<vigra::MultiArray<2u, float, std::allocator<float> >, 3ul> const&, sift::Point<unsigned short, unsigned short> const&) [4]
+[5]      0.1    0.35    0.00  389818         void vigra::internalConvolveLineReflect<vigra::IteratorAdaptor<vigra::StridedIteratorPolicy<vigra::ImageIteratorBase<vigra::ConstStridedImageIterator<float>, float, float const&, float const*, vigra::StridedArrayTag> > >, vigra::StandardConstValueAccessor<float>, vigra::IteratorAdaptor<vigra::StridedIteratorPolicy<vigra::ImageIteratorBase<vigra::StridedImageIterator<float>, float, float&, float*, vigra::StridedArrayTag> > >, vigra::StandardValueAccessor<float>, float const*, vigra::StandardConstAccessor<float> >(vigra::IteratorAdaptor<vigra::StridedIteratorPolicy<vigra::ImageIteratorBase<vigra::ConstStridedImageIterator<float>, float, float const&, float const*, vigra::StridedArrayTag> > >, vigra::IteratorAdaptor<vigra::StridedIteratorPolicy<vigra::ImageIteratorBase<vigra::ConstStridedImageIterator<float>, float, float const&, float const*, vigra::StridedArrayTag> > >, vigra::StandardConstValueAccessor<float>, vigra::IteratorAdaptor<vigra::StridedIteratorPolicy<vigra::ImageIteratorBase<vigra::StridedImageIterator<float>, float, float&, float*, vigra::StridedArrayTag> > >, vigra::StandardValueAccessor<float>, float const*, vigra::StandardConstAccessor<float>, int, int, int, int) [5]
+-----------------------------------------------
+                0.00    0.00       3/11512       sift::alg::reduceToNextLevel(vigra::MultiArray<2u, float, std::allocator<float> > const&, float) [32]
+                0.00    0.00      13/11512       sift::Sift::_createDOGs(vigra::MultiArray<2u, float, std::allocator<float> >&) [15]
+                0.01    0.27   11496/11512       sift::Sift::_orientationAssignment(std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&) [3]
+[6]      0.0    0.01    0.28   11512         sift::alg::convolveWithGauss(vigra::MultiArray<2u, float, std::allocator<float> > const&, float) [6]
+                0.01    0.26  389818/530329      sift::alg::soDerivative(std::array<vigra::MultiArray<2u, float, std::allocator<float> >, 3ul> const&, sift::Point<unsigned short, unsigned short> const&) [4]
+                0.00    0.00   23024/1774292     vigra::MultiArray<2u, float, std::allocator<float> >::MultiArray(vigra::TinyVector<long, 2> const&, std::allocator<float> const&) [20]
+                0.00    0.00   11512/11512       vigra::Kernel1D<float>::initGaussian(double, float, double) [69]
+-----------------------------------------------
+                0.01    0.01   20585/322137      unsigned int vigra::linalg::detail::qrTransformToLowerTriangular<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, double) [29]
+                0.03    0.07  140511/322137      unsigned int vigra::linalg::detail::qrTransformToUpperTriangular<float, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::ArrayVector<long, std::allocator<long> >&, double) [14]
+                0.04    0.08  161041/322137      unsigned int vigra::linalg::linearSolveQRReplace<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, double) [9]
+[7]      0.0    0.08    0.16  322137         unsigned int vigra::linalg::detail::qrTransformToTriangularImpl<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::ArrayVector<long, std::allocator<long> >&, double) [7]
+                0.09    0.07  945826/945826      bool vigra::linalg::detail::qrHouseholderStepImpl<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(long, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&) [11]
+                0.00    0.00  115082/811912      vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::subarray(vigra::TinyVector<long, 2>, vigra::TinyVector<long, 2>) const [35]
+                0.00    0.00  161041/161041      vigra::MultiArray<2u, float, std::allocator<float> >::reshape(vigra::TinyVector<long, 2> const&, float const&) [59]
+                0.00    0.00  104311/104311      void vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::swapDataImpl<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>) [64]
+-----------------------------------------------
+                0.00    0.00       2/161043      sift::Sift::calculate(vigra::MultiArray<2u, float, std::allocator<float> >&) [1]
+                0.00    0.03   20585/161043      sift::alg::vertexParabola(sift::Point<unsigned short, float> const&, sift::Point<unsigned short, float> const&, sift::Point<unsigned short, float> const&) [22]
+                0.00    0.18  140456/161043      sift::Sift::_eliminateEdgeResponses(std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&, sift::Matrix<sift::OctaveElem> const&) const [2]
+[8]      0.0    0.00    0.20  161043         bool vigra::linalg::linearSolve<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>, std::string) [8]
+                0.03    0.17  161041/161041      unsigned int vigra::linalg::linearSolveQRReplace<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, double) [9]
+                0.00    0.00  322082/3339995     vigra::MultiArray<2u, float, std::allocator<float> >::MultiArray<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, std::allocator<float> const&) [18]
+                0.00    0.00  161041/161041      frame_dummy [49]
+-----------------------------------------------
+                0.03    0.17  161041/161041      bool vigra::linalg::linearSolve<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>, std::string) [8]
+[9]      0.0    0.03    0.17  161041         unsigned int vigra::linalg::linearSolveQRReplace<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, double) [9]
+                0.04    0.08  161041/322137      unsigned int vigra::linalg::detail::qrTransformToTriangularImpl<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::ArrayVector<long, std::allocator<long> >&, double) [7]
+                0.00    0.02   20585/20585       unsigned int vigra::linalg::detail::qrTransformToLowerTriangular<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, double) [29]
+                0.02    0.00  140456/280912      bool vigra::linalg::linearSolveUpperTriangular<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>) [21]
+                0.01    0.00   20585/20585       void vigra::linalg::detail::applyHouseholderColumnReflections<float, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&) [31]
+                0.00    0.00  363252/811912      vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::subarray(vigra::TinyVector<long, 2>, vigra::TinyVector<long, 2>) const [35]
+                0.00    0.00  181626/1774292     vigra::MultiArray<2u, float, std::allocator<float> >::MultiArray(vigra::TinyVector<long, 2> const&, std::allocator<float> const&) [20]
+                0.00    0.00   20585/20585       bool vigra::linalg::linearSolveLowerTriangular<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>) [65]
+-----------------------------------------------
+                0.01    0.18  140511/140511      sift::Sift::_eliminateEdgeResponses(std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&, sift::Matrix<sift::OctaveElem> const&) const [2]
+[10]     0.0    0.01    0.18  140511         bool vigra::linalg::inverse<float, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&) [10]
+                0.02    0.13  140511/140511      bool vigra::linalg::qrDecomposition<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, double) [12]
+                0.02    0.00  140456/280912      bool vigra::linalg::linearSolveUpperTriangular<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>) [21]
+                0.00    0.00  281022/1774292     vigra::MultiArray<2u, float, std::allocator<float> >::MultiArray(vigra::TinyVector<long, 2> const&, std::allocator<float> const&) [20]
+                0.00    0.00  280912/811912      vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::subarray(vigra::TinyVector<long, 2>, vigra::TinyVector<long, 2>) const [35]
+                0.00    0.00  140511/281022      vigra::throw_precondition_error(bool, char const*, char const*, int) [clone .constprop.254] [58]
+-----------------------------------------------
+                0.09    0.07  945826/945826      unsigned int vigra::linalg::detail::qrTransformToTriangularImpl<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::ArrayVector<long, std::allocator<long> >&, double) [7]
+[11]     0.0    0.09    0.07  945826         bool vigra::linalg::detail::qrHouseholderStepImpl<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(long, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&) [11]
+                0.03    0.00 2652143/3339995     vigra::MultiArray<2u, float, std::allocator<float> >::MultiArray<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, std::allocator<float> const&) [18]
+                0.02    0.00  945826/1774292     vigra::MultiArray<2u, float, std::allocator<float> >::MultiArray(vigra::TinyVector<long, 2> const&, std::allocator<float> const&) [20]
+                0.01    0.00 2652143/2693313     vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>& vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::operator-=<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&) [33]
+                0.01    0.00 2652143/2833769     vigra::NormTraits<float>::SquaredNormType vigra::linalg::dot<float, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&) [41]
+                0.00    0.00   41170/322220      void vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::copyImpl<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&) [26]
+                0.00    0.00   41170/322192      void vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::assignImpl<vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&) [36]
+                0.00    0.00   41170/811912      vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::subarray(vigra::TinyVector<long, 2>, vigra::TinyVector<long, 2>) const [35]
+                0.00    0.00  945826/945826      vigra::throw_precondition_error(bool, char const*, char const*, int) [57]
+-----------------------------------------------
+                0.02    0.13  140511/140511      bool vigra::linalg::inverse<float, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&) [10]
+[12]     0.0    0.02    0.13  140511         bool vigra::linalg::qrDecomposition<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, double) [12]
+                0.00    0.11  140511/140511      unsigned int vigra::linalg::detail::qrTransformToUpperTriangular<float, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::ArrayVector<long, std::allocator<long> >&, double) [14]
+                0.02    0.00  281022/322220      void vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::copyImpl<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&) [26]
+                0.01    0.00  281022/322192      void vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::assignImpl<vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&) [36]
+                0.00    0.00  140511/281022      vigra::throw_precondition_error(bool, char const*, char const*, int) [clone .constprop.254] [58]
+                0.00    0.00  140511/140511      vigra::linalg::TemporaryMatrix<float, std::allocator<float> > vigra::linalg::identityMatrix<float>(long) [62]
+-----------------------------------------------
+                0.02    0.09       1/1           sift::Sift::calculate(vigra::MultiArray<2u, float, std::allocator<float> >&) [1]
+[13]     0.0    0.02    0.09       1         sift::Sift::_findScaleSpaceExtrema(sift::Matrix<sift::OctaveElem> const&, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&) const [13]
+                0.05    0.00 2988759/2988759     bool vigra::multi_math::any<vigra::multi_math::MultiMathBinaryOperator<vigra::multi_math::MultiMathOperand<vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> >, vigra::multi_math::MultiMathOperand<float>, vigra::multi_math::math_detail::Greater> >(vigra::multi_math::MultiMathOperand<vigra::multi_math::MultiMathBinaryOperator<vigra::multi_math::MultiMathOperand<vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> >, vigra::multi_math::MultiMathOperand<float>, vigra::multi_math::math_detail::Greater> > const&) [17]
+                0.02    0.00 2890543/2890543     bool vigra::multi_math::any<vigra::multi_math::MultiMathBinaryOperator<vigra::multi_math::MultiMathOperand<vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> >, vigra::multi_math::MultiMathOperand<float>, vigra::multi_math::math_detail::Less> >(vigra::multi_math::MultiMathOperand<vigra::multi_math::MultiMathBinaryOperator<vigra::multi_math::MultiMathOperand<vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> >, vigra::multi_math::MultiMathOperand<float>, vigra::multi_math::math_detail::Less> > const&) [24]
+                0.01    0.01      19/19          void std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >::_M_emplace_back_aux<sift::InterestPoint>(sift::InterestPoint&&) [28]
+-----------------------------------------------
+                0.00    0.11  140511/140511      bool vigra::linalg::qrDecomposition<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, double) [12]
+[14]     0.0    0.00    0.11  140511         unsigned int vigra::linalg::detail::qrTransformToUpperTriangular<float, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::ArrayVector<long, std::allocator<long> >&, double) [14]
+                0.03    0.07  140511/322137      unsigned int vigra::linalg::detail::qrTransformToTriangularImpl<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::ArrayVector<long, std::allocator<long> >&, double) [7]
+-----------------------------------------------
+                0.00    0.07       1/1           sift::Sift::calculate(vigra::MultiArray<2u, float, std::allocator<float> >&) [1]
+[15]     0.0    0.00    0.07       1         sift::Sift::_createDOGs(vigra::MultiArray<2u, float, std::allocator<float> >&) [15]
+                0.06    0.00      12/12          sift::alg::dog(vigra::MultiArray<2u, float, std::allocator<float> > const&, vigra::MultiArray<2u, float, std::allocator<float> > const&) [16]
+                0.00    0.01       3/3           sift::alg::reduceToNextLevel(vigra::MultiArray<2u, float, std::allocator<float> > const&, float) [32]
+                0.00    0.00      13/11512       sift::alg::convolveWithGauss(vigra::MultiArray<2u, float, std::allocator<float> > const&, float) [6]
+                0.00    0.00       2/2           sift::Matrix<sift::OctaveElem>::Matrix(unsigned short, unsigned short, sift::OctaveElem const&) [46]
+                0.00    0.00      24/3339995     vigra::MultiArray<2u, float, std::allocator<float> >::MultiArray<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, std::allocator<float> const&) [18]
+                0.00    0.00       4/32          void vigra::MultiArray<2u, float, std::allocator<float> >::copyOrReshape<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&) [45]
+                0.00    0.00       9/9           sift::Matrix<sift::OctaveElem>::operator[](sift::Point<unsigned short, unsigned short> const&) [74]
+                0.00    0.00       2/140498      sift::Matrix<sift::OctaveElem>::operator[](sift::Point<unsigned short, unsigned short> const&) [clone .constprop.240] [63]
+                0.00    0.00       1/2           std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>::_M_release() [83]
+-----------------------------------------------
+                0.06    0.00      12/12          sift::Sift::_createDOGs(vigra::MultiArray<2u, float, std::allocator<float> >&) [15]
+[16]     0.0    0.06    0.00      12         sift::alg::dog(vigra::MultiArray<2u, float, std::allocator<float> > const&, vigra::MultiArray<2u, float, std::allocator<float> > const&) [16]
+                0.00    0.00      12/1774292     vigra::MultiArray<2u, float, std::allocator<float> >::MultiArray(vigra::TinyVector<long, 2> const&, std::allocator<float> const&) [20]
+-----------------------------------------------
+                0.05    0.00 2988759/2988759     sift::Sift::_findScaleSpaceExtrema(sift::Matrix<sift::OctaveElem> const&, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&) const [13]
+[17]     0.0    0.05    0.00 2988759         bool vigra::multi_math::any<vigra::multi_math::MultiMathBinaryOperator<vigra::multi_math::MultiMathOperand<vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> >, vigra::multi_math::MultiMathOperand<float>, vigra::multi_math::math_detail::Greater> >(vigra::multi_math::MultiMathOperand<vigra::multi_math::MultiMathBinaryOperator<vigra::multi_math::MultiMathOperand<vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> >, vigra::multi_math::MultiMathOperand<float>, vigra::multi_math::math_detail::Greater> > const&) [17]
+-----------------------------------------------
+                                  28             vigra::MultiArray<2u, float, std::allocator<float> >::MultiArray<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, std::allocator<float> const&) [18]
+                0.00    0.00      24/3339995     sift::Sift::_createDOGs(vigra::MultiArray<2u, float, std::allocator<float> >&) [15]
+                0.00    0.00      32/3339995     void vigra::MultiArray<2u, float, std::allocator<float> >::copyOrReshape<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&) [45]
+                0.00    0.00   20585/3339995     unsigned int vigra::linalg::detail::qrTransformToLowerTriangular<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, double) [29]
+                0.00    0.00   22992/3339995     sift::Sift::_orientationAssignment(std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&) [3]
+                0.00    0.00   41170/3339995     void vigra::linalg::detail::applyHouseholderColumnReflections<float, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&) [31]
+                0.00    0.00  140456/3339995     sift::Sift::_eliminateEdgeResponses(std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&, sift::Matrix<sift::OctaveElem> const&) const [2]
+                0.00    0.00  140511/3339995     sift::alg::soDerivative(std::array<vigra::MultiArray<2u, float, std::allocator<float> >, 3ul> const&, sift::Point<unsigned short, unsigned short> const&) [4]
+                0.00    0.00  322082/3339995     bool vigra::linalg::linearSolve<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>, std::string) [8]
+                0.03    0.00 2652143/3339995     bool vigra::linalg::detail::qrHouseholderStepImpl<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(long, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&) [11]
+[18]     0.0    0.04    0.00 3339995+28      vigra::MultiArray<2u, float, std::allocator<float> >::MultiArray<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, std::allocator<float> const&) [18]
+                                  28             vigra::MultiArray<2u, float, std::allocator<float> >::MultiArray<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, std::allocator<float> const&) [18]
+-----------------------------------------------
+                0.04    0.00 2253216/2253216     sift::Sift::_orientationAssignment(std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&) [3]
+[19]     0.0    0.04    0.00 2253216         sift::alg::gradientMagnitude(vigra::MultiArray<2u, float, std::allocator<float> > const&, sift::Point<unsigned short, unsigned short> const&) [19]
+-----------------------------------------------
+                0.00    0.00       2/1774292     sift::Sift::_eliminateEdgeResponses(std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&, sift::Matrix<sift::OctaveElem> const&) const [2]
+                0.00    0.00       3/1774292     sift::alg::reduceToNextLevel(vigra::MultiArray<2u, float, std::allocator<float> > const&, float) [32]
+                0.00    0.00      12/1774292     sift::alg::dog(vigra::MultiArray<2u, float, std::allocator<float> > const&, vigra::MultiArray<2u, float, std::allocator<float> > const&) [16]
+                0.00    0.00   23024/1774292     sift::alg::convolveWithGauss(vigra::MultiArray<2u, float, std::allocator<float> > const&, float) [6]
+                0.00    0.00   61755/1774292     sift::alg::vertexParabola(sift::Point<unsigned short, float> const&, sift::Point<unsigned short, float> const&, sift::Point<unsigned short, float> const&) [22]
+                0.00    0.00  140511/1774292     sift::alg::foDerivative(std::array<vigra::MultiArray<2u, float, std::allocator<float> >, 3ul> const&, sift::Point<unsigned short, unsigned short> const&) [27]
+                0.00    0.00  140511/1774292     sift::alg::soDerivative(std::array<vigra::MultiArray<2u, float, std::allocator<float> >, 3ul> const&, sift::Point<unsigned short, unsigned short> const&) [4]
+                0.00    0.00  181626/1774292     unsigned int vigra::linalg::linearSolveQRReplace<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, double) [9]
+                0.00    0.00  281022/1774292     bool vigra::linalg::inverse<float, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&) [10]
+                0.02    0.00  945826/1774292     bool vigra::linalg::detail::qrHouseholderStepImpl<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(long, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&) [11]
+[20]     0.0    0.03    0.00 1774292         vigra::MultiArray<2u, float, std::allocator<float> >::MultiArray(vigra::TinyVector<long, 2> const&, std::allocator<float> const&) [20]
+-----------------------------------------------
+                0.02    0.00  140456/280912      unsigned int vigra::linalg::linearSolveQRReplace<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, double) [9]
+                0.02    0.00  140456/280912      bool vigra::linalg::inverse<float, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&) [10]
+[21]     0.0    0.03    0.00  280912         bool vigra::linalg::linearSolveUpperTriangular<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>) [21]
+-----------------------------------------------
+                0.00    0.03   20585/20585       sift::Sift::_findPeaks(std::array<float, 36ul> const&) const [23]
+[22]     0.0    0.00    0.03   20585         sift::alg::vertexParabola(sift::Point<unsigned short, float> const&, sift::Point<unsigned short, float> const&, sift::Point<unsigned short, float> const&) [22]
+                0.00    0.03   20585/161043      bool vigra::linalg::linearSolve<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>, std::string) [8]
+                0.00    0.00   61755/1774292     vigra::MultiArray<2u, float, std::allocator<float> >::MultiArray(vigra::TinyVector<long, 2> const&, std::allocator<float> const&) [20]
+-----------------------------------------------
+                0.00    0.03   11496/11496       sift::Sift::_orientationAssignment(std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&) [3]
+[23]     0.0    0.00    0.03   11496         sift::Sift::_findPeaks(std::array<float, 36ul> const&) const [23]
+                0.00    0.03   20585/20585       sift::alg::vertexParabola(sift::Point<unsigned short, float> const&, sift::Point<unsigned short, float> const&, sift::Point<unsigned short, float> const&) [22]
+                0.00    0.00   20585/20585       std::pair<std::_Rb_tree_iterator<float>, bool> std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_M_emplace_unique<float>(float&&) [66]
+-----------------------------------------------
+                0.02    0.00 2890543/2890543     sift::Sift::_findScaleSpaceExtrema(sift::Matrix<sift::OctaveElem> const&, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&) const [13]
+[24]     0.0    0.02    0.00 2890543         bool vigra::multi_math::any<vigra::multi_math::MultiMathBinaryOperator<vigra::multi_math::MultiMathOperand<vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> >, vigra::multi_math::MultiMathOperand<float>, vigra::multi_math::math_detail::Less> >(vigra::multi_math::MultiMathOperand<vigra::multi_math::MultiMathBinaryOperator<vigra::multi_math::MultiMathOperand<vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> >, vigra::multi_math::MultiMathOperand<float>, vigra::multi_math::math_detail::Less> > const&) [24]
+-----------------------------------------------
+                               29137             std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_M_erase(std::_Rb_tree_node<float>*) [25]
+                0.00    0.00       2/770935      void std::swap<sift::InterestPoint>(sift::InterestPoint&, sift::InterestPoint&) [48]
+                0.00    0.00   12033/770935      std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >::~vector() [44]
+                0.00    0.00   13476/770935      void std::__introsort_loop<__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, long, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)> >(__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, long, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)>) [clone .constprop.243] [30]
+                0.00    0.00   22992/770935      sift::Sift::_orientationAssignment(std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&) [3]
+                0.00    0.00  129015/770935      sift::Sift::calculate(vigra::MultiArray<2u, float, std::allocator<float> >&) [1]
+                0.00    0.00  152159/770935      void std::__unguarded_linear_insert<__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__ops::_Val_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)> >(__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__ops::_Val_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)>) [42]
+                0.00    0.00  179115/770935      std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::operator=(std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >&&) [43]
+                0.01    0.00  262143/770935      void std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >::_M_emplace_back_aux<sift::InterestPoint>(sift::InterestPoint&&) [28]
+[25]     0.0    0.02    0.00  770935+29137   std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_M_erase(std::_Rb_tree_node<float>*) [25]
+                               29137             std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_M_erase(std::_Rb_tree_node<float>*) [25]
+-----------------------------------------------
+                0.00    0.00      28/322220      void vigra::MultiArray<2u, float, std::allocator<float> >::copyOrReshape<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&) [45]
+                0.00    0.00   41170/322220      bool vigra::linalg::detail::qrHouseholderStepImpl<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(long, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&) [11]
+                0.02    0.00  281022/322220      bool vigra::linalg::qrDecomposition<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, double) [12]
+[26]     0.0    0.02    0.00  322220         void vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::copyImpl<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&) [26]
+-----------------------------------------------
+                0.02    0.00  140511/140511      sift::Sift::_eliminateEdgeResponses(std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&, sift::Matrix<sift::OctaveElem> const&) const [2]
+[27]     0.0    0.02    0.00  140511         sift::alg::foDerivative(std::array<vigra::MultiArray<2u, float, std::allocator<float> >, 3ul> const&, sift::Point<unsigned short, unsigned short> const&) [27]
+                0.00    0.00  140511/1774292     vigra::MultiArray<2u, float, std::allocator<float> >::MultiArray(vigra::TinyVector<long, 2> const&, std::allocator<float> const&) [20]
+-----------------------------------------------
+                0.01    0.01      19/19          sift::Sift::_findScaleSpaceExtrema(sift::Matrix<sift::OctaveElem> const&, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&) const [13]
+[28]     0.0    0.01    0.01      19         void std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >::_M_emplace_back_aux<sift::InterestPoint>(sift::InterestPoint&&) [28]
+                0.01    0.00  262143/770935      std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_M_erase(std::_Rb_tree_node<float>*) [25]
+                0.00    0.00      19/152180      sift::InterestPoint::InterestPoint(sift::InterestPoint&&) [61]
+-----------------------------------------------
+                0.00    0.02   20585/20585       unsigned int vigra::linalg::linearSolveQRReplace<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, double) [9]
+[29]     0.0    0.00    0.02   20585         unsigned int vigra::linalg::detail::qrTransformToLowerTriangular<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, double) [29]
+                0.01    0.01   20585/322137      unsigned int vigra::linalg::detail::qrTransformToTriangularImpl<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::ArrayVector<long, std::allocator<long> >&, double) [7]
+                0.00    0.00   20585/3339995     vigra::MultiArray<2u, float, std::allocator<float> >::MultiArray<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, std::allocator<float> const&) [18]
+-----------------------------------------------
+                               13478             void std::__introsort_loop<__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, long, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)> >(__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, long, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)>) [clone .constprop.243] [30]
+                0.01    0.00       2/2           sift::Sift::calculate(vigra::MultiArray<2u, float, std::allocator<float> >&) [1]
+[30]     0.0    0.01    0.00       2+13478   void std::__introsort_loop<__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, long, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)> >(__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, long, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)>) [clone .constprop.243] [30]
+                0.00    0.00   26952/179115      std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::operator=(std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >&&) [43]
+                0.00    0.00   13476/770935      std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_M_erase(std::_Rb_tree_node<float>*) [25]
+                0.00    0.00       2/2           void std::swap<sift::InterestPoint>(sift::InterestPoint&, sift::InterestPoint&) [48]
+                               13478             void std::__introsort_loop<__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, long, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)> >(__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, long, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)>) [clone .constprop.243] [30]
+-----------------------------------------------
+                0.01    0.00   20585/20585       unsigned int vigra::linalg::linearSolveQRReplace<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, double) [9]
+[31]     0.0    0.01    0.00   20585         void vigra::linalg::detail::applyHouseholderColumnReflections<float, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&) [31]
+                0.00    0.00   41170/3339995     vigra::MultiArray<2u, float, std::allocator<float> >::MultiArray<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, std::allocator<float> const&) [18]
+                0.00    0.00   41170/2693313     vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>& vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::operator-=<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&) [33]
+                0.00    0.00   41170/2833769     vigra::NormTraits<float>::SquaredNormType vigra::linalg::dot<float, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&) [41]
+-----------------------------------------------
+                0.00    0.01       3/3           sift::Sift::_createDOGs(vigra::MultiArray<2u, float, std::allocator<float> >&) [15]
+[32]     0.0    0.00    0.01       3         sift::alg::reduceToNextLevel(vigra::MultiArray<2u, float, std::allocator<float> > const&, float) [32]
+                0.01    0.00       3/3           void vigra::resizeImageNoInterpolation<vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float>, vigra::StridedImageIterator<float>, vigra::StandardValueAccessor<float> >(vigra::ConstStridedImageIterator<float>, vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float>, vigra::StridedImageIterator<float>, vigra::StridedImageIterator<float>, vigra::StandardValueAccessor<float>) [39]
+                0.00    0.00       3/11512       sift::alg::convolveWithGauss(vigra::MultiArray<2u, float, std::allocator<float> > const&, float) [6]
+                0.00    0.00       3/1774292     vigra::MultiArray<2u, float, std::allocator<float> >::MultiArray(vigra::TinyVector<long, 2> const&, std::allocator<float> const&) [20]
+-----------------------------------------------
+                0.00    0.00   41170/2693313     void vigra::linalg::detail::applyHouseholderColumnReflections<float, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&) [31]
+                0.01    0.00 2652143/2693313     bool vigra::linalg::detail::qrHouseholderStepImpl<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(long, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&) [11]
+[33]     0.0    0.01    0.00 2693313         vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>& vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::operator-=<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&) [33]
+                0.00    0.00 2693313/2693313     bool vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::arraysOverlap<vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&) const [56]
+-----------------------------------------------
+                0.01    0.00 2253216/2253216     sift::Sift::_orientationAssignment(std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&) [3]
+[34]     0.0    0.01    0.00 2253216         sift::alg::gradientOrientation(vigra::MultiArray<2u, float, std::allocator<float> > const&, sift::Point<unsigned short, unsigned short> const&) [34]
+-----------------------------------------------
+                0.00    0.00   11496/811912      sift::Sift::_orientationAssignment(std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&) [3]
+                0.00    0.00   41170/811912      bool vigra::linalg::detail::qrHouseholderStepImpl<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(long, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&) [11]
+                0.00    0.00  115082/811912      unsigned int vigra::linalg::detail::qrTransformToTriangularImpl<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::ArrayVector<long, std::allocator<long> >&, double) [7]
+                0.00    0.00  280912/811912      bool vigra::linalg::inverse<float, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&) [10]
+                0.00    0.00  363252/811912      unsigned int vigra::linalg::linearSolveQRReplace<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, double) [9]
+[35]     0.0    0.01    0.00  811912         vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::subarray(vigra::TinyVector<long, 2>, vigra::TinyVector<long, 2>) const [35]
+-----------------------------------------------
+                0.00    0.00   41170/322192      bool vigra::linalg::detail::qrHouseholderStepImpl<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(long, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&) [11]
+                0.01    0.00  281022/322192      bool vigra::linalg::qrDecomposition<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, double) [12]
+[36]     0.0    0.01    0.00  322192         void vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::assignImpl<vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&) [36]
+-----------------------------------------------
+                0.00    0.01      12/12          sift::Sift::calculate(vigra::MultiArray<2u, float, std::allocator<float> >&) [1]
+[37]     0.0    0.00    0.01      12         void vigra::detail::exportImage<vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float> >(vigra::ConstStridedImageIterator<float>, vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float>, vigra::ImageExportInfo const&, vigra::VigraTrueType) [37]
+                0.01    0.00      12/12          void vigra::detail::write_image_band<unsigned char, vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float>, vigra::detail::linear_transform>(vigra::Encoder*, vigra::ConstStridedImageIterator<float>, vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float>, vigra::detail::linear_transform const&) [38]
+                0.00    0.00      36/140498      sift::Matrix<sift::OctaveElem>::operator[](sift::Point<unsigned short, unsigned short> const&) [clone .constprop.240] [63]
+-----------------------------------------------
+                0.01    0.00      12/12          void vigra::detail::exportImage<vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float> >(vigra::ConstStridedImageIterator<float>, vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float>, vigra::ImageExportInfo const&, vigra::VigraTrueType) [37]
+[38]     0.0    0.01    0.00      12         void vigra::detail::write_image_band<unsigned char, vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float>, vigra::detail::linear_transform>(vigra::Encoder*, vigra::ConstStridedImageIterator<float>, vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float>, vigra::detail::linear_transform const&) [38]
+                0.00    0.00      24/24          vigra::throw_precondition_error(bool, char const*, char const*, int) [clone .constprop.255] [72]
+-----------------------------------------------
+                0.01    0.00       3/3           sift::alg::reduceToNextLevel(vigra::MultiArray<2u, float, std::allocator<float> > const&, float) [32]
+[39]     0.0    0.01    0.00       3         void vigra::resizeImageNoInterpolation<vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float>, vigra::StridedImageIterator<float>, vigra::StandardValueAccessor<float> >(vigra::ConstStridedImageIterator<float>, vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float>, vigra::StridedImageIterator<float>, vigra::StridedImageIterator<float>, vigra::StandardValueAccessor<float>) [39]
+                0.00    0.00       3/3           vigra::BasicImage<float, std::allocator<float> >::deallocate() [77]
+-----------------------------------------------
+                                                 <spontaneous>
+[40]     0.0    0.01    0.00                 void vigra::linalg::detail::incrementalMaxSingularValueApproximation<float, vigra::StridedArrayTag, vigra::StridedArrayTag, float>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, float&) [40]
+-----------------------------------------------
+                0.00    0.00   41170/2833769     void vigra::linalg::detail::applyHouseholderColumnReflections<float, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&) [31]
+                0.00    0.00  140456/2833769     sift::Sift::_eliminateEdgeResponses(std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&, sift::Matrix<sift::OctaveElem> const&) const [2]
+                0.01    0.00 2652143/2833769     bool vigra::linalg::detail::qrHouseholderStepImpl<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(long, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&) [11]
+[41]     0.0    0.01    0.00 2833769         vigra::NormTraits<float>::SquaredNormType vigra::linalg::dot<float, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&) [41]
+-----------------------------------------------
+                0.00    0.00      30/152159      void std::__insertion_sort<__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)> >(__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)>) [clone .constprop.248] [47]
+                0.00    0.01  152129/152159      sift::Sift::calculate(vigra::MultiArray<2u, float, std::allocator<float> >&) [1]
+[42]     0.0    0.00    0.01  152159         void std::__unguarded_linear_insert<__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__ops::_Val_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)> >(__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__ops::_Val_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)>) [42]
+                0.00    0.00  152159/179115      std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::operator=(std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >&&) [43]
+                0.00    0.00  152159/770935      std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_M_erase(std::_Rb_tree_node<float>*) [25]
+                0.00    0.00  152209/152209      sift::InterestPoint::cmpByFilter(sift::InterestPoint const&, sift::InterestPoint const&) [60]
+                0.00    0.00  152159/152180      sift::InterestPoint::InterestPoint(sift::InterestPoint&&) [61]
+-----------------------------------------------
+                0.00    0.00       4/179115      void std::swap<sift::InterestPoint>(sift::InterestPoint&, sift::InterestPoint&) [48]
+                0.00    0.00   26952/179115      void std::__introsort_loop<__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, long, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)> >(__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, long, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)>) [clone .constprop.243] [30]
+                0.00    0.00  152159/179115      void std::__unguarded_linear_insert<__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__ops::_Val_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)> >(__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__ops::_Val_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)>) [42]
+[43]     0.0    0.00    0.00  179115         std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::operator=(std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >&&) [43]
+                0.00    0.00  179115/770935      std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_M_erase(std::_Rb_tree_node<float>*) [25]
+-----------------------------------------------
+                                                 <spontaneous>
+[44]     0.0    0.00    0.00                 std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >::~vector() [44]
+                0.00    0.00   12033/770935      std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_M_erase(std::_Rb_tree_node<float>*) [25]
+-----------------------------------------------
+                0.00    0.00       4/32          sift::Sift::_createDOGs(vigra::MultiArray<2u, float, std::allocator<float> >&) [15]
+                0.00    0.00      28/32          sift::Matrix<sift::OctaveElem>::Matrix(unsigned short, unsigned short, sift::OctaveElem const&) [46]
+[45]     0.0    0.00    0.00      32         void vigra::MultiArray<2u, float, std::allocator<float> >::copyOrReshape<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&) [45]
+                0.00    0.00      28/322220      void vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::copyImpl<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&) [26]
+                0.00    0.00      32/3339995     vigra::MultiArray<2u, float, std::allocator<float> >::MultiArray<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, std::allocator<float> const&) [18]
+-----------------------------------------------
+                0.00    0.00       2/2           sift::Sift::_createDOGs(vigra::MultiArray<2u, float, std::allocator<float> >&) [15]
+[46]     0.0    0.00    0.00       2         sift::Matrix<sift::OctaveElem>::Matrix(unsigned short, unsigned short, sift::OctaveElem const&) [46]
+                0.00    0.00      28/32          void vigra::MultiArray<2u, float, std::allocator<float> >::copyOrReshape<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&) [45]
+-----------------------------------------------
+                0.00    0.00       2/2           sift::Sift::calculate(vigra::MultiArray<2u, float, std::allocator<float> >&) [1]
+[47]     0.0    0.00    0.00       2         void std::__insertion_sort<__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)> >(__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)>) [clone .constprop.248] [47]
+                0.00    0.00      30/152159      void std::__unguarded_linear_insert<__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__ops::_Val_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)> >(__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__ops::_Val_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)>) [42]
+-----------------------------------------------
+                0.00    0.00       2/2           void std::__introsort_loop<__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, long, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)> >(__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, long, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)>) [clone .constprop.243] [30]
+[48]     0.0    0.00    0.00       2         void std::swap<sift::InterestPoint>(sift::InterestPoint&, sift::InterestPoint&) [48]
+                0.00    0.00       4/179115      std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::operator=(std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >&&) [43]
+                0.00    0.00       2/770935      std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_M_erase(std::_Rb_tree_node<float>*) [25]
+                0.00    0.00       2/152180      sift::InterestPoint::InterestPoint(sift::InterestPoint&&) [61]
+-----------------------------------------------
+                0.00    0.00  161041/161041      bool vigra::linalg::linearSolve<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>, std::string) [8]
+[49]     0.0    0.00    0.00  161041         frame_dummy [49]
+-----------------------------------------------
+                0.00    0.00 2693313/2693313     vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>& vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::operator-=<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&) [33]
+[56]     0.0    0.00    0.00 2693313         bool vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::arraysOverlap<vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&) const [56]
+-----------------------------------------------
+                0.00    0.00  945826/945826      bool vigra::linalg::detail::qrHouseholderStepImpl<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(long, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&) [11]
+[57]     0.0    0.00    0.00  945826         vigra::throw_precondition_error(bool, char const*, char const*, int) [57]
+-----------------------------------------------
+                0.00    0.00  140511/281022      bool vigra::linalg::qrDecomposition<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, double) [12]
+                0.00    0.00  140511/281022      bool vigra::linalg::inverse<float, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&) [10]
+[58]     0.0    0.00    0.00  281022         vigra::throw_precondition_error(bool, char const*, char const*, int) [clone .constprop.254] [58]
+-----------------------------------------------
+                0.00    0.00  161041/161041      unsigned int vigra::linalg::detail::qrTransformToTriangularImpl<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::ArrayVector<long, std::allocator<long> >&, double) [7]
+[59]     0.0    0.00    0.00  161041         vigra::MultiArray<2u, float, std::allocator<float> >::reshape(vigra::TinyVector<long, 2> const&, float const&) [59]
+-----------------------------------------------
+                0.00    0.00  152209/152209      void std::__unguarded_linear_insert<__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__ops::_Val_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)> >(__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__ops::_Val_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)>) [42]
+[60]     0.0    0.00    0.00  152209         sift::InterestPoint::cmpByFilter(sift::InterestPoint const&, sift::InterestPoint const&) [60]
+-----------------------------------------------
+                0.00    0.00       2/152180      void std::swap<sift::InterestPoint>(sift::InterestPoint&, sift::InterestPoint&) [48]
+                0.00    0.00      19/152180      void std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >::_M_emplace_back_aux<sift::InterestPoint>(sift::InterestPoint&&) [28]
+                0.00    0.00  152159/152180      void std::__unguarded_linear_insert<__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__ops::_Val_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)> >(__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__ops::_Val_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)>) [42]
+[61]     0.0    0.00    0.00  152180         sift::InterestPoint::InterestPoint(sift::InterestPoint&&) [61]
+-----------------------------------------------
+                0.00    0.00  140511/140511      bool vigra::linalg::qrDecomposition<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, double) [12]
+[62]     0.0    0.00    0.00  140511         vigra::linalg::TemporaryMatrix<float, std::allocator<float> > vigra::linalg::identityMatrix<float>(long) [62]
+-----------------------------------------------
+                0.00    0.00       2/140498      sift::Sift::_createDOGs(vigra::MultiArray<2u, float, std::allocator<float> >&) [15]
+                0.00    0.00       4/140498      sift::Sift::calculate(vigra::MultiArray<2u, float, std::allocator<float> >&) [1]
+                0.00    0.00      36/140498      void vigra::detail::exportImage<vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float> >(vigra::ConstStridedImageIterator<float>, vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float>, vigra::ImageExportInfo const&, vigra::VigraTrueType) [37]
+                0.00    0.00  140456/140498      sift::Sift::_eliminateEdgeResponses(std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&, sift::Matrix<sift::OctaveElem> const&) const [2]
+[63]     0.0    0.00    0.00  140498         sift::Matrix<sift::OctaveElem>::operator[](sift::Point<unsigned short, unsigned short> const&) [clone .constprop.240] [63]
+-----------------------------------------------
+                0.00    0.00  104311/104311      unsigned int vigra::linalg::detail::qrTransformToTriangularImpl<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::ArrayVector<long, std::allocator<long> >&, double) [7]
+[64]     0.0    0.00    0.00  104311         void vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::swapDataImpl<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>) [64]
+-----------------------------------------------
+                0.00    0.00   20585/20585       unsigned int vigra::linalg::linearSolveQRReplace<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, double) [9]
+[65]     0.0    0.00    0.00   20585         bool vigra::linalg::linearSolveLowerTriangular<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>) [65]
+-----------------------------------------------
+                0.00    0.00   20585/20585       sift::Sift::_findPeaks(std::array<float, 36ul> const&) const [23]
+[66]     0.0    0.00    0.00   20585         std::pair<std::_Rb_tree_iterator<float>, bool> std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_M_emplace_unique<float>(float&&) [66]
+-----------------------------------------------
+                0.00    0.00   11650/11650       sift::Sift::_orientationAssignment(std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&) [3]
+[67]     0.0    0.00    0.00   11650         sift::Sift::_findNearestGaussian(float) [67]
+-----------------------------------------------
+                0.00    0.00   11512/11512       vigra::Kernel1D<float>::initGaussian(double, float, double) [69]
+[68]     0.0    0.00    0.00   11512         vigra::Gaussian<float>::calculateHermitePolynomial() [68]
+-----------------------------------------------
+                0.00    0.00   11512/11512       sift::alg::convolveWithGauss(vigra::MultiArray<2u, float, std::allocator<float> > const&, float) [6]
+[69]     0.0    0.00    0.00   11512         vigra::Kernel1D<float>::initGaussian(double, float, double) [69]
+                0.00    0.00   11512/11512       vigra::Gaussian<float>::calculateHermitePolynomial() [68]
+-----------------------------------------------
+                0.00    0.00   11496/11496       sift::Sift::_orientationAssignment(std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&) [3]
+[70]     0.0    0.00    0.00   11496         sift::alg::orientationHistogram(vigra::MultiArray<2u, float, std::allocator<float> > const&, vigra::MultiArray<2u, float, std::allocator<float> > const&, vigra::MultiArray<2u, float, std::allocator<float> > const&) [70]
+-----------------------------------------------
+                                8552             std::_Rb_tree_node<float>* std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_M_copy<std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_Reuse_or_alloc_node>(std::_Rb_tree_node<float> const*, std::_Rb_tree_node<float>*, std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_Reuse_or_alloc_node&) [71]
+                0.00    0.00   11496/11496       sift::Sift::_orientationAssignment(std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&) [3]
+[71]     0.0    0.00    0.00   11496+8552    std::_Rb_tree_node<float>* std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_M_copy<std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_Reuse_or_alloc_node>(std::_Rb_tree_node<float> const*, std::_Rb_tree_node<float>*, std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_Reuse_or_alloc_node&) [71]
+                                8552             std::_Rb_tree_node<float>* std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_M_copy<std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_Reuse_or_alloc_node>(std::_Rb_tree_node<float> const*, std::_Rb_tree_node<float>*, std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_Reuse_or_alloc_node&) [71]
+-----------------------------------------------
+                0.00    0.00      24/24          void vigra::detail::write_image_band<unsigned char, vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float>, vigra::detail::linear_transform>(vigra::Encoder*, vigra::ConstStridedImageIterator<float>, vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float>, vigra::detail::linear_transform const&) [38]
+[72]     0.0    0.00    0.00      24         vigra::throw_precondition_error(bool, char const*, char const*, int) [clone .constprop.255] [72]
+-----------------------------------------------
+                0.00    0.00      24/24          sift::Sift::calculate(vigra::MultiArray<2u, float, std::allocator<float> >&) [1]
+[73]     0.0    0.00    0.00      24         std::string __gnu_cxx::__to_xstring<std::string, char>(int (*)(char*, unsigned long, char const*, __va_list_tag*), unsigned long, char const*, ...) [clone .constprop.230] [73]
+-----------------------------------------------
+                0.00    0.00       9/9           sift::Sift::_createDOGs(vigra::MultiArray<2u, float, std::allocator<float> >&) [15]
+[74]     0.0    0.00    0.00       9         sift::Matrix<sift::OctaveElem>::operator[](sift::Point<unsigned short, unsigned short> const&) [74]
+-----------------------------------------------
+                0.00    0.00       2/4           boost::program_options::typed_value<float, char>::~typed_value() [96]
+                0.00    0.00       2/4           std::_Rb_tree<std::string, std::pair<std::string const, boost::program_options::variable_value>, std::_Select1st<std::pair<std::string const, boost::program_options::variable_value> >, std::less<std::string>, std::allocator<std::pair<std::string const, boost::program_options::variable_value> > >::_M_erase(std::_Rb_tree_node<std::pair<std::string const, boost::program_options::variable_value> >*) [90]
+[75]     0.0    0.00    0.00       4         boost::any::holder<float>::~holder() [75]
+-----------------------------------------------
+                0.00    0.00       2/4           boost::program_options::typed_value<unsigned short, char>::~typed_value() [99]
+                0.00    0.00       2/4           std::_Rb_tree<std::string, std::pair<std::string const, boost::program_options::variable_value>, std::_Select1st<std::pair<std::string const, boost::program_options::variable_value> >, std::less<std::string>, std::allocator<std::pair<std::string const, boost::program_options::variable_value> > >::_M_erase(std::_Rb_tree_node<std::pair<std::string const, boost::program_options::variable_value> >*) [90]
+[76]     0.0    0.00    0.00       4         boost::any::holder<unsigned short>::~holder() [76]
+-----------------------------------------------
+                0.00    0.00       3/3           void vigra::resizeImageNoInterpolation<vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float>, vigra::StridedImageIterator<float>, vigra::StandardValueAccessor<float> >(vigra::ConstStridedImageIterator<float>, vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float>, vigra::StridedImageIterator<float>, vigra::StridedImageIterator<float>, vigra::StandardValueAccessor<float>) [39]
+[77]     0.0    0.00    0.00       3         vigra::BasicImage<float, std::allocator<float> >::deallocate() [77]
+-----------------------------------------------
+                0.00    0.00       2/2           boost::program_options::typed_value<float, char>::default_value(float const&) [95]
+[78]     0.0    0.00    0.00       2         boost::detail::lexical_converter_impl<std::string, float>::try_convert(float const&, std::string&) [78]
+-----------------------------------------------
+                0.00    0.00       2/2           boost::program_options::typed_value<float, char>::notify(boost::any const&) const [213]
+[79]     0.0    0.00    0.00       2         boost::any::holder<float>::type() const [79]
+-----------------------------------------------
+                0.00    0.00       2/2           boost::program_options::typed_value<float, char>::apply_default(boost::any&) const [211]
+[80]     0.0    0.00    0.00       2         boost::any::holder<float>::clone() const [80]
+-----------------------------------------------
+                0.00    0.00       2/2           boost::program_options::typed_value<unsigned short, char>::notify(boost::any const&) const [222]
+[81]     0.0    0.00    0.00       2         boost::any::holder<unsigned short>::type() const [81]
+-----------------------------------------------
+                0.00    0.00       2/2           boost::program_options::typed_value<unsigned short, char>::apply_default(boost::any&) const [220]
+[82]     0.0    0.00    0.00       2         boost::any::holder<unsigned short>::clone() const [82]
+-----------------------------------------------
+                0.00    0.00       1/2           sift::Sift::_createDOGs(vigra::MultiArray<2u, float, std::allocator<float> >&) [15]
+                0.00    0.00       1/2           sift::Sift::calculate(vigra::MultiArray<2u, float, std::allocator<float> >&) [1]
+[83]     0.0    0.00    0.00       2         std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>::_M_release() [83]
+                0.00    0.00       2/2           std::_Sp_counted_deleter<sift::OctaveElem*, std::default_delete<sift::OctaveElem []>, std::allocator<void>, (__gnu_cxx::_Lock_policy)2>::_M_dispose() [84]
+-----------------------------------------------
+                0.00    0.00       2/2           std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>::_M_release() [83]
+[84]     0.0    0.00    0.00       2         std::_Sp_counted_deleter<sift::OctaveElem*, std::default_delete<sift::OctaveElem []>, std::allocator<void>, (__gnu_cxx::_Lock_policy)2>::_M_dispose() [84]
+-----------------------------------------------
+                0.00    0.00       2/2           boost::program_options::basic_command_line_parser<char>::basic_command_line_parser(int, char const* const*) [115]
+[85]     0.0    0.00    0.00       2         void std::vector<std::string, std::allocator<std::string> >::_M_emplace_back_aux<std::string>(std::string&&) [85]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [299]
+[86]     0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN4sift4Sift9calculateERN5vigra10MultiArrayILj2EfSaIfEEE [86]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [299]
+[87]     0.0    0.00    0.00       1         _GLOBAL__sub_I_main [87]
+-----------------------------------------------
+                0.00    0.00       1/1           sift::Sift::calculate(vigra::MultiArray<2u, float, std::allocator<float> >&) [1]
+[88]     0.0    0.00    0.00       1         std::_Sp_counted_deleter<sift::OctaveElem*, std::default_delete<sift::OctaveElem []>, std::allocator<void>, (__gnu_cxx::_Lock_policy)2>::_M_destroy() [88]
+-----------------------------------------------
+                0.00    0.00       1/1           boost::program_options::variables_map::~variables_map() [103]
+[89]     0.0    0.00    0.00       1         std::_Rb_tree<std::string, std::string, std::_Identity<std::string>, std::less<std::string>, std::allocator<std::string> >::_M_erase(std::_Rb_tree_node<std::string>*) [89]
+-----------------------------------------------
+                                   5             std::_Rb_tree<std::string, std::pair<std::string const, boost::program_options::variable_value>, std::_Select1st<std::pair<std::string const, boost::program_options::variable_value> >, std::less<std::string>, std::allocator<std::pair<std::string const, boost::program_options::variable_value> > >::_M_erase(std::_Rb_tree_node<std::pair<std::string const, boost::program_options::variable_value> >*) [90]
+                0.00    0.00       1/1           boost::program_options::variables_map::~variables_map() [103]
+[90]     0.0    0.00    0.00       1+5       std::_Rb_tree<std::string, std::pair<std::string const, boost::program_options::variable_value>, std::_Select1st<std::pair<std::string const, boost::program_options::variable_value> >, std::less<std::string>, std::allocator<std::pair<std::string const, boost::program_options::variable_value> > >::_M_erase(std::_Rb_tree_node<std::pair<std::string const, boost::program_options::variable_value> >*) [90]
+                0.00    0.00       2/4           boost::any::holder<unsigned short>::~holder() [76]
+                0.00    0.00       2/4           boost::any::holder<float>::~holder() [75]
+                                   5             std::_Rb_tree<std::string, std::pair<std::string const, boost::program_options::variable_value>, std::_Select1st<std::pair<std::string const, boost::program_options::variable_value> >, std::less<std::string>, std::allocator<std::pair<std::string const, boost::program_options::variable_value> > >::_M_erase(std::_Rb_tree_node<std::pair<std::string const, boost::program_options::variable_value> >*) [90]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function is in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+Copyright (C) 2012-2014 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+Index by function name
+
+  [86] _GLOBAL__sub_I__ZN4sift4Sift9calculateERN5vigra10MultiArrayILj2EfSaIfEEE [17] bool vigra::multi_math::any<vigra::multi_math::MultiMathBinaryOperator<vigra::multi_math::MultiMathOperand<vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> >, vigra::multi_math::MultiMathOperand<float>, vigra::multi_math::math_detail::Greater> >(vigra::multi_math::MultiMathOperand<vigra::multi_math::MultiMathBinaryOperator<vigra::multi_math::MultiMathOperand<vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> >, vigra::multi_math::MultiMathOperand<float>, vigra::multi_math::math_detail::Greater> > const&) [73] std::string __gnu_cxx::__to_xstring<std::string, char>(int (*)(char*, unsigned long, char const*, __va_list_tag*), unsigned long, char const*, ...) [clone .constprop.230]
+  [87] _GLOBAL__sub_I_main    [36] void vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::assignImpl<vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&) [23] sift::Sift::_findPeaks(std::array<float, 36ul> const&) const
+  [60] sift::InterestPoint::cmpByFilter(sift::InterestPoint const&, sift::InterestPoint const&) [64] void vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::swapDataImpl<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>) [13] sift::Sift::_findScaleSpaceExtrema(sift::Matrix<sift::OctaveElem> const&, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&) const
+  [61] sift::InterestPoint::InterestPoint(sift::InterestPoint&&) [26] void vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::copyImpl<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&) [2] sift::Sift::_eliminateEdgeResponses(std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&, sift::Matrix<sift::OctaveElem> const&) const
+  [27] sift::alg::foDerivative(std::array<vigra::MultiArray<2u, float, std::allocator<float> >, 3ul> const&, sift::Point<unsigned short, unsigned short> const&) [33] vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>& vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::operator-=<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&) [79] boost::any::holder<float>::type() const
+   [4] sift::alg::soDerivative(std::array<vigra::MultiArray<2u, float, std::allocator<float> >, 3ul> const&, sift::Point<unsigned short, unsigned short> const&) [57] vigra::throw_precondition_error(bool, char const*, char const*, int) [80] boost::any::holder<float>::clone() const
+  [22] sift::alg::vertexParabola(sift::Point<unsigned short, float> const&, sift::Point<unsigned short, float> const&, sift::Point<unsigned short, float> const&) [58] vigra::throw_precondition_error(bool, char const*, char const*, int) [clone .constprop.254] [81] boost::any::holder<unsigned short>::type() const
+   [6] sift::alg::convolveWithGauss(vigra::MultiArray<2u, float, std::allocator<float> > const&, float) [72] vigra::throw_precondition_error(bool, char const*, char const*, int) [clone .constprop.255] [82] boost::any::holder<unsigned short>::clone() const
+  [19] sift::alg::gradientMagnitude(vigra::MultiArray<2u, float, std::allocator<float> > const&, sift::Point<unsigned short, unsigned short> const&) [39] void vigra::resizeImageNoInterpolation<vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float>, vigra::StridedImageIterator<float>, vigra::StandardValueAccessor<float> >(vigra::ConstStridedImageIterator<float>, vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float>, vigra::StridedImageIterator<float>, vigra::StridedImageIterator<float>, vigra::StandardValueAccessor<float>) [56] bool vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::arraysOverlap<vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&) const
+  [32] sift::alg::reduceToNextLevel(vigra::MultiArray<2u, float, std::allocator<float> > const&, float) [5] void vigra::internalConvolveLineReflect<vigra::IteratorAdaptor<vigra::StridedIteratorPolicy<vigra::ImageIteratorBase<vigra::ConstStridedImageIterator<float>, float, float const&, float const*, vigra::StridedArrayTag> > >, vigra::StandardConstValueAccessor<float>, vigra::IteratorAdaptor<vigra::StridedIteratorPolicy<vigra::ImageIteratorBase<vigra::StridedImageIterator<float>, float, float&, float*, vigra::StridedArrayTag> > >, vigra::StandardValueAccessor<float>, float const*, vigra::StandardConstAccessor<float> >(vigra::IteratorAdaptor<vigra::StridedIteratorPolicy<vigra::ImageIteratorBase<vigra::ConstStridedImageIterator<float>, float, float const&, float const*, vigra::StridedArrayTag> > >, vigra::IteratorAdaptor<vigra::StridedIteratorPolicy<vigra::ImageIteratorBase<vigra::ConstStridedImageIterator<float>, float, float const&, float const*, vigra::StridedArrayTag> > >, vigra::StandardConstValueAccessor<float>, vigra::IteratorAdaptor<vigra::StridedIteratorPolicy<vigra::ImageIteratorBase<vigra::StridedImageIterator<float>, float, float&, float*, vigra::StridedArrayTag> > >, vigra::StandardValueAccessor<float>, float const*, vigra::StandardConstAccessor<float>, int, int, int, int) [35] vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>::subarray(vigra::TinyVector<long, 2>, vigra::TinyVector<long, 2>) const
+  [34] sift::alg::gradientOrientation(vigra::MultiArray<2u, float, std::allocator<float> > const&, sift::Point<unsigned short, unsigned short> const&) [37] void vigra::detail::exportImage<vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float> >(vigra::ConstStridedImageIterator<float>, vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float>, vigra::ImageExportInfo const&, vigra::VigraTrueType) [83] std::_Sp_counted_base<(__gnu_cxx::_Lock_policy)2>::_M_release()
+  [70] sift::alg::orientationHistogram(vigra::MultiArray<2u, float, std::allocator<float> > const&, vigra::MultiArray<2u, float, std::allocator<float> > const&, vigra::MultiArray<2u, float, std::allocator<float> > const&) [38] void vigra::detail::write_image_band<unsigned char, vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float>, vigra::detail::linear_transform>(vigra::Encoder*, vigra::ConstStridedImageIterator<float>, vigra::ConstStridedImageIterator<float>, vigra::StandardConstValueAccessor<float>, vigra::detail::linear_transform const&) [88] std::_Sp_counted_deleter<sift::OctaveElem*, std::default_delete<sift::OctaveElem []>, std::allocator<void>, (__gnu_cxx::_Lock_policy)2>::_M_destroy()
+  [16] sift::alg::dog(vigra::MultiArray<2u, float, std::allocator<float> > const&, vigra::MultiArray<2u, float, std::allocator<float> > const&) [8] bool vigra::linalg::linearSolve<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>, std::string) [84] std::_Sp_counted_deleter<sift::OctaveElem*, std::default_delete<sift::OctaveElem []>, std::allocator<void>, (__gnu_cxx::_Lock_policy)2>::_M_dispose()
+  [15] sift::Sift::_createDOGs(vigra::MultiArray<2u, float, std::allocator<float> >&) [62] vigra::linalg::TemporaryMatrix<float, std::allocator<float> > vigra::linalg::identityMatrix<float>(long) [28] void std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >::_M_emplace_back_aux<sift::InterestPoint>(sift::InterestPoint&&)
+  [67] sift::Sift::_findNearestGaussian(float) [12] bool vigra::linalg::qrDecomposition<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, double) [85] void std::vector<std::string, std::allocator<std::string> >::_M_emplace_back_aux<std::string>(std::string&&)
+   [3] sift::Sift::_orientationAssignment(std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> >&) [9] unsigned int vigra::linalg::linearSolveQRReplace<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, double) [89] std::_Rb_tree<std::string, std::string, std::_Identity<std::string>, std::less<std::string>, std::allocator<std::string> >::_M_erase(std::_Rb_tree_node<std::string>*)
+  [46] sift::Matrix<sift::OctaveElem>::Matrix(unsigned short, unsigned short, sift::OctaveElem const&) [65] bool vigra::linalg::linearSolveLowerTriangular<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>) [90] std::_Rb_tree<std::string, std::pair<std::string const, boost::program_options::variable_value>, std::_Select1st<std::pair<std::string const, boost::program_options::variable_value> >, std::less<std::string>, std::allocator<std::pair<std::string const, boost::program_options::variable_value> > >::_M_erase(std::_Rb_tree_node<std::pair<std::string const, boost::program_options::variable_value> >*)
+  [74] sift::Matrix<sift::OctaveElem>::operator[](sift::Point<unsigned short, unsigned short> const&) [21] bool vigra::linalg::linearSolveUpperTriangular<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>) [66] std::pair<std::_Rb_tree_iterator<float>, bool> std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_M_emplace_unique<float>(float&&)
+  [63] sift::Matrix<sift::OctaveElem>::operator[](sift::Point<unsigned short, unsigned short> const&) [clone .constprop.240] [41] vigra::NormTraits<float>::SquaredNormType vigra::linalg::dot<float, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&) [71] std::_Rb_tree_node<float>* std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_M_copy<std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_Reuse_or_alloc_node>(std::_Rb_tree_node<float> const*, std::_Rb_tree_node<float>*, std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_Reuse_or_alloc_node&)
+  [75] boost::any::holder<float>::~holder() [11] bool vigra::linalg::detail::qrHouseholderStepImpl<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(long, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&) [25] std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::_M_erase(std::_Rb_tree_node<float>*)
+  [76] boost::any::holder<unsigned short>::~holder() [7] unsigned int vigra::linalg::detail::qrTransformToTriangularImpl<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::ArrayVector<long, std::allocator<long> >&, double) [43] std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >::operator=(std::_Rb_tree<float, float, std::_Identity<float>, std::less<float>, std::allocator<float> >&&)
+  [78] boost::detail::lexical_converter_impl<std::string, float>::try_convert(float const&, std::string&) [29] unsigned int vigra::linalg::detail::qrTransformToLowerTriangular<float, vigra::StridedArrayTag, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, double) [47] void std::__insertion_sort<__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)> >(__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)>) [clone .constprop.248]
+  [77] vigra::BasicImage<float, std::allocator<float> >::deallocate() [14] unsigned int vigra::linalg::detail::qrTransformToUpperTriangular<float, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, vigra::ArrayVector<long, std::allocator<long> >&, double) [30] void std::__introsort_loop<__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, long, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)> >(__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, long, __gnu_cxx::__ops::_Iter_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)>) [clone .constprop.243]
+  [45] void vigra::MultiArray<2u, float, std::allocator<float> >::copyOrReshape<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&) [31] void vigra::linalg::detail::applyHouseholderColumnReflections<float, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&) [42] void std::__unguarded_linear_insert<__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__ops::_Val_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)> >(__gnu_cxx::__normal_iterator<sift::InterestPoint*, std::vector<sift::InterestPoint, std::allocator<sift::InterestPoint> > >, __gnu_cxx::__ops::_Val_comp_iter<bool (*)(sift::InterestPoint const&, sift::InterestPoint const&)>)
+  [59] vigra::MultiArray<2u, float, std::allocator<float> >::reshape(vigra::TinyVector<long, 2> const&, float const&) [40] void vigra::linalg::detail::incrementalMaxSingularValueApproximation<float, vigra::StridedArrayTag, vigra::StridedArrayTag, float>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&, float&) [48] void std::swap<sift::InterestPoint>(sift::InterestPoint&, sift::InterestPoint&)
+  [20] vigra::MultiArray<2u, float, std::allocator<float> >::MultiArray(vigra::TinyVector<long, 2> const&, std::allocator<float> const&) [10] bool vigra::linalg::inverse<float, vigra::StridedArrayTag, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, vigra::MultiArrayView<2u, float, vigra::StridedArrayTag>&) [49] frame_dummy
+  [18] vigra::MultiArray<2u, float, std::allocator<float> >::MultiArray<float, vigra::StridedArrayTag>(vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> const&, std::allocator<float> const&) [68] vigra::Gaussian<float>::calculateHermitePolynomial()
+  [24] bool vigra::multi_math::any<vigra::multi_math::MultiMathBinaryOperator<vigra::multi_math::MultiMathOperand<vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> >, vigra::multi_math::MultiMathOperand<float>, vigra::multi_math::math_detail::Less> >(vigra::multi_math::MultiMathOperand<vigra::multi_math::MultiMathBinaryOperator<vigra::multi_math::MultiMathOperand<vigra::MultiArrayView<2u, float, vigra::StridedArrayTag> >, vigra::multi_math::MultiMathOperand<float>, vigra::multi_math::math_detail::Less> > const&) [69] vigra::Kernel1D<float>::initGaussian(double, float, double)
