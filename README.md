@@ -2,6 +2,7 @@
 - [Intro](#intro)
 - [Installation](#installation)
 - [User Guide](#user-guide)
+- [API](#api)
 
 # Intro
 This is a C++ implementation of the SIFT algorithm, which was originally presented by David G. Lowe
@@ -86,3 +87,7 @@ accuracy. This is accomplished through doubling the size of the initial image an
 with sigma=1.0 onto it. Like mentioned in the paper, a base sigma of 0.5 is assumed in the original 
 image. Every further calculation is based on the doubled version. If this flag is set to off, the 
 algorithm starts with the initial image.
+
+# API
+A full Class and Namespace Reference can be found [here](
+https://snowiow.github.io/SIFT/)
