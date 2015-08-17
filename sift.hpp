@@ -45,6 +45,16 @@ namespace sift {
              */
             Matrix<OctaveElem> _gaussians;
 
+            /**
+             * The magnitudes of the gaussians
+             */
+            Matrix<vigra::MultiArray<2, f32_t>> _magnitudes;
+
+            /**
+             * The orientations of the gaussians
+             */
+            Matrix<vigra::MultiArray<2, f32_t>> _orientations;
+
         public:
             /**
              * @param sigma standard value 1.6
@@ -68,6 +78,23 @@ namespace sift {
             std::vector<InterestPoint> calculate(vigra::MultiArray<2, f32_t>&);
 
         private:
+            /**
+             * Creates the local image desciptors.
+             * @param interestpoints the vector with interestpoints
+             * @param dogs the dogs which were calculated in an earlier step
+             */
+            void _createDecriptors(std::vector<InterestPoint>&, const Matrix<OctaveElem>&);
+            
+            /**
+             * Creates magnitude versions of all the gaussian images.
+             */
+            void _createMagnitudePyramid();
+
+            /**
+             * Create orientation versions of all the gaussian images.
+             */
+            void _createOrientationPyramid();
+
             /**
              * Keypoint Location using Taylor expansion to filter the weak interest points. Those 
              * interest points, which get filtered get their filtered flag set to true
@@ -94,9 +121,9 @@ namespace sift {
             /**
              * Finds the nearest gaussian, based on the scale given
              * @param scale the scale
-             * @return a reference to the nearest gaussian
+             * @return the point where the Gaussian is lying in the pyramid
              */
-            const OctaveElem& _findNearestGaussian(f32_t);
+            const Point<u16_t, u16_t> _findNearestGaussian(f32_t);
 
             /**
              * Finds the Scale space extrema aka InterestPoints

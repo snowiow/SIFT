@@ -7,15 +7,15 @@ using namespace vigra::linalg;
 
 namespace sift {
     namespace alg {
-        const vigra::MultiArray<2, f32_t> convolveWithGauss(const vigra::MultiArray<2, f32_t>& input, 
+        const vigra::MultiArray<2, f32_t> convolveWithGauss(const vigra::MultiArray<2, f32_t>& img, 
                 f32_t sigma) {
 
             vigra::Kernel1D<f32_t> filter;
             filter.initGaussian(sigma);
-            vigra::MultiArray<2, f32_t> tmp(input.shape());
-            vigra::MultiArray<2, f32_t> result(input.shape());
+            vigra::MultiArray<2, f32_t> tmp(img.shape());
+            vigra::MultiArray<2, f32_t> result(img.shape());
 
-            separableConvolveX(input, tmp, filter);
+            separableConvolveX(img, tmp, filter);
             separableConvolveY(tmp, result, filter);
 
             return result;
@@ -25,25 +25,25 @@ namespace sift {
                 f32_t sigma) {
 
             // image size at current level
-            const vigra::Shape2 s((in.width()+ 1) / 2, (in.height() + 1) / 2);
+            const vigra::Shape2 s((img.width()+ 1) / 2, (img.height() + 1) / 2);
 
             // resize result image to appropriate size
             vigra::MultiArray<2, f32_t> out(s);
             // downsample smoothed image
-            resizeImageNoInterpolation(convolveWithGauss(in, sigma), out);
+            resizeImageNoInterpolation(convolveWithGauss(img, sigma), out);
 
             return out; // TODO by ref entgegen nehmen um copy zu vermeiden?
         }
 
-        const vigra::MultiArray<2, f32_t> increaseToNextLevel(const vigra::MultiArray<2, f32_t>& in,
+        const vigra::MultiArray<2, f32_t> increaseToNextLevel(const vigra::MultiArray<2, f32_t>& img,
                 f32_t sigma) {
             // image size at current level
-            const vigra::Shape2 s(in.width() * 2, in.height() * 2);
+            const vigra::Shape2 s(img.width() * 2, img.height() * 2);
 
             // resize result image to appropriate size
             vigra::MultiArray<2, f32_t> out(s);
             // downsample smoothed image
-            resizeImageNoInterpolation(convolveWithGauss(in, sigma), out);
+            resizeImageNoInterpolation(convolveWithGauss(img, sigma), out);
 
             return out; // TODO by ref entgegen nehmen um copy zu vermeiden?
         }
@@ -157,5 +157,38 @@ namespace sift {
 
             return -res(1, 0) / (2 * res(0, 0));
         }
+    }
+
+
+    std::array<Point<f32_t, f32_t>, 2> rotateShape(const Point<u16_t, u16_t>& center, f32_t angle, const u16_t width, const u16_t height) {
+        //Determine upper left and bottom right point
+        auto ul = Point<f32_t, f32_t>(center.x - width / 2, center.y - height / 2);
+        auto br = Point<f32_t, f32_t>(center.x + width / 2, center.y + height / 2);
+
+        //Perform clockwise rotation
+        angle *= -1;
+
+        //Transform center to 0, 0
+        ul.x -= center.x;
+        ul.y -= center.y;
+
+        br.x -= center.x;
+        br.y -= center.y;
+
+        //Perform rotation based on rotation matrix for both points
+        ul.x = ul.x * std::cos(angle) - ul.y * std::sin(angle);
+        ul.y = ul.x * std::sin(angle) + ul.y * std::cos(angle);
+
+        br.x = br.x * std::cos(angle) - br.y * std::sin(angle);
+        br.y = br.x * std::sin(angle) + br.y * std::cos(angle);
+
+        //Transform center back to original position
+        ul.x += center.x;
+        ul.y += center.y;
+
+        br.x += center.x;
+        br.y += center.y;
+
+        return std::array<Point<f32_t, f32_t>, 2>{{ul, br}};
     }
 }

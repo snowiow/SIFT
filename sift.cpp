@@ -75,7 +75,8 @@ namespace sift {
 
         cv::imwrite("images/papagei_filtered.png", image);
 
-        //Save img with filtered interest points for demonstration purposes
+        _createMagnitudePyramid();
+        _createOrientationPyramid();
         _orientationAssignment(interestPoints);
 
         //Cleanup
@@ -90,49 +91,112 @@ namespace sift {
     }
 
 
-    void Sift::_orientationAssignment(std::vector<InterestPoint>& interestPoints) {
-        for (InterestPoint& p : interestPoints) {
-            OctaveElem closest = _findNearestGaussian(p.scale);
+    void Sift::_createDecriptors(std::vector<InterestPoint>& interestPoints, 
+            const Matrix<OctaveElem>& dogs) {
 
-            u16_t region = 8;
+        const u16_t region = 8;
+        for (InterestPoint& p: interestPoints) {
+            Point<u16_t, u16_t> current_point = _findNearestGaussian(p.scale);
+            const vigra::MultiArray<2, f32_t>& current = _gaussians(current_point.x, current_point.y).img;
+            if (p.loc.x < region || p.loc.x > current.width() - region ||
+                p.loc.y < region || p.loc.y > current.height() - region) {
+                
+                p.filtered = true;
+                continue;
+            }
+            auto leftUpCorner = vigra::Shape2(p.loc.x - region, p.loc.y - region);
+            auto rightDownCorner = vigra::Shape2(p.loc.x + region, p.loc.y + region);
+            vigra::SplineImageView<2, f32_t> gauss_spline = current;
+            
+            //std::array<Point<f32_t, f32_t>, 2> shape = alg::rotateShape(p.loc, p.orientation, 16, 16);
+            
+        } 
+    }
+    
+    void Sift::_createMagnitudePyramid() {
+        _magnitudes = Matrix<vigra::MultiArray<2, f32_t>>(_gaussians.width(), _gaussians.height());
+        for (u16_t o = 0; o < _gaussians.width(); o++) {
+            for (u16_t i = 0; i < _gaussians.height(); i++) {
+                const vigra::MultiArray<2, f32_t>& current_gauss = _gaussians(o, i).img;
+                _magnitudes(o, i) = vigra::MultiArray<2, f32_t>(current_gauss.shape());
+                vigra::MultiArray<2, f32_t>& current_mag = _magnitudes(o, i);
+                for (u16_t x = 1; x < _gaussians(o, i).img.width() - 1; x++) {
+                    for (u16_t y = 1; y < _gaussians(o, i).img.height() - 1; y++) {
+                        current_mag(x, y) = alg::gradientMagnitude(current_gauss, Point<u16_t, u16_t>(x, y));
+                    }
+                }
+            }
+        }
+    }
+
+    void Sift::_createOrientationPyramid() {
+        _orientations = Matrix<vigra::MultiArray<2, f32_t>>(_gaussians.width(), _gaussians.height());
+        for (u16_t o = 0; o < _gaussians.width(); o++) {
+            for (u16_t i = 0; i < _gaussians.height(); i++) {
+                const vigra::MultiArray<2, f32_t>& current_gauss = _gaussians(o, i).img;
+                _orientations(o, i) = vigra::MultiArray<2, f32_t>(current_gauss.shape());
+                vigra::MultiArray<2, f32_t>& current_orientation = _orientations(o, i);
+                for (u16_t x = 1; x < _gaussians(o, i).img.width() - 1; x++) {
+                    for (u16_t y = 1; y < _gaussians(o, i).img.height() - 1; y++) {
+                        current_orientation(x, y) = alg::gradientOrientation(current_gauss, Point<u16_t, u16_t>(x, y));
+                    }
+                }
+            }
+        }
+    }
+
+
+    void Sift::_orientationAssignment(std::vector<InterestPoint>& interestPoints) {
+        const u16_t region = 8;
+        //In case an interest point has more than one orientation, the additional will be saved here
+        //and appended at the end of the function
+        std::vector<InterestPoint> additional;
+        for (InterestPoint& p : interestPoints) {
+            const Point<u16_t, u16_t> closest_point = _findNearestGaussian(p.scale);
+            const vigra::MultiArray<2, f32_t>& closest = _gaussians(closest_point.x, closest_point.y).img;
+
             //Is Keypoint inside image boundaries of gaussian
-            if ((p.loc.x < region || p.loc.x >= closest.img.width() - region) ||
-                    (p.loc.y < region || p.loc.y >= closest.img.height() - region)) {
+            if ((p.loc.x < region || p.loc.x >= closest.width() - region) ||
+                    (p.loc.y < region || p.loc.y >= closest.height() - region)) {
 
                 p.filtered = true;
                 continue;
             }
-            auto topLeftCorner = vigra::Shape2(p.loc.x - region, p.loc.y - region);
-            auto bottomRightCorner = vigra::Shape2(p.loc.x + region, p.loc.y + region);
-            auto gauss_region = closest.img.subarray(topLeftCorner, bottomRightCorner);
+            const auto topLeftCorner = vigra::Shape2(p.loc.x - region, p.loc.y - region);
+            const auto bottomRightCorner = vigra::Shape2(p.loc.x + region, p.loc.y + region);
+            const auto gauss_region = closest.subarray(topLeftCorner, bottomRightCorner);
 
-            vigra::MultiArray<2, f32_t> magnitudes(vigra::Shape2(region * 2, region * 2));
-            vigra::MultiArray<2, f32_t> orientations(vigra::Shape2(region * 2, region * 2));
 
-            for (u16_t x = 1; x < magnitudes.width() - 1; x++) {
-                for (u16_t y = 1; y < magnitudes.height() - 1; y++) {
-                    Point<u16_t, u16_t> point(x, y);
-                    magnitudes(x, y) = alg::gradientMagnitude(closest.img, point);
-                    orientations(x, y) = alg::gradientOrientation(closest.img, point);
+            const vigra::MultiArray<2, f32_t> gauss_convolved = alg::convolveWithGauss(gauss_region, 1.5 * p.scale);
+            const vigra::MultiArray<2, f32_t> orientation = _orientations(closest_point.x, closest_point.y).
+                subarray(topLeftCorner, bottomRightCorner);
 
+            const vigra::MultiArray<2,f32_t> magnitude = _magnitudes(closest_point.x, closest_point.y).
+                subarray(topLeftCorner, bottomRightCorner);
+
+            const std::array<f32_t, 36> histogram = alg::orientationHistogram(orientation, magnitude, gauss_region);
+            const std::set<f32_t> peaks = _findPeaks(histogram);
+            p.orientation = *(peaks.begin());
+            if (peaks.size() > 1) {
+                for (auto iter = peaks.begin()++; iter != peaks.end(); iter++) {
+                    InterestPoint temp = p;
+                    temp.orientation = *iter;
+                    additional.emplace_back(temp);
                 }
             }
-
-            auto gauss_convolved = alg::convolveWithGauss(gauss_region, 1.5 * p.scale);
-            auto histogram = alg::orientationHistogram(orientations, magnitudes, gauss_region);
-            p.orientation = _findPeaks(histogram);
         }
+        interestPoints.insert(interestPoints.end(), additional.begin(), additional.end());
     }
 
-    const OctaveElem& Sift::_findNearestGaussian(f32_t scale) {
+    const Point<u16_t, u16_t>Sift::_findNearestGaussian(f32_t scale) {
         f32_t lowest_diff = 100;
-        OctaveElem& nearest_gauss = _gaussians(0, 0);
+        Point<u16_t, u16_t> nearest_gauss = Point<u16_t, u16_t>(0, 0);
         for (u16_t o = 0; o < _gaussians.width(); o++) {
             for (u16_t i = 0; i < _gaussians.height(); i++) {
                 const f32_t cur_scale = std::abs(_gaussians(o, i).scale - scale);
                 if (cur_scale < lowest_diff) {
                     lowest_diff = cur_scale;
-                    nearest_gauss = _gaussians(o, i);
+                    nearest_gauss = Point<u16_t, u16_t>(o, i);
                 }
             }
         }
@@ -232,8 +296,8 @@ namespace sift {
             vec[vec.size() - 1] *= -1;
 
             //if (!inverse(neg_sec_deriv, inverse_matrix)) {
-                //p.filtered = true;
-                //continue;
+            //p.filtered = true;
+            //continue;
             //}
             if (!inverse(vec.back(), inverse_matrix)) {
                 p.filtered = true;
@@ -242,8 +306,8 @@ namespace sift {
 
 
             //if (!linearSolve(inverse_matrix, deriv, extremum)) {
-                //p.filtered = true;
-                //continue;
+            //p.filtered = true;
+            //continue;
             //}
             if (!linearSolve(inverse_matrix, vec[vec.size() - 3], extremum)) {
                 p.filtered = true;

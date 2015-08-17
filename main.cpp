@@ -34,7 +34,7 @@ int main(int argc, char** argv) {
       ("k,k", po::value<f32_t>(&k)->default_value(std::sqrt(2)), "The constant which is calculated on sigma for the DoGs")
       ("octaves,o", po::value<u16_t>(&octaves)->default_value(4), "How many octaves should be calculated")
       ("dogsPerEpoch,d", po::value<u16_t>(&dogsPerEpoch)->default_value(3), "How many DoGs should be created per epoch")
-      ("subpixel,p", po::value<bool>(&subpixel)->default_value(false), "Starts with the doubled size of initial")
+      ("subpixel,p", po::value<bool>(&subpixel)->default_value(false), "Starts with the doubled size of initial image")
       ;  
     po::positional_options_description p; 
     p.add("img", 1);
@@ -62,7 +62,8 @@ int main(int argc, char** argv) {
             u16_t y = (p.loc.y * std::pow(2, p.octave)) / subpixel_divisor;
             cv::RotatedRect r(cv::Point2f(x, y), 
                               cv::Size(p.scale * 10, p.scale * 10),
-                              *(p.orientation.begin()));
+                              p.orientation);
+
             cv::Point2f points[4]; 
             r.points( points );
             cv::line(image, points[0], points[1], cv::Scalar(255, 0, 0));

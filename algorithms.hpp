@@ -3,6 +3,7 @@
 
 #include <vigra/multi_array.hxx>
 #include <vigra/matrix.hxx>
+#include <vigra/splineimageview.hxx>
 
 #include "point.hpp"
 #include "types.hpp"
@@ -100,6 +101,17 @@ namespace sift {
          */
         f32_t vertexParabola(const Point<u16_t, f32_t>&, const Point<u16_t, f32_t>&, 
                 const Point<u16_t, f32_t>&);
+
+        /**
+         * Rotates a given shape by a given degree clockwise
+         * @param center the center point of the shape
+         * @param angle by which angle the shape should be rotated
+         * @param width the width of the shape
+         * @param height the height of the shape
+         * @return array with 2 elements. First element represents upper left corner of the shape and
+         * bottom right is represented by the second argument
+         */
+        std::array<Point<f32_t, f32_t>, 2> rotateShape(const Point<u16_t, u16_t>&, f32_t, const u16_t, const u16_t);
     }
 }
 #endif //ALGORITHMS_HPP
