@@ -43,6 +43,8 @@ namespace sift {
              */
             f32_t orientation;
 
+            std::vector<f32_t> descriptors;
+
             InterestPoint() = default;
             explicit InterestPoint(Point<u16_t, u16_t> loc, f32_t scale, u16_t octave, u16_t index) 
                 :  scale(scale), octave(octave), index(index), loc(loc) {

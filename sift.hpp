@@ -81,9 +81,8 @@ namespace sift {
             /**
              * Creates the local image desciptors.
              * @param interestpoints the vector with interestpoints
-             * @param dogs the dogs which were calculated in an earlier step
              */
-            void _createDecriptors(std::vector<InterestPoint>&, const Matrix<OctaveElem>&);
+            void _createDecriptors(std::vector<InterestPoint>&);
             
             /**
              * Creates magnitude versions of all the gaussian images.

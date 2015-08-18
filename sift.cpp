@@ -91,9 +91,7 @@ namespace sift {
     }
 
 
-    void Sift::_createDecriptors(std::vector<InterestPoint>& interestPoints, 
-            const Matrix<OctaveElem>& dogs) {
-
+    void Sift::_createDecriptors(std::vector<InterestPoint>& interestPoints) {
         const u16_t region = 8;
         for (InterestPoint& p: interestPoints) {
             Point<u16_t, u16_t> current_point = _findNearestGaussian(p.scale);
@@ -104,12 +102,42 @@ namespace sift {
                 p.filtered = true;
                 continue;
             }
+
             auto leftUpCorner = vigra::Shape2(p.loc.x - region, p.loc.y - region);
             auto rightDownCorner = vigra::Shape2(p.loc.x + region, p.loc.y + region);
-            vigra::SplineImageView<2, f32_t> gauss_spline = current;
+            auto orientations = _orientations(current_point.x, current_point.y).subarray(leftUpCorner, rightDownCorner);
+            auto magnitudes = _magnitudes(current_point.x, current_point.y).subarray(leftUpCorner, rightDownCorner);
+            auto gauss = _gaussians(current_point.x, current_point.y).img.subarray(leftUpCorner, rightDownCorner);
             
-            //std::array<Point<f32_t, f32_t>, 2> shape = alg::rotateShape(p.loc, p.orientation, 16, 16);
-            
+
+            //Rotate orientations relative to keypoint orientation
+            for (u16_t x = 0; x < orientations.width(); x++) {
+                for (u16_t y = 0; y < orientations.height(); y++) {
+                   orientations(x, y) += p.orientation;
+                }
+            }
+
+            //weight magnitudes by a gauss which is half the descriptor window size
+            auto weighting = alg::convolveWithGauss(magnitudes, region);
+            for (u16_t x = 0; x < magnitudes.width(); x++) {
+                for (u16_t y = 0; y < magnitudes.height(); y++) {
+                    magnitudes(x, y) += weighting(x, y);
+                }
+            }
+            std::vector<f32_t> descriptors;
+            //Create histograms of the 4x4 regions of the descriptor window
+            for (u16_t x = 0; x < gauss.width(); x += 4) {
+                for (u16_t y = 0; y < gauss.height(); y += 4) {
+                    auto lu = vigra::Shape2(x, y);
+                    auto rb = vigra::Shape2(x + 4, y + 4);
+                    auto cur_orientations = orientations.subarray(lu, rb);
+                    auto cur_magnitudes = magnitudes.subarray(lu, rb);
+                    auto cur_gauss = gauss.subarray(lu, rb);
+                    auto result = alg::orientationHistogram8(cur_orientations, cur_magnitudes, cur_gauss);
+                    descriptors.insert(descriptors.end(), result.begin(), result.end());
+                }
+            }
+            p.descriptors = descriptors;
         } 
     }
     

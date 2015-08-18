@@ -114,7 +114,7 @@ namespace sift {
             return std::fmod(result + 360, 360);
         }
 
-        const std::array<f32_t, 36> orientationHistogram(
+        const std::array<f32_t, 36> orientationHistogram36(
                 const vigra::MultiArray<2, f32_t>& orientations,
                 const vigra::MultiArray<2, f32_t>& magnitudes, 
                 const vigra::MultiArray<2, f32_t>& current_gauss) {
@@ -130,6 +130,24 @@ namespace sift {
             }
             return bins;
         }
+
+        const std::array<f32_t, 8> orientationHistogram8(
+                const vigra::MultiArray<2, f32_t>& orientations,
+                const vigra::MultiArray<2, f32_t>& magnitudes, 
+                const vigra::MultiArray<2, f32_t>& current_gauss) {
+
+            std::array<f32_t, 8> bins = {{0}};
+            for (u16_t x = 0; x < orientations.width(); x++) {
+                for (u16_t y = 0; y < orientations.height(); y++) {
+                    const f32_t sum = magnitudes(x, y) * current_gauss(x, y);
+                    u16_t i = std::floor(orientations(x, y) / 45);
+                    i = i > 7 ? 0 : i;
+                    bins[i] += sum;
+                }
+            }
+            return bins;
+        }
+
 
         f32_t vertexParabola(const Point<u16_t, f32_t>& ln, const Point<u16_t, f32_t>& peak, 
                 const Point<u16_t, f32_t>& rn) {
@@ -160,35 +178,33 @@ namespace sift {
     }
 
 
-    std::array<Point<f32_t, f32_t>, 2> rotateShape(const Point<u16_t, u16_t>& center, f32_t angle, const u16_t width, const u16_t height) {
+    std::array<Point<f32_t, f32_t>, 4> rotateShape(const Point<u16_t, u16_t>& center, f32_t angle, 
+            const u16_t width, const u16_t height) {
+
         //Determine upper left and bottom right point
         auto ul = Point<f32_t, f32_t>(center.x - width / 2, center.y - height / 2);
+        auto ur = Point<f32_t, f32_t>(center.x - width / 2, center.y + height / 2);
+        auto bl = Point<f32_t, f32_t>(center.x + width / 2, center.y - height / 2);
         auto br = Point<f32_t, f32_t>(center.x + width / 2, center.y + height / 2);
+
+        std::array<Point<f32_t, f32_t>, 4> shape{{ul, ur, bl, br}};
 
         //Perform clockwise rotation
         angle *= -1;
 
-        //Transform center to 0, 0
-        ul.x -= center.x;
-        ul.y -= center.y;
+        for (Point<f32_t, f32_t> p : shape) {
+            //Transform center to 0, 0
+            p.x -= center.x;
+            p.y -= center.y;
 
-        br.x -= center.x;
-        br.y -= center.y;
+            //Perform rotation based on rotation matrix for both points
+            p.x = ul.x * std::cos(angle) - p.y * std::sin(angle);
+            p.y = ul.x * std::sin(angle) + p.y * std::cos(angle);
 
-        //Perform rotation based on rotation matrix for both points
-        ul.x = ul.x * std::cos(angle) - ul.y * std::sin(angle);
-        ul.y = ul.x * std::sin(angle) + ul.y * std::cos(angle);
-
-        br.x = br.x * std::cos(angle) - br.y * std::sin(angle);
-        br.y = br.x * std::sin(angle) + br.y * std::cos(angle);
-
-        //Transform center back to original position
-        ul.x += center.x;
-        ul.y += center.y;
-
-        br.x += center.x;
-        br.y += center.y;
-
-        return std::array<Point<f32_t, f32_t>, 2>{{ul, br}};
+            //Transform center back to original position
+            ul.x += center.x;
+            ul.y += center.y;
+        }
+        return shape;
     }
 }
