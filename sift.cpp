@@ -97,8 +97,8 @@ namespace sift {
             Point<u16_t, u16_t> current_point = _findNearestGaussian(p.scale);
             const vigra::MultiArray<2, f32_t>& current = _gaussians(current_point.x, current_point.y).img;
             if (p.loc.x < region || p.loc.x > current.width() - region ||
-                p.loc.y < region || p.loc.y > current.height() - region) {
-                
+                    p.loc.y < region || p.loc.y > current.height() - region) {
+
                 p.filtered = true;
                 continue;
             }
@@ -108,12 +108,12 @@ namespace sift {
             auto orientations = _orientations(current_point.x, current_point.y).subarray(leftUpCorner, rightDownCorner);
             auto magnitudes = _magnitudes(current_point.x, current_point.y).subarray(leftUpCorner, rightDownCorner);
             auto gauss = _gaussians(current_point.x, current_point.y).img.subarray(leftUpCorner, rightDownCorner);
-            
+
 
             //Rotate orientations relative to keypoint orientation
             for (u16_t x = 0; x < orientations.width(); x++) {
                 for (u16_t y = 0; y < orientations.height(); y++) {
-                   orientations(x, y) += p.orientation;
+                    orientations(x, y) += p.orientation;
                 }
             }
 
@@ -133,14 +133,34 @@ namespace sift {
                     auto cur_orientations = orientations.subarray(lu, rb);
                     auto cur_magnitudes = magnitudes.subarray(lu, rb);
                     auto cur_gauss = gauss.subarray(lu, rb);
-                    auto result = alg::orientationHistogram8(cur_orientations, cur_magnitudes, cur_gauss);
+                    std::vector<f32_t> result = alg::orientationHistogram8(cur_orientations, cur_magnitudes, cur_gauss);
+                    alg::normalizeVector(result);
+                    result = _eliminateVectorThreshold(result);
+                    
                     descriptors.insert(descriptors.end(), result.begin(), result.end());
                 }
             }
             p.descriptors = descriptors;
         } 
     }
-    
+
+
+    const std::vector<f32_t> Sift::_eliminateVectorThreshold(const std::vector<f32_t>& vec) const {
+        bool threshold = false;
+        std::vector<f32_t> result;
+        for (auto& elem : vec) {
+            if (elem < 0.2)
+                result.emplace_back(elem);
+            else 
+                threshold = true;
+        }
+        alg::normalizeVector(result);
+        //As long as there are values violating the threshold recheck the vector
+        if (threshold)
+            _eliminateVectorThreshold(result);
+        return result;
+    }
+
     void Sift::_createMagnitudePyramid() {
         _magnitudes = Matrix<vigra::MultiArray<2, f32_t>>(_gaussians.width(), _gaussians.height());
         for (u16_t o = 0; o < _gaussians.width(); o++) {
@@ -202,7 +222,7 @@ namespace sift {
             const vigra::MultiArray<2,f32_t> magnitude = _magnitudes(closest_point.x, closest_point.y).
                 subarray(topLeftCorner, bottomRightCorner);
 
-            const std::array<f32_t, 36> histogram = alg::orientationHistogram(orientation, magnitude, gauss_region);
+            const std::array<f32_t, 36> histogram = alg::orientationHistogram36(orientation, magnitude, gauss_region);
             const std::set<f32_t> peaks = _findPeaks(histogram);
             p.orientation = *(peaks.begin());
             if (peaks.size() > 1) {
@@ -306,77 +326,54 @@ namespace sift {
         vigra::MultiArray<2, f32_t> inverse_matrix(vigra::Shape2(3, 3));
 
         const f32_t t = std::pow(10 + 1, 2) / 10;
-        std::vector<vigra::Matrix<f32_t>> vec;
-        vec.reserve(2000000);
         for (InterestPoint& p : interestPoints) {
             auto& d = dogs(p.octave, p.index);
             const std::array<vigra::MultiArray<2, f32_t>, 3>& param = 
             {{dogs(p.octave, p.index - 1).img, dogs(p.octave, p.index).img, dogs(p.octave, p.index + 1).img}};
 
-            //const vigra::Matrix<f32_t> deriv = alg::foDerivative(param, p.loc);
-            //const vigra::Matrix<f32_t> sec_deriv = alg::soDerivative(param, p.loc);
-            vec.emplace_back(alg::foDerivative(param, p.loc));
-            vec.emplace_back(alg::soDerivative(param, p.loc));
+            const vigra::Matrix<f32_t> deriv = alg::foDerivative(param, p.loc);
+            const vigra::Matrix<f32_t> sec_deriv = alg::soDerivative(param, p.loc);
 
-            //vigra::Matrix<f32_t> neg_sec_deriv = sec_deriv ;
-            vec.emplace_back(vec.back());
-            //neg_sec_deriv *=  -1;
-            vec[vec.size() - 1] *= -1;
+            vigra::Matrix<f32_t> neg_sec_deriv = sec_deriv ;
+            neg_sec_deriv *=  -1;
 
-            //if (!inverse(neg_sec_deriv, inverse_matrix)) {
-            //p.filtered = true;
-            //continue;
-            //}
-            if (!inverse(vec.back(), inverse_matrix)) {
+            if (!inverse(neg_sec_deriv, inverse_matrix)) {
                 p.filtered = true;
                 continue;
             }
 
-
-            //if (!linearSolve(inverse_matrix, deriv, extremum)) {
-            //p.filtered = true;
-            //continue;
-            //}
-            if (!linearSolve(inverse_matrix, vec[vec.size() - 3], extremum)) {
-                p.filtered = true;
-                continue;
+            if (!linearSolve(inverse_matrix, deriv, extremum)) {
+            p.filtered = true;
+            continue;
             }
 
-
-            //Calculated up 0.5 from paper to own image values [0,255]
+            //Calculated up from 0.5 of paper to own image values [0,255]
             if (extremum(0, 0) > 127.5 || extremum(1, 0) > 127.5 || extremum(2, 0) > 127.5) {
                 p.filtered = true;
                 continue;
             } 
-            //const vigra::Matrix<f32_t> deriv_transpose = deriv.transpose();
-            vec.emplace_back(vec[vec.size() - 3].transpose());
-            //f32_t func_val_extremum = dot(deriv_transpose, extremum);
-            f32_t func_val_extremum = dot(vec[vec.size() - 1], extremum);
+            const vigra::Matrix<f32_t> deriv_transpose = deriv.transpose();
+            f32_t func_val_extremum = dot(deriv_transpose, extremum);
             func_val_extremum *= 0.5 + d.img(p.loc.x, p.loc.y);
 
-            //Calculated up 0.03 from paper to own image values[0, 255]
+            //Calculated up from 0.03 of paper to own image values[0, 255]
             if (func_val_extremum < 7.65) {
                 p.filtered = true;
                 continue;
             }
 
-            //const auto dxx = sec_deriv(0, 0);
-            //const auto dyy = sec_deriv(1, 1);
-            const auto dxx = vec[vec.size() - 3](0, 0);
-            const auto dyy = vec[vec.size() - 3](1, 1);
+            const auto dxx = sec_deriv(0, 0);
+            const auto dyy = sec_deriv(1, 1);
             //dxx + dyy
             const f32_t hessian_tr = dxx + dyy;
             //dxx * dyy - dxy^2
-            //const f32_t hessian_det = dxx *  dyy - std::pow(sec_deriv(0, 1), 2);
-            const f32_t hessian_det = dxx *  dyy - std::pow(vec[vec.size() - 3](0, 1), 2);
+            const f32_t hessian_det = dxx *  dyy - std::pow(sec_deriv(0, 1), 2);
 
             if (hessian_det < 0) {
                 p.filtered = true;
                 continue;
             }
 
-            //Original r = 10, calculated up to own image values[0, 255]
-            //Question: The value 10 isn't based on the greyvalues? 
             if (std::pow(hessian_tr, 2) / hessian_det > t) 
                 p.filtered = true;
         }
@@ -399,7 +396,7 @@ namespace sift {
                         auto under = dogs(e, i - 1).img.subarray(leftUpCorner, rightDownCorner);
                         auto above = dogs(e, i + 1).img.subarray(leftUpCorner, rightDownCorner);
                         //Check all neighborhood pixels of current and adjacent DOGs. If there isn't any
-                        //pixel bigger or smaller than the current. We found an extremum.
+                        //pixel bigger or smaller than the current, we found an extremum.
                         if ((!any(current > dogs(e, i).img(x, y)) &&
                                     !any(under > dogs(e, i).img(x, y)) &&
                                     !any(above > dogs(e, i).img(x, y))) ||
@@ -437,10 +434,8 @@ namespace sift {
                 dogs(i, j - 1).img = alg::dog(gaussians(i, j - 1).img, gaussians(i, j).img);
                 exp++;
             }
-            /*
-             * If we aren't in the last octave populate the next level with the second
-             * last element, scaled by a half, of images of current octave.
-             */
+             // If we aren't in the last octave populate the next level with the second
+             // last element, scaled by a half, of the image size of current octave.
             if (i < (_octaves - 1)) {
                 auto scaledElem = alg::reduceToNextLevel(gaussians(i, _dogsPerEpoch - 1).img, 
                         gaussians(i, _dogsPerEpoch - 1).scale);

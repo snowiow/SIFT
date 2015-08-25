@@ -3,7 +3,6 @@
 
 #include <vigra/multi_array.hxx>
 #include <vigra/matrix.hxx>
-#include <vigra/splineimageview.hxx>
 
 #include "point.hpp"
 #include "types.hpp"
@@ -103,8 +102,8 @@ namespace sift {
          * @param img the given img
          * @return histogram with 8 bins which are weighted by magnitudes and gaussian
          */
-        const std::array<f32_t, 8> orientationHistogram8(const vigra::MultiArray<2, f32_t>&,
-                const vigra::MultiArray<2, f32_t>&, const vigra::MultiArray<2, f32_t>&) {
+        const std::vector<f32_t> orientationHistogram8(const vigra::MultiArray<2, f32_t>&,
+                const vigra::MultiArray<2, f32_t>&, const vigra::MultiArray<2, f32_t>&);
 
         /**
          * Calculates the vertex of a parabola, by taking a max value and its 2 neigbours
@@ -126,6 +125,12 @@ namespace sift {
          * bottom right is represented by the second argument
          */
         std::array<Point<f32_t, f32_t>, 4> rotateShape(const Point<u16_t, u16_t>&, f32_t, const u16_t, const u16_t);
+
+        /**
+         * Normalizes a vector
+         * @param vec the vector to be normalized
+         */
+        void normalizeVector(std::vector<f32_t>&);
     }
 }
 #endif //ALGORITHMS_HPP

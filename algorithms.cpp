@@ -32,7 +32,7 @@ namespace sift {
             // downsample smoothed image
             resizeImageNoInterpolation(convolveWithGauss(img, sigma), out);
 
-            return out; // TODO by ref entgegen nehmen um copy zu vermeiden?
+            return out; 
         }
 
         const vigra::MultiArray<2, f32_t> increaseToNextLevel(const vigra::MultiArray<2, f32_t>& img,
@@ -45,7 +45,7 @@ namespace sift {
             // downsample smoothed image
             resizeImageNoInterpolation(convolveWithGauss(img, sigma), out);
 
-            return out; // TODO by ref entgegen nehmen um copy zu vermeiden?
+            return out; 
         }
 
 
@@ -56,6 +56,7 @@ namespace sift {
             for (u16_t x = 0; x < lower.shape(0); x++) {
                 for (u16_t y = 0; y < lower.shape(1); y++) {
                     const f32_t dif = higher(x, y) - lower(x, y);
+                    // don't get negative values
                     result(x, y) = 128 + dif;
                 }
             }
@@ -131,12 +132,13 @@ namespace sift {
             return bins;
         }
 
-        const std::array<f32_t, 8> orientationHistogram8(
+        const std::vector<f32_t> orientationHistogram8(
                 const vigra::MultiArray<2, f32_t>& orientations,
                 const vigra::MultiArray<2, f32_t>& magnitudes, 
                 const vigra::MultiArray<2, f32_t>& current_gauss) {
 
-            std::array<f32_t, 8> bins = {{0}};
+            std::vector<f32_t> bins;
+            bins.resize(8);
             for (u16_t x = 0; x < orientations.width(); x++) {
                 for (u16_t y = 0; y < orientations.height(); y++) {
                     const f32_t sum = magnitudes(x, y) * current_gauss(x, y);
@@ -175,36 +177,47 @@ namespace sift {
 
             return -res(1, 0) / (2 * res(0, 0));
         }
-    }
 
+        std::array<Point<f32_t, f32_t>, 4> rotateShape(const Point<u16_t, u16_t>& center, f32_t angle, 
+                const u16_t width, const u16_t height) {
 
-    std::array<Point<f32_t, f32_t>, 4> rotateShape(const Point<u16_t, u16_t>& center, f32_t angle, 
-            const u16_t width, const u16_t height) {
+            //Determine upper left and bottom right point
+            auto ul = Point<f32_t, f32_t>(center.x - width / 2, center.y - height / 2);
+            auto ur = Point<f32_t, f32_t>(center.x - width / 2, center.y + height / 2);
+            auto bl = Point<f32_t, f32_t>(center.x + width / 2, center.y - height / 2);
+            auto br = Point<f32_t, f32_t>(center.x + width / 2, center.y + height / 2);
 
-        //Determine upper left and bottom right point
-        auto ul = Point<f32_t, f32_t>(center.x - width / 2, center.y - height / 2);
-        auto ur = Point<f32_t, f32_t>(center.x - width / 2, center.y + height / 2);
-        auto bl = Point<f32_t, f32_t>(center.x + width / 2, center.y - height / 2);
-        auto br = Point<f32_t, f32_t>(center.x + width / 2, center.y + height / 2);
+            std::array<Point<f32_t, f32_t>, 4> shape{{ul, ur, bl, br}};
 
-        std::array<Point<f32_t, f32_t>, 4> shape{{ul, ur, bl, br}};
+            //Perform clockwise rotation
+            angle *= -1;
 
-        //Perform clockwise rotation
-        angle *= -1;
+            for (Point<f32_t, f32_t> p : shape) {
+                //Transform center to 0, 0
+                p.x -= center.x;
+                p.y -= center.y;
 
-        for (Point<f32_t, f32_t> p : shape) {
-            //Transform center to 0, 0
-            p.x -= center.x;
-            p.y -= center.y;
+                //Perform rotation based on rotation matrix for both points
+                p.x = ul.x * std::cos(angle) - p.y * std::sin(angle);
+                p.y = ul.x * std::sin(angle) + p.y * std::cos(angle);
 
-            //Perform rotation based on rotation matrix for both points
-            p.x = ul.x * std::cos(angle) - p.y * std::sin(angle);
-            p.y = ul.x * std::sin(angle) + p.y * std::cos(angle);
-
-            //Transform center back to original position
-            ul.x += center.x;
-            ul.y += center.y;
+                //Transform center back to original position
+                ul.x += center.x;
+                ul.y += center.y;
+            }
+            return shape;
         }
-        return shape;
+
+        void normalizeVector(std::vector<f32_t>& vec) {
+            //Get length of vector
+            f32_t length = 0;
+            std::for_each(vec.begin(), vec.end(), [&](f32_t& n) {
+                length += n;        
+            });
+
+            std::for_each(vec.begin(), vec.end(), [&](f32_t& n) {
+                n /= length;
+            });
+        }
     }
 }
