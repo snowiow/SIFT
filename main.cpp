@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include <fstream>
 #include <vector>
 #include <string>
 
@@ -17,25 +17,27 @@
 namespace po = boost::program_options;
 
 /*
-* Main Function takes a greyvalue image as input
-*/
+ * Main Function takes a greyvalue image as input
+ */
 int main(int argc, char** argv) {
     std::string img_file;
     f32_t sigma, k; 
     u16_t octaves, dogsPerEpoch; 
     bool subpixel;
+    bool result;
 
     po::options_description desc("Options");
 
     desc.add_options() 
-      ("help", "Print help messages") 
-      ("img,i", po::value<std::string>(&img_file), "The image on which sift will be executed")
-      ("sigma,s", po::value<f32_t>(&sigma)->default_value(1.6), "The sigma value of the Gaussian calculations")
-      ("k,k", po::value<f32_t>(&k)->default_value(std::sqrt(2)), "The constant which is calculated on sigma for the DoGs")
-      ("octaves,o", po::value<u16_t>(&octaves)->default_value(4), "How many octaves should be calculated")
-      ("dogsPerEpoch,d", po::value<u16_t>(&dogsPerEpoch)->default_value(3), "How many DoGs should be created per epoch")
-      ("subpixel,p", po::value<bool>(&subpixel)->default_value(false), "Starts with the doubled size of initial image")
-      ;  
+        ("help", "Print help messages") 
+        ("img,i", po::value<std::string>(&img_file), "The image on which sift will be executed")
+        ("sigma,s", po::value<f32_t>(&sigma)->default_value(1.6), "The sigma value of the Gaussian calculations")
+        ("k,k", po::value<f32_t>(&k)->default_value(std::sqrt(2)), "The constant which is calculated on sigma for the DoGs")
+        ("octaves,o", po::value<u16_t>(&octaves)->default_value(4), "How many octaves should be calculated")
+        ("dogsPerEpoch,d", po::value<u16_t>(&dogsPerEpoch)->default_value(3), "How many DoGs should be created per epoch")
+        ("subpixel,p", po::value<bool>(&subpixel)->default_value(false), "Starts with the doubled size of initial image")
+        ("result,r", po::value<bool>(&result)->default_value(false), "Print the resulting InterestPoints in a file")
+        ;  
     po::positional_options_description p; 
     p.add("img", 1);
     po::variables_map vm; 
@@ -61,8 +63,8 @@ int main(int argc, char** argv) {
             u16_t x = (p.loc.x * std::pow(2, p.octave)) / subpixel_divisor;
             u16_t y = (p.loc.y * std::pow(2, p.octave)) / subpixel_divisor;
             cv::RotatedRect r(cv::Point2f(x, y), 
-                              cv::Size(p.scale * 10, p.scale * 10),
-                              p.orientation);
+                    cv::Size(p.scale * 10, p.scale * 10),
+                    p.orientation);
 
             cv::Point2f points[4]; 
             r.points( points );
@@ -74,9 +76,21 @@ int main(int argc, char** argv) {
 
         cv::imwrite(img_file + "_orientation.png", image);
 
+        if (result) {
+            std::ofstream out("interstpoints.txt");
+            out << "Location\tscale\torientation\tdescriptors\n";
+            for (const sift::InterestPoint& p : interestPoints) {
+               out << "[" << p.loc.x << ", " << p.loc.y <<  "]\t" << p.scale << "\t" << p.orientation << "\t" << "[";
+               for (f32_t d : p.descriptors) {
+                   out << d << ", ";
+               }
+               out << "]\n";
+            }
+            out.close();
+        }
     } catch (std::exception& ex) {
         std::cerr << ex.what() << std::endl;
     }
-    
+
     return 0;
 }

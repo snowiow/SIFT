@@ -137,8 +137,7 @@ namespace sift {
                 const vigra::MultiArray<2, f32_t>& magnitudes, 
                 const vigra::MultiArray<2, f32_t>& current_gauss) {
 
-            std::vector<f32_t> bins;
-            bins.resize(8);
+            std::vector<f32_t> bins(8, 0);
             for (u16_t x = 0; x < orientations.width(); x++) {
                 for (u16_t y = 0; y < orientations.height(); y++) {
                     const f32_t sum = magnitudes(x, y) * current_gauss(x, y);
@@ -215,6 +214,9 @@ namespace sift {
                 length += n;        
             });
 
+            if (length == 0) {
+                return;
+            } 
             std::for_each(vec.begin(), vec.end(), [&](f32_t& n) {
                 n /= length;
             });

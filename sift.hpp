@@ -89,7 +89,7 @@ namespace sift {
              * vector normalization as long as there are no more values above 0.2
              * @param vec The given vector
              */
-            const std::vector<f32_t> _eliminateVectorThreshold(const std::vector<f32_t>&) const;
+            std::vector<f32_t> _eliminateVectorThreshold(std::vector<f32_t>&) const;
             
             /**
              * Creates magnitude versions of all the gaussian images.

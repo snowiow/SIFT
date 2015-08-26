@@ -1,6 +1,5 @@
 #include "sift.hpp"
 
-#include <iostream>
 #include <string>
 #include <cassert>
 
@@ -23,36 +22,16 @@ namespace sift {
 
         auto dogs = _createDOGs(img);
         //Save DoGs for Demonstration purposes
-        for (u16_t i = 0; i < dogs.width(); i++) {
-            for (u16_t j = 0; j < dogs.height(); j++) {
-                const std::string fnStr = "images/dog" + std::to_string(i) + std::to_string(j) + ".png";
-                exportImage(dogs(i, j).img, vigra::ImageExportInfo(fnStr.c_str()));
-            }
-        }
+        //for (u16_t i = 0; i < dogs.width(); i++) {
+            //for (u16_t j = 0; j < dogs.height(); j++) {
+                //const std::string fnStr = "images/dog" + std::to_string(i) + std::to_string(j) + ".png";
+                //exportImage(dogs(i, j).img, vigra::ImageExportInfo(fnStr.c_str()));
+            //}
+        //}
+
         std::vector<InterestPoint> interestPoints;
         _findScaleSpaceExtrema(dogs, interestPoints);
         _eliminateEdgeResponses(interestPoints, dogs);
-        //Save image with filtered and unfiltered values. For demonstration
-        cv::Mat image;
-        image = cv::imread("images/papagei.jpg", CV_LOAD_IMAGE_COLOR);
-
-        for (const InterestPoint& p : interestPoints) {
-            if (p.filtered) {
-                u16_t x = p.loc.x * std::pow(2, p.octave);
-                u16_t y = p.loc.y * std::pow(2, p.octave);
-                cv::rectangle(image, cv::Point2f(x, y), 
-                        cv::Point2f(x + p.scale * 10, y + p.scale * 10),
-                        cv::Scalar(0, 0, 255));
-
-            } else {
-                u16_t x = p.loc.x * std::pow(2, p.octave);
-                u16_t y = p.loc.y * std::pow(2, p.octave);
-                cv::rectangle(image, cv::Point2f(x, y), 
-                        cv::Point2f(x + p.scale * 10, y + p.scale * 10),
-                        cv::Scalar(255, 0, 0));
-            }
-        }
-        cv::imwrite("images/papagei_unfiltered.png", image);
 
         //Cleanup
         std::sort(interestPoints.begin(), interestPoints.end(), InterestPoint::cmpByFilter);
@@ -61,19 +40,6 @@ namespace sift {
 
         u16_t size = std::distance(interestPoints.begin(), result);
         interestPoints.resize(size);
-
-        //Save image with filtered keypoints for demonstration.
-        image = cv::imread("images/papagei.jpg", CV_LOAD_IMAGE_COLOR);
-
-        for (const InterestPoint& p : interestPoints) {
-            const u16_t x = p.loc.x * std::pow(2, p.octave);
-            const u16_t y = p.loc.y * std::pow(2, p.octave);
-            cv::rectangle(image, cv::Point2f(x, y), 
-                    cv::Point2f(x + p.scale * 10, y + p.scale * 10),
-                    cv::Scalar(255, 0, 0));
-        }
-
-        cv::imwrite("images/papagei_filtered.png", image);
 
         _createMagnitudePyramid();
         _createOrientationPyramid();
@@ -86,7 +52,7 @@ namespace sift {
 
         size = std::distance(interestPoints.begin(), result);
         interestPoints.resize(size);
-        std::cout << interestPoints.size() << std::endl;
+        _createDecriptors(interestPoints);
         return interestPoints;
     }
 
@@ -118,7 +84,7 @@ namespace sift {
             }
 
             //weight magnitudes by a gauss which is half the descriptor window size
-            auto weighting = alg::convolveWithGauss(magnitudes, region);
+            auto weighting = alg::convolveWithGauss(current, 1.6);
             for (u16_t x = 0; x < magnitudes.width(); x++) {
                 for (u16_t y = 0; y < magnitudes.height(); y++) {
                     magnitudes(x, y) += weighting(x, y);
@@ -134,8 +100,7 @@ namespace sift {
                     auto cur_magnitudes = magnitudes.subarray(lu, rb);
                     auto cur_gauss = gauss.subarray(lu, rb);
                     std::vector<f32_t> result = alg::orientationHistogram8(cur_orientations, cur_magnitudes, cur_gauss);
-                    alg::normalizeVector(result);
-                    result = _eliminateVectorThreshold(result);
+                    _eliminateVectorThreshold(result);
                     
                     descriptors.insert(descriptors.end(), result.begin(), result.end());
                 }
@@ -145,19 +110,19 @@ namespace sift {
     }
 
 
-    const std::vector<f32_t> Sift::_eliminateVectorThreshold(const std::vector<f32_t>& vec) const {
-        bool threshold = false;
+    std::vector<f32_t> Sift::_eliminateVectorThreshold(std::vector<f32_t>& vec) const {
+        alg::normalizeVector(vec);
         std::vector<f32_t> result;
+        bool threshold = false;
         for (auto& elem : vec) {
-            if (elem < 0.2)
+            if (elem <= 0.2) {
                 result.emplace_back(elem);
-            else 
+            } else {
                 threshold = true;
+            }
         }
-        alg::normalizeVector(result);
-        //As long as there are values violating the threshold recheck the vector
         if (threshold)
-            _eliminateVectorThreshold(result);
+            alg::normalizeVector(result);
         return result;
     }
 
@@ -343,8 +308,8 @@ namespace sift {
             }
 
             if (!linearSolve(inverse_matrix, deriv, extremum)) {
-            p.filtered = true;
-            continue;
+                p.filtered = true;
+                continue;
             }
 
             //Calculated up from 0.5 of paper to own image values [0,255]
@@ -434,8 +399,8 @@ namespace sift {
                 dogs(i, j - 1).img = alg::dog(gaussians(i, j - 1).img, gaussians(i, j).img);
                 exp++;
             }
-             // If we aren't in the last octave populate the next level with the second
-             // last element, scaled by a half, of the image size of current octave.
+            // If we aren't in the last octave populate the next level with the second
+            // last element, scaled by a half, of the image size of current octave.
             if (i < (_octaves - 1)) {
                 auto scaledElem = alg::reduceToNextLevel(gaussians(i, _dogsPerEpoch - 1).img, 
                         gaussians(i, _dogsPerEpoch - 1).scale);
