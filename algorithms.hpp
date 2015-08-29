@@ -80,16 +80,30 @@ namespace sift {
         f32_t gradientOrientation(const vigra::MultiArray<2, f32_t>&, const Point<u16_t, u16_t>&);
 
         /**
-         * Creates the orientation Histogram of a given
+         * Creates an orientation Histogram of a given img and his corresponding orientations and 
+         * magnitudes. Places values in bins of size 10. So the resulting histogram has 36 elements.
          * @param orientations The img of which the histogram is taken from. Needs to be computed by gradient 
          * orientations before
          * @param magnitudes The img of which the bins of the histogram will be weighted. Need to be
          * precomputed by gradient magnitude
-         * @param scale The scale of the current images
+         * @param img the given img
          * @return histogram with 36 bins which are weighted by magnitudes and gaussian
          */
-        const std::array<f32_t, 36> orientationHistogram(const vigra::MultiArray<2, f32_t>&, 
+        const std::array<f32_t, 36> orientationHistogram36(const vigra::MultiArray<2, f32_t>&, 
                 const vigra::MultiArray<2, f32_t>& , const vigra::MultiArray<2, f32_t>&);
+
+        /**
+         * Creates an orientation Histogram of a given img and his corresponding orientations and 
+         * magnitudes. Places values in bins of size 45. So the resulting histogram has 8 elements.
+         * @param orientations The img of which the histogram is taken from. Needs to be computed by gradient 
+         * orientations before
+         * @param magnitudes The img of which the bins of the histogram will be weighted. Need to be
+         * precomputed by gradient magnitude
+         * @param img the given img
+         * @return histogram with 8 bins which are weighted by magnitudes and gaussian
+         */
+        const std::vector<f32_t> orientationHistogram8(const vigra::MultiArray<2, f32_t>&,
+                const vigra::MultiArray<2, f32_t>&, const vigra::MultiArray<2, f32_t>&);
 
         /**
          * Calculates the vertex of a parabola, by taking a max value and its 2 neigbours
@@ -100,6 +114,23 @@ namespace sift {
          */
         f32_t vertexParabola(const Point<u16_t, f32_t>&, const Point<u16_t, f32_t>&, 
                 const Point<u16_t, f32_t>&);
+
+        /**
+         * Rotates a given shape by a given degree clockwise
+         * @param center the center point of the shape
+         * @param angle by which angle the shape should be rotated
+         * @param width the width of the shape
+         * @param height the height of the shape
+         * @return array with 2 elements. First element represents upper left corner of the shape and
+         * bottom right is represented by the second argument
+         */
+        std::array<Point<f32_t, f32_t>, 4> rotateShape(const Point<u16_t, u16_t>&, f32_t, const u16_t, const u16_t);
+
+        /**
+         * Normalizes a vector
+         * @param vec the vector to be normalized
+         */
+        void normalizeVector(std::vector<f32_t>&);
     }
 }
 #endif //ALGORITHMS_HPP

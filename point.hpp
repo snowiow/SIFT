@@ -9,6 +9,7 @@ namespace sift {
          * A simple Point class which can have two different types for the two coordinates.
          */
         class Point {
+            public:
             /**
              * The horizontal coordinate
              */
