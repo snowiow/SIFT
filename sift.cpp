@@ -113,6 +113,7 @@ namespace sift {
     std::vector<f32_t> Sift::_eliminateVectorThreshold(std::vector<f32_t>& vec) const {
         alg::normalizeVector(vec);
         std::vector<f32_t> result;
+        result.reserve(vec.size());
         bool threshold = false;
         for (auto& elem : vec) {
             if (elem <= 0.2) {

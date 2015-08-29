@@ -125,7 +125,7 @@ namespace sift {
                 for (u16_t y = 0; y < orientations.height(); y++) {
                     const f32_t sum = magnitudes(x, y) * current_gauss(x, y);
                     u16_t i = std::floor(orientations(x, y) / 10);
-                    i = i > 35 ? 0 : i;
+                    i = i % 35;
                     bins[i] += sum;
                 }
             }
@@ -142,7 +142,7 @@ namespace sift {
                 for (u16_t y = 0; y < orientations.height(); y++) {
                     const f32_t sum = magnitudes(x, y) * current_gauss(x, y);
                     u16_t i = std::floor(orientations(x, y) / 45);
-                    i = i > 7 ? 0 : i;
+                    i = i % 7;
                     bins[i] += sum;
                 }
             }
@@ -191,7 +191,7 @@ namespace sift {
             //Perform clockwise rotation
             angle *= -1;
 
-            for (Point<f32_t, f32_t> p : shape) {
+            for (Point<f32_t, f32_t>& p : shape) {
                 //Transform center to 0, 0
                 p.x -= center.x;
                 p.y -= center.y;
