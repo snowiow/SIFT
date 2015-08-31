@@ -24,7 +24,7 @@ Now you want to make an extra directory for your buildfiles. For Example:
 `mkdir build`  
 Switch into the created directory  
 `cd build`  
-Then you want to create your preferred make files with CMake. On all unix like systems this will be 
+Then you want to create your preferred make files with CMake. On all Unix like systems this will be 
 GNU Makefiles.  
 `cmake -G "Unix Makefiles" ..`  
 For other supported build systems check the official documentation of CMake.  
@@ -40,15 +40,17 @@ and can be found in the same directory as the original file. The command to prod
 `./sift path/to/file.jpg`  
 But there are many possible parameters on which you can screw the values. The following list shows the possibilities
 ```Options:
-  --help                           Print help message
+  --help                           Print help messages
   -i [ --img ] arg                 The image on which sift will be executed
   -s [ --sigma ] arg (=1.60000002) The sigma value of the Gaussian calculations
   -k [ --k ] arg (=1.41421354)     The constant which is calculated on sigma 
                                    for the DoGs
   -o [ --octaves ] arg (=4)        How many octaves should be calculated
   -d [ --dogsPerEpoch ] arg (=3)   How many DoGs should be created per epoch
-  -p [ --subpixel ] arg (=0)       Starts with the doubled size of initial
-  ```
+  -p [ --subpixel ] arg (=0)       Starts with the doubled size of initial 
+                                   image
+  -r [ --result ] arg (=0)         Print the resulting InterestPoints in a file
+```
 This overview can also be called by  
 `./sift --help`  
 The first flag is the shorthand and can generally be written by  
@@ -87,6 +89,10 @@ accuracy. This is accomplished through doubling the size of the initial image an
 with sigma=1.0 onto it. Like mentioned in the paper, a base sigma of 0.5 is assumed in the original 
 image. Every further calculation is based on the doubled version. If this flag is set to off, the 
 algorithm starts with the initial image.
+
+## -r [ --result ] arg (=0)
+Writes a sift.txt with a table like listing of all found interest points. The listed data are: positions,
+scale, orientation and their descriptors
 
 # API
 A full Class and Namespace Reference can be found [here](
