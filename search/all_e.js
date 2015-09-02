@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['readme_2emd',['README.md',['../README_8md.html',1,'']]],
-  ['reducetonextlevel',['reduceToNextLevel',['../namespacesift_1_1alg.html#ad2f2df5248316f486c8750bfbf1025f9',1,'sift::alg']]]
+  ['point',['Point',['../classsift_1_1Point.html',1,'sift']]],
+  ['point',['Point',['../classsift_1_1Point.html#a0d825e35d3b47cae1f9e348852629865',1,'sift::Point::Point()=default'],['../classsift_1_1Point.html#a4b3f2e85080df4c4cc23fa9801347078',1,'sift::Point::Point(T x, U y)']]],
+  ['point_2ehpp',['point.hpp',['../point_8hpp.html',1,'']]],
+  ['point_3c_20u16_5ft_2c_20u16_5ft_20_3e',['Point&lt; u16_t, u16_t &gt;',['../classsift_1_1Point.html',1,'sift']]]
 ];

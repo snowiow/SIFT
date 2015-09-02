@@ -97,19 +97,21 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>CMake: A cross-platform open-source make system.</li>
 </ul>
 <h2>Installation Process</h2>
-<p>With the needed libraries installed and the help of CMake, the installation is as easy as three commands. First download this repository by cloning or whatever way you prefer. Switch into the directory afterwards. Now you want to make an extra directory for your buildfiles. For Example: <code>mkdir build</code> Switch into the created directory <code>cd build</code> Then you want to create your preferred make files with CMake. On all unix like systems this will be GNU Makefiles. <code>cmake -G "Unix Makefiles" ..</code> For other supported build systems check the official documentation of CMake. The final step is to build your executable from the Makefiles <code>make</code> You should now have an executable named sift in your build directory. Please refer to the next section to check how it is used and which possibilities you got, by executing it.</p>
+<p>With the needed libraries installed and the help of CMake, the installation is as easy as three commands. First download this repository by cloning or whatever way you prefer. Switch into the directory afterwards. Now make an extra directory for your buildfiles. For Example: <code>mkdir build</code> Switch into the created directory <code>cd build</code> Then create your preferred make files with CMake. On all Unix like systems this will be GNU Makefiles. <code>cmake -G "Unix Makefiles" ..</code> For other supported build systems check the official documentation of CMake. The final step is to build the executable from the Makefiles <code>make</code> There should now be an executable named sift in the build directory. Please refer to the next section to check how it is used and which possibilities you have, by executing it.</p>
 <h1>User Guide</h1>
-<p>This is a CLI only application and there is no intention to make a GUI based application out of it. However the usage isn't very complicated. The easiest way to start of is just throwing an image in and get a new image back, with the sift features drawn on it. The file is called <code>[file]_features.png</code> and can be found in the same directory as the original file. The command to produce this file is <code>./sift path/to/file.jpg</code> But there are many possible parameters on which you can screw the values. The following list shows the possibilities </p><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;{Options:}</div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;  --help                           Print help message</div>
+<p>The easiest way to start of is just giving an image and get a new image back, with the sift features drawn on it. The file is called <code>[file]_features.png</code> and can be found in the same directory as the original file. The command to produce this file is <code>./sift path/to/file.type</code> But there are many possible parameters on which you can screw the values. The following list shows the possibilities </p><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;{Options:}</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;  --help                           Print help messages</div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;  -i [ --img ] arg                 The image on which sift will be executed</div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;  -s [ --sigma ] arg (=1.60000002) The sigma value of the Gaussian calculations</div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;  -k [ --k ] arg (=1.41421354)     The constant which is calculated on sigma </div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;                                   for the DoGs</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;  -o [ --octaves ] arg (=4)        How many octaves should be calculated</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;  -d [ --dogsPerEpoch ] arg (=3)   How many DoGs should be created per epoch</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;  -p [ --subpixel ] arg (=0)       Starts with the doubled size of initial</div>
-</div><!-- fragment --><p> This overview can also be called by <code>./sift --help</code> The first flag is the shorthand and can generally be written by <code>./sift path/to/file.jpg -[shorthand] [value]</code> The second value inside the square brackets is the longhand and may be more readable, but it's also more typing. The general theme looks like this <code>./sift path/to/file.jpg --[longhand]=[value]</code> following after is the default value, which is set, if no argument is given by the user. These default values are based on the studies of David Lowe's paper and seem to give the most stable results overall. The following chapters cover every flag in detail </p><h2>-i [ &ndash;img ] arg</h2>
-<p>The flag indicator is optional as seen in the first example of the user guide. This is also the only possible option which can be handled without a flag indicator. It takes an image file(tested: jpg, png) in RGB or Greyscale. Currently the algorithm gets slower by the size of the image dramatically. A small list with different image sizes shows the calculation time on my PC(i7 vPro)</p><ul>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;  -p [ --subpixel ] arg (=0)       Starts with the doubled size of initial </div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;                                   image</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;  -r [ --result ] arg (=0)         Print the resulting InterestPoints in a file</div>
+</div><!-- fragment --><p> This overview can also be called by <code>./sift --help</code> The first flag is the shorthand and can generally be written by <code>./sift path/to/file.jpg -[shorthand] [value]</code> The second value inside the square brackets is the longhand and may be more readable, but it's also more typing. The general theme looks like this: <code>./sift path/to/file.jpg --[longhand]=[value]</code> The following argument is the default value, which is set, if no argument is given by the user. These default values are based on the studies of David Lowe's paper and seem to give the most stable results overall. The following chapters cover every flag in detail. </p><h2>-i [ &ndash;img ] arg</h2>
+<p>The flag is the only non-optional as seen in the first example of the user guide. This is also the only possible option which can be handled without a flag. It takes an image file(tested: jpg, png) in RGB or Greyscale. Currently the algorithm gets slower by the size of the image dramatically. A small list with different image sizes shows the calculation time on my PC(i7 vPro)</p><ul>
 <li>~300x300 px: ~0.7 seconds</li>
 <li>~600x600 px: ~15 seconds</li>
 <li>~1500x1500 px: ~11 minutes</li>
@@ -123,15 +125,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --><h2>-o [ &ndash;octaves ] arg (=4)</h2>
 <p>The count of octaves to be calculated for the DoG pyramid.</p>
 <h2>-d [ &ndash;dogsPerEpoch ] arg (=3)</h2>
-<p>The count of DoGs created per epoch. Attention: these are the DoGs, there will be +4 Gaussians. Minimum is 3, because we need at least one DoG with an upper and lower neighbour. To process further calculation steps of the algorithm.</p>
+<p>The count of DoGs created per epoch. The minimum is 3, because we need at least one DoG with an upper and lower neighbour to do further calculation steps of the algorithm.</p>
 <h2>-p [ &ndash;subpixel ] arg (=0)</h2>
-<p>Sets the subpixel flag to on(1) or off(0). If it is set to on, the algorithm works on subpixel accuracy. This is accomplished through doubling the size of the initial image and set a Gaussian with sigma=1.0 onto it. Like mentioned in the paper, a base sigma of 0.5 is assumed in the original image. Every further calculation is based on the doubled version. If this flag is set to off, the algorithm starts with the initial image.</p>
+<p>Sets the subpixel flag to on(1) or off(0). If it is set to on, the algorithm works on subpixel accuracy. This is accomplished through doubling the size of the initial image and blur it with a Gaussian window with sigma=1.0 afterwards. Like mentioned in the paper, a base sigma of 0.5 is assumed in the original image. Every further calculation is based on the doubled version. If this flag is set to off, the algorithm starts with the initial image.</p>
+<h2>-r [ &ndash;result ] arg (=0)</h2>
+<p>Writes a sift.txt with a table like listing of all found interest points. The listed data are: positions, scale, orientation and their descriptors.</p>
 <h1>API</h1>
 <p>A full Class and Namespace Reference can be found <a href="https://snowiow.github.io/SIFT/">here</a> </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Aug 31 2015 14:09:02 for SIFT by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Sep 2 2015 16:56:51 for SIFT by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.10
 </small></address>

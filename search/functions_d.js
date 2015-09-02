@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['sift',['Sift',['../classsift_1_1Sift.html#a782dc76e2fcca6e04cd3cb2398e06eb0',1,'sift::Sift']]],
-  ['soderivative',['soDerivative',['../namespacesift_1_1alg.html#a9c327156119ec4e9fed336819307b84f',1,'sift::alg']]]
+  ['reducetonextlevel',['reduceToNextLevel',['../namespacesift_1_1alg.html#ad2f2df5248316f486c8750bfbf1025f9',1,'sift::alg']]],
+  ['rotateshape',['rotateShape',['../namespacesift_1_1alg.html#a6576e3730fc5599e364fb3108852f0f8',1,'sift::alg']]]
 ];

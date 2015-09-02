@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['filtered',['filtered',['../classsift_1_1InterestPoint.html#a613fd840fa925b4885d5228fd2c1290c',1,'sift::InterestPoint']]]
+  ['descriptors',['descriptors',['../classsift_1_1InterestPoint.html#abe4ba24ab6870a8aa958910bc8acf1b5',1,'sift::InterestPoint']]]
 ];

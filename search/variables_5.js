@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['scale',['scale',['../classsift_1_1InterestPoint.html#abcdd744160459cfbd2330b5d6b8a2926',1,'sift::InterestPoint::scale()'],['../classsift_1_1OctaveElem.html#a20c52ec14f807ff469e3602dfb79cb88',1,'sift::OctaveElem::scale()']]],
-  ['subpixel',['subpixel',['../classsift_1_1Sift.html#ab083661626a1f1f50ceafaf3134f573d',1,'sift::Sift']]]
+  ['octave',['octave',['../classsift_1_1InterestPoint.html#a2daaf1185f5658cabc2e8a3768b7f321',1,'sift::InterestPoint']]],
+  ['orientation',['orientation',['../classsift_1_1InterestPoint.html#ab53d998739385e222fae9ad52fe0e161',1,'sift::InterestPoint']]]
 ];

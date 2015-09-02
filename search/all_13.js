@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['width',['width',['../classsift_1_1Matrix.html#a89f2de95ccd41c087fe100f102082afa',1,'sift::Matrix']]]
+  ['vertexparabola',['vertexParabola',['../namespacesift_1_1alg.html#ad087a900110dfb1e70e5f9f2c76234f2',1,'sift::alg']]]
 ];
