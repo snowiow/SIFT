@@ -1,13 +1,15 @@
 # SIFT Algorithm in C++
-- Showcase(#showcase)
+- [Showcase](#showcase)
 - [Intro](#intro)
 - [Installation](#installation)
 - [User Guide](#user-guide)
 - [API](#api)
 
 # Showcase
-[parrot](https://github.com/snowiow/sift/blob/master/example/parrot.jpg)
-[parrot_features](https://github.com/snowiow/sift/blob/master/example/parrot_orientation.png)
+![parrot](https://github.com/snowiow/sift/blob/master/example/parrot.jpg)  
+
+![parrot_features](https://github.com/snowiow/sift/blob/master/example/parrot_orientation.png)  
+
 # Intro
 This is a C++ implementation of the SIFT algorithm, which was originally presented by David G. Lowe
 in the International Journal of Computer Vision 60 in January 2004. This algorithm is mostly implemented
