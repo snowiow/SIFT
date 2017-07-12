@@ -4,7 +4,7 @@ project(sift)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -O3")
 
 FIND_PACKAGE(Vigra)
-FIND_PACKAGE(OpenCV)
+FIND_PACKAGE(OpenCV REQUIRED)
 FIND_PACKAGE(Boost COMPONENTS program_options REQUIRED)
 
 set(HEADER_FILES sift.hpp types.hpp point.hpp matrix.hpp algorithms.hpp octaveelem.hpp interestpoint.hpp)

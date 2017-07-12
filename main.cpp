@@ -6,8 +6,7 @@
 #include <vigra/impex.hxx>
 #include <vigra/multi_array.hxx>
 
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
+#include <opencv/cv.hpp>
 
 #include <boost/program_options.hpp>
 
